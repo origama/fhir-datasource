@@ -2,7 +2,7 @@
 
 import _ from 'lodash';
 
-export default class ChangeMyNameDatasource {
+export default class FhirDatasourceDatasource {
   id: number;
   name: string;
 

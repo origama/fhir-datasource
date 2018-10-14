@@ -1,14 +1,14 @@
-import ChangeMyNameDatasource from './datasource';
-import {ChangeMyNameQueryCtrl} from './query_ctrl';
-import {ChangeMyNameConfigCtrl} from './config_ctrl';
+import FhirDatasourceDatasource from './datasource';
+import {FhirDatasourceQueryCtrl} from './query_ctrl';
+import {FhirDatasourceConfigCtrl} from './config_ctrl';
 
-class ChangeMyNameAnnotationsQueryCtrl {
+class FhirDatasourceAnnotationsQueryCtrl {
   static templateUrl = 'partials/annotations.editor.html';
 }
 
 export {
-  ChangeMyNameDatasource as Datasource,
-  ChangeMyNameQueryCtrl as QueryCtrl,
-  ChangeMyNameConfigCtrl as ConfigCtrl,
-  ChangeMyNameAnnotationsQueryCtrl as AnnotationsQueryCtrl,
+  FhirDatasourceDatasource as Datasource,
+  FhirDatasourceQueryCtrl as QueryCtrl,
+  FhirDatasourceConfigCtrl as ConfigCtrl,
+  FhirDatasourceAnnotationsQueryCtrl as AnnotationsQueryCtrl,
 };
