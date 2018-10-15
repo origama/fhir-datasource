@@ -1,15 +1,36 @@
-///<reference path="../node_modules/grafana-sdk-mocks/app/headers/common.d.ts" />
-
+import * as FHIR from 'fhir.js';
+import nativeFhir from 'fhir.js/src/adapters/native';
 import _ from 'lodash';
-
 export default class FhirDatasourceDatasource {
   id: number;
   name: string;
+  config: any;
+  client: any;
+  conformance: any;
 
   /** @ngInject */
-  constructor(instanceSettings, private backendSrv, private templateSrv, private $q) {
+  constructor(instanceSettings) {
     this.name = instanceSettings.name;
     this.id = instanceSettings.id;
+    this.config = instanceSettings.jsonData;
+    
+    let config: any = {
+      'baseUrl': 'http://fhirtest.uhn.ca/baseDstu2',
+      'credentials': 'same-origin',
+    };
+    
+    // config.baseUrl = this.config.fhiraddress;    
+    // console.log("FHIR.mkFhir",FHIR.mkFhir);
+    // console.log("nativeFhir",nativeFhir);
+    // var fhir = nativeFhir({
+    //   baseUrl: 'https://ci-api.fhir.me',
+    //   auth: {user: 'client', pass: 'secret'}
+    // });
+    // console.log("fhir",fhir);
+    this.client = nativeFhir(config);
+    console.log(this.client);
+    
+
   }
 
   query(options) {
@@ -25,10 +46,21 @@ export default class FhirDatasourceDatasource {
   }
 
   testDatasource() {
-    return this.$q.when({
-      status: 'error',
-      message: 'Data Source is just a template and has not been implemented yet.',
-      title: 'Error'
+    
+    return this.client.conformance({}).then((response) => {
+      if(response.data){
+        this.conformance = (response.data || []);
+        console.log(this.conformance);
+        alert("yeah"); 
+      }
+    }, (err) => {
+      alert("err indian way");
+      return {
+        status: 'error',
+        message: 'Data Source is just a template and has not been implemented yet.',
+        title: 'Error'
+      };
+      
     });
   }
 }

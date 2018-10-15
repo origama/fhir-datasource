@@ -17,3 +17,15 @@
 .gf-form-select-wrapper--caret-indent.gf-form-select-wrapper::after {
   right: 0.775rem
 }
+
+.service-dropdown {
+  width: 12rem;
+}
+
+.aggregation-dropdown-wrapper {
+  max-width: 29.1rem;
+}
+
+.timegrainunit-dropdown-wrapper {
+  width: 8rem;
+}

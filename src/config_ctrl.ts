@@ -1,4 +1,6 @@
-///<reference path="../node_modules/grafana-sdk-mocks/app/headers/common.d.ts" />
+import config from 'grafana/app/core/config';
+import { isVersionGtOrEq } from './version';
+
 
 export class FhirDatasourceConfigCtrl {
   static templateUrl = 'partials/config.html';

@@ -1,14 +1,12 @@
-import FhirDatasourceDatasource from './datasource';
-import {FhirDatasourceQueryCtrl} from './query_ctrl';
-import {FhirDatasourceConfigCtrl} from './config_ctrl';
+import Datasource from './datasource';
+import { FhirDatasourceQueryCtrl } from './query_ctrl';
+import { FhirDatasourceAnnotationsQueryCtrl } from './annotations_query_ctrl';
+import { FhirDatasourceConfigCtrl } from './config_ctrl';
 
-class FhirDatasourceAnnotationsQueryCtrl {
-  static templateUrl = 'partials/annotations.editor.html';
-}
 
 export {
-  FhirDatasourceDatasource as Datasource,
-  FhirDatasourceQueryCtrl as QueryCtrl,
+  Datasource,
+  FhirDatasourceAnnotationsQueryCtrl as QueryCtrl,
   FhirDatasourceConfigCtrl as ConfigCtrl,
-  FhirDatasourceAnnotationsQueryCtrl as AnnotationsQueryCtrl,
+  FhirDatasourceQueryCtrl as AnnotationsQueryCtrl,
 };
