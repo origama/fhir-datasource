@@ -1,4 +1,4 @@
-import * as FHIR from 'fhir.js';
+///<reference path="../node_modules/grafana-sdk-mocks/app/headers/common.d.ts" />
 import nativeFhir from 'fhir.js/src/adapters/native';
 import _ from 'lodash';
 export default class FhirDatasourceDatasource {

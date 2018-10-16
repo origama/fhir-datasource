@@ -31,6 +31,7 @@
     "clean-webpack-plugin": "0.1.19",
     "copy-webpack-plugin": "4.5.1",
     "css-loader": "0.28.11",
+    "grafana-sdk-mocks": "github:grafana/grafana-sdk-mocks",
     "jest": "23.0.1",
     "ng-annotate-webpack-plugin": "0.3.0",
     "style-loader": "0.21.0",
