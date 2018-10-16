@@ -18,7 +18,8 @@ Main Status: DRAFT
 It is developed merging concept from datasource template offered by grafana github.
 We swithced from grunt to webpack.
 
-We discovered a clean template here: https://github.com/CorpGlory/grafana-plugin-template-webpack-typescript
+We discovered a clean template here: 
+https://github.com/CorpGlory/grafana-plugin-template-webpack-typescript
 
 We made a very simplier docker-compose file to test locally the plugin
 You can find in dockerTest:
@@ -27,9 +28,10 @@ You can find in dockerTest:
  - port binding on 127.0.0.1:3000
 
 #### Usefull Reference
-
+ 
  - http://docs.grafana.org/plugins/developing/development/
  - http://docs.grafana.org/plugins/developing/datasources/
+ - https://github.com/grafana/grafana/tree/master/public/app/plugins/datasource
  - https://github.com/grafana/grafana-sdk-mocks
  - https://github.com/CorpGlory/types-grafana
  - https://github.com/CorpGlory/grafana-plugin-template-webpack-typescript
