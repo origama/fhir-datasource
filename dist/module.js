@@ -2270,7 +2270,7 @@ var FhirDatasourceDatasource = /** @class */function () {
             'baseUrl': 'http://fhirtest.uhn.ca/baseDstu2',
             'credentials': 'same-origin'
         };
-        // config.baseUrl = this.config.fhiraddress;    
+        config.baseUrl = this.config.fhiraddress || config.baseUrl;
         // console.log("FHIR.mkFhir",FHIR.mkFhir);
         // console.log("nativeFhir",nativeFhir);
         // var fhir = nativeFhir({
@@ -2279,7 +2279,6 @@ var FhirDatasourceDatasource = /** @class */function () {
         // });
         // console.log("fhir",fhir);
         this.client = (0, _native2.default)(config);
-        console.log(this.client);
     }
     FhirDatasourceDatasource.prototype.query = function (options) {
         throw new Error("Query Support not implemented yet.");
@@ -2296,10 +2295,15 @@ var FhirDatasourceDatasource = /** @class */function () {
             if (response.data) {
                 _this.conformance = response.data || [];
                 console.log(_this.conformance);
-                alert("yeah");
             }
+            var text = JSON.stringify(_this.conformance, null, 2);
+            ;
+            return {
+                status: 'success',
+                message: 'Connection result: \n' + text,
+                title: 'success'
+            };
         }, function (err) {
-            alert("err indian way");
             return {
                 status: 'error',
                 message: 'Data Source is just a template and has not been implemented yet.',
@@ -2308,7 +2312,7 @@ var FhirDatasourceDatasource = /** @class */function () {
         });
     };
     return FhirDatasourceDatasource;
-}();
+}(); ///<reference path="../node_modules/grafana-sdk-mocks/app/headers/common.d.ts" />
 exports.default = FhirDatasourceDatasource;
 
 /***/ }),

@@ -19,7 +19,7 @@ export default class FhirDatasourceDatasource {
       'credentials': 'same-origin',
     };
     
-    // config.baseUrl = this.config.fhiraddress;    
+    config.baseUrl = (this.config.fhiraddress || config.baseUrl);
     // console.log("FHIR.mkFhir",FHIR.mkFhir);
     // console.log("nativeFhir",nativeFhir);
     // var fhir = nativeFhir({
@@ -28,8 +28,6 @@ export default class FhirDatasourceDatasource {
     // });
     // console.log("fhir",fhir);
     this.client = nativeFhir(config);
-    console.log(this.client);
-    
 
   }
 
@@ -47,14 +45,19 @@ export default class FhirDatasourceDatasource {
 
   testDatasource() {
     
-    return this.client.conformance({}).then((response) => {
+    return this.client.conformance({}).then(
+      (response) => {
       if(response.data){
         this.conformance = (response.data || []);
-        console.log(this.conformance);
-        alert("yeah"); 
+        console.log(this.conformance);        
       }
-    }, (err) => {
-      alert("err indian way");
+      let text = JSON.stringify(this.conformance, null, 2);;
+      return {
+        status: 'success',
+        message: 'Connection result: \n' + text ,
+        title: 'success'
+      }
+    }, (err) => {      
       return {
         status: 'error',
         message: 'Data Source is just a template and has not been implemented yet.',
