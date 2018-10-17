@@ -2353,7 +2353,7 @@ var Response = /** @class */function () {
     Response.success = function (title, msg) {
         return {
             status: ReturnStatus.success,
-            title: title,
+            title: ReturnStatus.success,
             message: msg
         };
     };
