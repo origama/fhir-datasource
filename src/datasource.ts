@@ -28,6 +28,7 @@ export default class FhirDatasourceDatasource {
     // });
     // console.log("fhir",fhir);
     this.client = nativeFhir(config);
+    (<any>window).fhir_datasource=this;
 
   }
 
