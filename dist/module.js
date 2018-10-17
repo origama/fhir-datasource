@@ -2296,10 +2296,14 @@ var FhirDatasourceDatasource = /** @class */function () {
             if (response.data) {
                 _this.conformance = response.data || [];
                 console.log(_this.conformance);
-                if (_this.isValidServer()) return Response.success("Server added successfully!", "");else return Response.error("Cannot add Server!", "The server doesn't seem to be a valid one!");
+                if (_this.isValidServer()) {
+                    return Response.success("Server added successfully!", _this.conformance.software.name + " is a valid Fhir Server.");
+                } else return Response.error("Cannot add Server!", "The server doesn't seem to be a valid one!");
             } else return Response.error("Cannot add Server!", "The server's response is not compliant!");
         }, function (err) {
-            return Response.error("Cannot add Server!", "We couldn't add the server: " + err + " ");
+            var errmsg = "";
+            if (err.error && err.error instanceof TypeError) errmsg = err.error.message;else errmsg = "[" + err.error.status + "] " + err.error.statusText;
+            return Response.error("Cannot add Server!", "We couldn't add the server:\n" + errmsg);
         });
     };
     /**
@@ -2353,7 +2357,7 @@ var Response = /** @class */function () {
     Response.success = function (title, msg) {
         return {
             status: ReturnStatus.success,
-            title: ReturnStatus.success,
+            title: title,
             message: msg
         };
     };

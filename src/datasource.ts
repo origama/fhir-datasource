@@ -50,20 +50,22 @@ export default class FhirDatasourceDatasource {
       if(response.data){
         this.conformance = (response.data || []);
         console.log(this.conformance);        
-        if (this.isValidServer())
+        if (this.isValidServer()){
           return Response.success(
             "Server added successfully!",
-            "");
+            this.conformance.software.name+" is a valid Fhir Server.");
+        }
         else
           return Response.error("Cannot add Server!","The server doesn't seem to be a valid one!")
       }
       else return Response.error("Cannot add Server!","The server's response is not compliant!")
-    }, (err) => {      
-      return Response.error("Cannot add Server!",`We couldn't add the server: ${err} `)
+    }, (err) => {
+      let errmsg=""
+      if (err.error && err.error instanceof TypeError) errmsg=err.error.message;
+      else errmsg=`[${err.error.status}] ${err.error.statusText}`
+      return Response.error("Cannot add Server!",`We couldn't add the server:\n${errmsg}`)
     });
   }
-
-  
 
   /** 
    * Contains the logic to check if the provided server is a valid one.
