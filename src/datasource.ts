@@ -45,26 +45,77 @@ export default class FhirDatasourceDatasource {
   }
 
   testDatasource() {
-    
     return this.client.conformance({}).then(
       (response) => {
       if(response.data){
         this.conformance = (response.data || []);
         console.log(this.conformance);        
+        if (this.isValidServer())
+          return Response.success(
+            "Server added successfully!",
+            "");
+        else
+          return Response.error("Cannot add Server!","The server doesn't seem to be a valid one!")
       }
-      let text = JSON.stringify(this.conformance, null, 2);;
-      return {
-        status: 'success',
-        message: 'Connection result: \n' + text ,
-        title: 'success'
-      }
+      else return Response.error("Cannot add Server!","The server's response is not compliant!")
     }, (err) => {      
-      return {
-        status: 'error',
-        message: 'Data Source is just a template and has not been implemented yet.',
-        title: 'Error'
-      };
-      
+      return Response.error("Cannot add Server!",`We couldn't add the server: ${err} `)
     });
   }
+
+  
+
+  /** 
+   * Contains the logic to check if the provided server is a valid one.
+   * At the moment it only checks if it has a conformance object and
+   * if the conformance has a fhirVersion attribute.
+  */
+  isValidServer(){
+    if(this.conformance!=[] && this.conformance.fhirVersion){
+      return true;
+    }
+    return false;
+  }
+}
+
+/**
+ * Possible result statuses for testDatasource
+ */
+enum ReturnStatus {
+  success = "success",
+  error = "error",
+}
+
+/**
+ * Helper class to generate the right json object to pass over to grafana.
+ * It handles success and error object messages.
+ */
+class Response {
+    retObj = {}
+
+    /**
+     * Generates error json message
+     * @param title Message title 
+     * @param msg Message body
+     */
+    static error(title:String, msg : String){
+      return {
+        status: ReturnStatus.error,
+        title: title,
+        message: msg        
+      }
+    }
+
+    /**
+     * Generates success json messages
+     * @param title Message title 
+     * @param msg Message body
+     */
+    static success(title:String, msg : String){
+      return {
+        status: ReturnStatus.success,
+        title: title,
+        message: msg        
+      }
+    }
 }

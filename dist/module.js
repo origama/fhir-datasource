@@ -2296,25 +2296,69 @@ var FhirDatasourceDatasource = /** @class */function () {
             if (response.data) {
                 _this.conformance = response.data || [];
                 console.log(_this.conformance);
-            }
-            var text = JSON.stringify(_this.conformance, null, 2);
-            ;
-            return {
-                status: 'success',
-                message: 'Connection result: \n' + text,
-                title: 'success'
-            };
+                if (_this.isValidServer()) return Response.success("Server added successfully!", "");else return Response.error("Cannot add Server!", "The server doesn't seem to be a valid one!");
+            } else return Response.error("Cannot add Server!", "The server's response is not compliant!");
         }, function (err) {
-            return {
-                status: 'error',
-                message: 'Data Source is just a template and has not been implemented yet.',
-                title: 'Error'
-            };
+            return Response.error("Cannot add Server!", "We couldn't add the server: " + err + " ");
         });
+    };
+    /**
+     * Contains the logic to check if the provided server is a valid one.
+     * At the moment it only checks if it has a conformance object and
+     * if the conformance has a fhirVersion attribute.
+    */
+    FhirDatasourceDatasource.prototype.isValidServer = function () {
+        if (this.conformance != [] && this.conformance.fhirVersion) {
+            return true;
+        }
+        return false;
     };
     return FhirDatasourceDatasource;
 }(); ///<reference path="../node_modules/grafana-sdk-mocks/app/headers/common.d.ts" />
 exports.default = FhirDatasourceDatasource;
+/**
+ * Possible result statuses for testDatasource
+ */
+
+var ReturnStatus;
+(function (ReturnStatus) {
+    ReturnStatus["success"] = "success";
+    ReturnStatus["error"] = "error";
+})(ReturnStatus || (ReturnStatus = {}));
+/**
+ * Helper class to generate the right json object to pass over to grafana.
+ * It handles success and error object messages.
+ */
+var Response = /** @class */function () {
+    function Response() {
+        this.retObj = {};
+    }
+    /**
+     * Generates error json message
+     * @param title Message title
+     * @param msg Message body
+     */
+    Response.error = function (title, msg) {
+        return {
+            status: ReturnStatus.error,
+            title: title,
+            message: msg
+        };
+    };
+    /**
+     * Generates success json messages
+     * @param title Message title
+     * @param msg Message body
+     */
+    Response.success = function (title, msg) {
+        return {
+            status: ReturnStatus.success,
+            title: title,
+            message: msg
+        };
+    };
+    return Response;
+}();
 
 /***/ }),
 
