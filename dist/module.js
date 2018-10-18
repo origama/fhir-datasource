@@ -2282,7 +2282,27 @@ var FhirDatasourceDatasource = /** @class */function () {
         window.fhir_datasource = this;
     }
     FhirDatasourceDatasource.prototype.query = function (options) {
-        throw new Error("Query Support not implemented yet.");
+        console.log("from query, options:", options);
+        /**
+         * This is what I have to return:
+         * [
+              {
+                "target":"upper_75",
+                "datapoints":[
+                  [622, 1450754160000],
+                  [365, 1450754220000]
+                ]
+              },
+              {
+                "target":"upper_90",
+                "datapoints":[
+                  [861, 1450754160000],
+                  [767, 1450754220000]
+                ]
+              }
+            ]
+         */
+        var retvals = [];
     };
     FhirDatasourceDatasource.prototype.annotationQuery = function (options) {
         throw new Error("Annotation Support not implemented yet.");
