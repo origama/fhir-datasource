@@ -2283,16 +2283,26 @@ var FhirDatasourceDatasource = /** @class */function () {
     }
     FhirDatasourceDatasource.prototype.query = function (options) {
         console.log("from query, options:", options);
-        // var query = this.buildQueryParameters(options);
-        // query.targets = query.targets.filter(t => !t.hide);
-        // if (query.targets.length <= 0) {
-        //   return this.q.when({data: []});
-        // }
-        // if (this.templateSrv.getAdhocFilters) {
-        //   query.adhocFilters = this.templateSrv.getAdhocFilters(this.name);
-        // } else {
-        //   query.adhocFilters = [];
-        // }
+        /**
+         * This is what I have to return:
+         * [
+              {
+                "target":"upper_75",
+                "datapoints":[
+                  [622, 1450754160000],
+                  [365, 1450754220000]
+                ]
+              },
+              {
+                "target":"upper_90",
+                "datapoints":[
+                  [861, 1450754160000],
+                  [767, 1450754220000]
+                ]
+              }
+            ]
+         */
+        var retvals = [];
     };
     FhirDatasourceDatasource.prototype.annotationQuery = function (options) {
         throw new Error("Annotation Support not implemented yet.");
