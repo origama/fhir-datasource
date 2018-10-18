@@ -33,7 +33,30 @@ export default class FhirDatasourceDatasource {
   }
 
   query(options) {
-    throw new Error("Query Support not implemented yet.");
+    console.log("from query, options:",options);
+    /**
+     * This is what I have to return:
+     * [
+          {
+            "target":"upper_75",
+            "datapoints":[
+              [622, 1450754160000],
+              [365, 1450754220000]
+            ]
+          },
+          {
+            "target":"upper_90",
+            "datapoints":[
+              [861, 1450754160000],
+              [767, 1450754220000]
+            ]
+          }
+        ]
+     */
+    
+     let retvals=[];
+     
+
   }
 
   annotationQuery(options) {

@@ -2282,7 +2282,17 @@ var FhirDatasourceDatasource = /** @class */function () {
         window.fhir_datasource = this;
     }
     FhirDatasourceDatasource.prototype.query = function (options) {
-        throw new Error("Query Support not implemented yet.");
+        console.log("from query, options:", options);
+        // var query = this.buildQueryParameters(options);
+        // query.targets = query.targets.filter(t => !t.hide);
+        // if (query.targets.length <= 0) {
+        //   return this.q.when({data: []});
+        // }
+        // if (this.templateSrv.getAdhocFilters) {
+        //   query.adhocFilters = this.templateSrv.getAdhocFilters(this.name);
+        // } else {
+        //   query.adhocFilters = [];
+        // }
     };
     FhirDatasourceDatasource.prototype.annotationQuery = function (options) {
         throw new Error("Annotation Support not implemented yet.");
