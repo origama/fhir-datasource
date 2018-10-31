@@ -170,7 +170,7 @@ exports = module.exports = __webpack_require__(/*! ../../node_modules/css-loader
 
 
 // module
-exports.push([module.i, ".min-width-10 {\n  min-width: 10rem;\n}\n\n.min-width-12 {\n  min-width: 12rem;\n}\n\n.min-width-20 {\n  min-width: 20rem;\n}\n\n.gf-form-select-wrapper select.gf-form-input {\n  height: 2.64rem;\n}\n\n.gf-form-select-wrapper--caret-indent.gf-form-select-wrapper::after {\n  right: 0.775rem\n}\n\n.service-dropdown {\n  width: 12rem;\n}\n\n.aggregation-dropdown-wrapper {\n  max-width: 29.1rem;\n}\n\n.timegrainunit-dropdown-wrapper {\n  width: 8rem;\n}\n", "", {"version":3,"sources":["/Users/origama/repos/origama/fhir-datasource/src/css/query_editor.css"],"names":[],"mappings":"AAAA;EACE,iBAAiB;CAClB;;AAED;EACE,iBAAiB;CAClB;;AAED;EACE,iBAAiB;CAClB;;AAED;EACE,gBAAgB;CACjB;;AAED;EACE,eAAe;CAChB;;AAED;EACE,aAAa;CACd;;AAED;EACE,mBAAmB;CACpB;;AAED;EACE,YAAY;CACb","file":"query_editor.css","sourcesContent":[".min-width-10 {\n  min-width: 10rem;\n}\n\n.min-width-12 {\n  min-width: 12rem;\n}\n\n.min-width-20 {\n  min-width: 20rem;\n}\n\n.gf-form-select-wrapper select.gf-form-input {\n  height: 2.64rem;\n}\n\n.gf-form-select-wrapper--caret-indent.gf-form-select-wrapper::after {\n  right: 0.775rem\n}\n\n.service-dropdown {\n  width: 12rem;\n}\n\n.aggregation-dropdown-wrapper {\n  max-width: 29.1rem;\n}\n\n.timegrainunit-dropdown-wrapper {\n  width: 8rem;\n}\n"],"sourceRoot":""}]);
+exports.push([module.i, ".min-width-10 {\n  min-width: 10rem;\n}\n\n.min-width-12 {\n  min-width: 12rem;\n}\n\n.min-width-20 {\n  min-width: 20rem;\n}\n\n.gf-form-select-wrapper select.gf-form-input {\n  height: 2.64rem;\n}\n\n.gf-form-select-wrapper--caret-indent.gf-form-select-wrapper::after {\n  right: 0.775rem\n}\n\n.service-dropdown {\n  width: 12rem;\n}\n\n.aggregation-dropdown-wrapper {\n  max-width: 29.1rem;\n}\n\n.timegrainunit-dropdown-wrapper {\n  width: 8rem;\n}\n", "", {"version":3,"sources":["/home/blackdevil/Scrivania/nuovo/progetti/grafana-fhir-datasource/fhir-datasource/src/css/query_editor.css"],"names":[],"mappings":"AAAA;EACE,iBAAiB;CAClB;;AAED;EACE,iBAAiB;CAClB;;AAED;EACE,iBAAiB;CAClB;;AAED;EACE,gBAAgB;CACjB;;AAED;EACE,eAAe;CAChB;;AAED;EACE,aAAa;CACd;;AAED;EACE,mBAAmB;CACpB;;AAED;EACE,YAAY;CACb","file":"query_editor.css","sourcesContent":[".min-width-10 {\n  min-width: 10rem;\n}\n\n.min-width-12 {\n  min-width: 12rem;\n}\n\n.min-width-20 {\n  min-width: 20rem;\n}\n\n.gf-form-select-wrapper select.gf-form-input {\n  height: 2.64rem;\n}\n\n.gf-form-select-wrapper--caret-indent.gf-form-select-wrapper::after {\n  right: 0.775rem\n}\n\n.service-dropdown {\n  width: 12rem;\n}\n\n.aggregation-dropdown-wrapper {\n  max-width: 29.1rem;\n}\n\n.timegrainunit-dropdown-wrapper {\n  width: 8rem;\n}\n"],"sourceRoot":""}]);
 
 // exports
 
@@ -2254,61 +2254,136 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _lodash = __webpack_require__(/*! lodash */ "lodash");
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
 var _native = __webpack_require__(/*! fhir.js/src/adapters/native */ "../node_modules/fhir.js/src/adapters/native.js");
 
 var _native2 = _interopRequireDefault(_native);
 
+var _grafana = __webpack_require__(/*! ./utils/grafana/grafana.module */ "./utils/grafana/grafana.module.ts");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var FhirDatasourceDatasource = /** @class */function () {
-    /** @ngInject */
-    function FhirDatasourceDatasource(instanceSettings) {
-        this.name = instanceSettings.name;
+    //@ngInject
+    function FhirDatasourceDatasource(instanceSettings, $q, backendSrv, templateSrv) {
+        console.log("FhirDatasourceDatasource Ctor", instanceSettings);
         this.id = instanceSettings.id;
+        this.type = instanceSettings.type;
+        this.url = instanceSettings.url;
+        this.name = instanceSettings.name;
+        this.q = $q;
+        this.backendSrv = backendSrv;
+        this.templateSrv = templateSrv;
+        this.withCredentials = instanceSettings.withCredentials;
+        this.headers = { 'Content-Type': 'application/json' };
         this.config = instanceSettings.jsonData;
         var config = {
-            'baseUrl': 'http://fhirtest.uhn.ca/baseDstu2',
+            'baseUrl': 'http://fhirtest.uhn.ca/baseDstu3',
             'credentials': 'same-origin'
         };
-        config.baseUrl = this.config.fhiraddress || config.baseUrl;
-        // console.log("FHIR.mkFhir",FHIR.mkFhir);
-        // console.log("nativeFhir",nativeFhir);
-        // var fhir = nativeFhir({
-        //   baseUrl: 'https://ci-api.fhir.me',
-        //   auth: {user: 'client', pass: 'secret'}
-        // });
-        // console.log("fhir",fhir);
+        config.baseUrl = this.config.baseUrl || new URL(config.baseUrl).href;
         this.client = (0, _native2.default)(config);
         window.fhir_datasource = this;
+        window.fhir_client = this.client;
+        this.client.conformance({});
+        console.log("url", this.url);
+        console.log("backendSrv", this.backendSrv);
+        console.log("templateSrv", this.templateSrv);
+        this.backendSrv.datasourceRequest = function (request) {
+            console.log("datasourceRequest", request);
+            return this.$q.when({
+                _request: request,
+                data: ["metric_0", "metric_1", "metric_2"]
+            });
+        };
     }
     FhirDatasourceDatasource.prototype.query = function (options) {
-        console.log("from query, options:", options);
-        /**
-         * This is what I have to return:
-         * [
-              {
-                "target":"upper_75",
-                "datapoints":[
-                  [622, 1450754160000],
-                  [365, 1450754220000]
-                ]
-              },
-              {
-                "target":"upper_90",
-                "datapoints":[
-                  [861, 1450754160000],
-                  [767, 1450754220000]
-                ]
-              }
-            ]
-         */
-        var retvals = [];
+        console.log("FhirDatasourceDatasource Query", options);
+        var query = this.buildQueryParameters(options);
+        query.targets = query.targets.filter(function (t) {
+            return !t.hide;
+        });
+        console.log("query", query);
+        query.targets = [];
+        if (query.targets.length <= 0) {
+            return this.q.when({ data: [] });
+        }
+        return this.q.when({
+            data: []
+        });
+        //return this.doRequest(options);
+        //    return this.q.when(options);
+        /*    return this.q.when({
+              "range": { "from": "2015-12-22T03:06:13.851Z", "to": "2015-12-22T06:48:24.137Z" },
+              "interval": "5s",
+              "targets": [
+                { "refId": "B", "target": "upper_75" },
+                { "refId": "A", "target": "upper_90" }
+              ],
+              "format": "json",
+              "maxDataPoints": 2495, //decided by the panel
+              "data" : [ "uno","due","tre"]
+            });
+            */
+        /*
+            if (query.targets.length <= 0) {
+              return this.q.when({data: []});
+            }
+        
+            if (this.templateSrv.getAdhocFilters) {
+              query.adhocFilters = this.templateSrv.getAdhocFilters(this.name);
+            } else {
+              query.adhocFilters = [];
+            }
+           
+            let x = this.doRequest(options);
+            console.log(x)
+            return x;
+        */
+        // return this.doRequest({
+        //   url: this.url + '/query',
+        //   data: query,
+        //   method: 'POST'
+        // });
     };
     FhirDatasourceDatasource.prototype.annotationQuery = function (options) {
+        console.log("FhirDatasourceDatasource annotationQuery", options);
         throw new Error("Annotation Support not implemented yet.");
+        // var query = this.templateSrv.replace(options.annotation.query, {}, 'glob');
+        // var annotationQuery = {
+        //   range: options.range,
+        //   annotation: {
+        //     name: options.annotation.name,
+        //     datasource: options.annotation.datasource,
+        //     enable: options.annotation.enable,
+        //     iconColor: options.annotation.iconColor,
+        //     query: query
+        //   },
+        //   rangeRaw: options.rangeRaw
+        // };
+        // return this.doRequest({
+        //   url: this.url + '/annotations',
+        //   method: 'POST',
+        //   data: annotationQuery
+        // }).then(result => {
+        //   return result.data;
+        // });
     };
     FhirDatasourceDatasource.prototype.metricFindQuery = function (query) {
-        throw new Error("Template Variable Support not implemented yet.");
+        console.log("metricFindQuery", query);
+        var interpolated = {
+            target: this.templateSrv.replace(query, null, 'regex')
+        };
+        return this.client.conformance({}).then(function (response) {
+            var toRet = [];
+            toRet = response.data.rest[0].resource.map(function (tmp) {
+                return new _grafana.GrafanaHelper.Metric(tmp.type, tmp.type);
+            });
+            return toRet;
+        });
     };
     FhirDatasourceDatasource.prototype.testDatasource = function () {
         var _this = this;
@@ -2317,13 +2392,13 @@ var FhirDatasourceDatasource = /** @class */function () {
                 _this.conformance = response.data || [];
                 console.log(_this.conformance);
                 if (_this.isValidServer()) {
-                    return Response.success("Server added successfully!", _this.conformance.software.name + " is a valid Fhir Server.");
-                } else return Response.error("Cannot add Server!", "The server doesn't seem to be a valid one!");
-            } else return Response.error("Cannot add Server!", "The server's response is not compliant!");
+                    return _grafana.GrafanaHelper.Response.success("Server added successfully!", _this.conformance.software.name + " is a valid Fhir Server.");
+                } else return _grafana.GrafanaHelper.Response.error("Cannot add Server!", "The server doesn't seem to be a valid one!");
+            } else return _grafana.GrafanaHelper.Response.error("Cannot add Server!", "The server's response is not compliant!");
         }, function (err) {
             var errmsg = "";
             if (err.error && err.error instanceof TypeError) errmsg = err.error.message;else errmsg = "[" + err.error.status + "] " + err.error.statusText;
-            return Response.error("Cannot add Server!", "We couldn't add the server:\n" + errmsg);
+            return _grafana.GrafanaHelper.Response.error("Cannot add Server!", "We couldn't add the server:\n" + errmsg);
         });
     };
     /**
@@ -2337,52 +2412,59 @@ var FhirDatasourceDatasource = /** @class */function () {
         }
         return false;
     };
+    FhirDatasourceDatasource.prototype.doRequest = function (options) {
+        options.withCredentials = this.withCredentials;
+        options.headers = this.headers;
+        console.log("options", options);
+        var x = this.backendSrv.datasourceRequest(options);
+        console.log("backend", x);
+        return x;
+    };
+    FhirDatasourceDatasource.prototype.buildQueryParameters = function (options) {
+        var _this = this;
+        //remove placeholder targets
+        options.targets = _lodash2.default.filter(options.targets, function (target) {
+            return target.target !== 'select metric';
+        });
+        console.log("buildQueryParameters", options);
+        var targets = _lodash2.default.map(options.targets, function (target) {
+            return {
+                target: _this.templateSrv.replace(target.target, options.scopedVars, 'regex'),
+                refId: target.refId,
+                hide: target.hide,
+                type: target.type || 'timeserie'
+            };
+        });
+        options.targets = targets;
+        return options;
+    };
+    FhirDatasourceDatasource.prototype.getTagKeys = function (options) {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            _this.doRequest({
+                url: _this.url + '/tag-keys',
+                method: 'POST',
+                data: options
+            }).then(function (result) {
+                return resolve(result.data);
+            });
+        });
+    };
+    FhirDatasourceDatasource.prototype.getTagValues = function (options) {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            _this.doRequest({
+                url: _this.url + '/tag-values',
+                method: 'POST',
+                data: options
+            }).then(function (result) {
+                return resolve(result.data);
+            });
+        });
+    };
     return FhirDatasourceDatasource;
 }(); ///<reference path="../node_modules/grafana-sdk-mocks/app/headers/common.d.ts" />
 exports.default = FhirDatasourceDatasource;
-/**
- * Possible result statuses for testDatasource
- */
-
-var ReturnStatus;
-(function (ReturnStatus) {
-    ReturnStatus["success"] = "success";
-    ReturnStatus["error"] = "error";
-})(ReturnStatus || (ReturnStatus = {}));
-/**
- * Helper class to generate the right json object to pass over to grafana.
- * It handles success and error object messages.
- */
-var Response = /** @class */function () {
-    function Response() {
-        this.retObj = {};
-    }
-    /**
-     * Generates error json message
-     * @param title Message title
-     * @param msg Message body
-     */
-    Response.error = function (title, msg) {
-        return {
-            status: ReturnStatus.error,
-            title: title,
-            message: msg
-        };
-    };
-    /**
-     * Generates success json messages
-     * @param title Message title
-     * @param msg Message body
-     */
-    Response.success = function (title, msg) {
-        return {
-            status: ReturnStatus.success,
-            title: title,
-            message: msg
-        };
-    };
-    return Response;
-}();
 
 /***/ }),
 
@@ -2397,9 +2479,9 @@ var Response = /** @class */function () {
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
-exports.AnnotationsQueryCtrl = exports.ConfigCtrl = exports.QueryCtrl = exports.Datasource = undefined;
+exports.QueryOptionsCtrl = exports.AnnotationsQueryCtrl = exports.ConfigCtrl = exports.QueryCtrl = exports.Datasource = undefined;
 
 var _datasource = __webpack_require__(/*! ./datasource */ "./datasource.ts");
 
@@ -2413,10 +2495,24 @@ var _config_ctrl = __webpack_require__(/*! ./config_ctrl */ "./config_ctrl.ts");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var GenericQueryOptionsCtrl = /** @class */function () {
+    function GenericQueryOptionsCtrl() {
+        this.templateUrl = 'partials/query.options.html';
+    }
+    return GenericQueryOptionsCtrl;
+}();
+var GenericAnnotationsQueryCtrl = /** @class */function () {
+    function GenericAnnotationsQueryCtrl() {
+        this.templateUrl = 'partials/annotations.editor.html';
+    }
+    return GenericAnnotationsQueryCtrl;
+}();
 exports.Datasource = _datasource2.default;
-exports.QueryCtrl = _annotations_query_ctrl.FhirDatasourceAnnotationsQueryCtrl;
+exports.QueryCtrl = _query_ctrl.FhirDatasourceQueryCtrl;
 exports.ConfigCtrl = _config_ctrl.FhirDatasourceConfigCtrl;
-exports.AnnotationsQueryCtrl = _query_ctrl.FhirDatasourceQueryCtrl;
+exports.AnnotationsQueryCtrl = _annotations_query_ctrl.FhirDatasourceAnnotationsQueryCtrl;
+exports.QueryOptionsCtrl = GenericQueryOptionsCtrl;
+//GenericAnnotationsQueryCtrl as AnnotationsQueryCtrl
 
 /***/ }),
 
@@ -2435,15 +2531,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.FhirDatasourceQueryCtrl = undefined;
 
-var _lodash = __webpack_require__(/*! lodash */ "lodash");
-
-var _lodash2 = _interopRequireDefault(_lodash);
-
 var _sdk = __webpack_require__(/*! grafana/app/plugins/sdk */ "grafana/app/plugins/sdk");
 
 __webpack_require__(/*! ./css/query_editor.css */ "./css/query_editor.css");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var __extends = undefined && undefined.__extends || function () {
     var extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function (d, b) {
@@ -2468,21 +2558,100 @@ var FhirDatasourceQueryCtrl = /** @class */function (_super) {
     function FhirDatasourceQueryCtrl($scope, $injector) {
         var _this = _super.call(this, $scope, $injector) || this;
         _this.defaults = {};
-        _lodash2.default.defaultsDeep(_this.target, _this.defaults);
+        console.log("FhirDatasourceQueryCtrl"), $scope;
+        _this.scope = $scope;
+        //_.defaultsDeep(this.target, this.defaults);
         _this.target.target = _this.target.target || 'select metric';
         _this.target.type = _this.target.type || 'timeserie';
         return _this;
     }
     FhirDatasourceQueryCtrl.prototype.getOptions = function (query) {
+        console.log("getOptions", query);
         return this.datasource.metricFindQuery(query || '');
     };
     FhirDatasourceQueryCtrl.prototype.onChangeInternal = function () {
         this.panelCtrl.refresh(); // Asks the panel to refresh data.
     };
+    FhirDatasourceQueryCtrl.prototype.toggleEditorMode = function () {
+        this.target.rawQuery = !this.target.rawQuery;
+    };
     FhirDatasourceQueryCtrl.templateUrl = 'partials/query.editor.html';
     return FhirDatasourceQueryCtrl;
 }(_sdk.QueryCtrl);
 exports.FhirDatasourceQueryCtrl = FhirDatasourceQueryCtrl;
+
+/***/ }),
+
+/***/ "./utils/grafana/grafana.module.ts":
+/*!*****************************************!*\
+  !*** ./utils/grafana/grafana.module.ts ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var GrafanaHelper = exports.GrafanaHelper = undefined;
+(function (GrafanaHelper) {
+    /**
+     * Possible result statuses for testDatasource
+     */
+    var ReturnStatus;
+    (function (ReturnStatus) {
+        ReturnStatus["success"] = "success";
+        ReturnStatus["error"] = "error";
+    })(ReturnStatus = GrafanaHelper.ReturnStatus || (GrafanaHelper.ReturnStatus = {}));
+    /**
+     * Helper class to generate the right json object to pass over to grafana.
+     * It handles success and error object messages.
+     */
+    var Response = /** @class */function () {
+        function Response() {
+            this.retObj = {};
+        }
+        /**
+         * Generates error json message
+         * @param title Message title
+         * @param msg Message body
+         */
+        Response.error = function (title, msg) {
+            return {
+                status: ReturnStatus.error,
+                title: title,
+                message: msg
+            };
+        };
+        /**
+         * Generates success json messages
+         * @param title Message title
+         * @param msg Message body
+         */
+        Response.success = function (title, msg) {
+            return {
+                status: ReturnStatus.success,
+                title: title,
+                message: msg
+            };
+        };
+        return Response;
+    }();
+    GrafanaHelper.Response = Response;
+    var Metric = /** @class */function () {
+        /**
+         *
+         */
+        function Metric(text, value) {
+            this.text = text;
+            this.value = value;
+        }
+        return Metric;
+    }();
+    GrafanaHelper.Metric = Metric;
+})(GrafanaHelper || (exports.GrafanaHelper = GrafanaHelper = {}));
 
 /***/ }),
 

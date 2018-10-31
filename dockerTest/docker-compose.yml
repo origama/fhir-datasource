@@ -5,6 +5,7 @@ services:
     image: grafana/grafana
     volumes:
       - ../dist:/var/lib/grafana/plugins/fhir-datasource
+      - ../../simple-json-datasource/dist:/var/lib/grafana/plugins/simple-json-datasource
     ports:
       - "3000:3000"
     expose:

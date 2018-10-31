@@ -13,7 +13,7 @@ dsUrl="http://hapi.fhir.org/baseDstu3"
 dsAccess="proxy"
 # The bearer token needs to be generated on grafana once and it will be persisted
 # you can obtain one here: http://127.0.0.1:3000/org/apikeys
-grafanaToken="eyJrIjoiZEpvcmlzU2o2ckJjMzAycUw1VEF2NVBwbXJvOVpnb0wiLCJuIjoidGVzdCIsImlkIjoxfQ=="
+grafanaToken="eyJrIjoiWG9tRWJlSDVnbm02ajk4TDdhQkhWT0x2WEJSQWpvbFkiLCJuIjoibGViYnkiLCJpZCI6MX0="
 grafanaUrl=http://127.0.0.1:3000
 
 # docker
