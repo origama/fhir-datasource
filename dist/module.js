@@ -2280,6 +2280,7 @@ var FhirDatasourceDatasource = /** @class */function () {
         this.withCredentials = instanceSettings.withCredentials;
         this.headers = { 'Content-Type': 'application/json' };
         this.config = instanceSettings.jsonData;
+        console.log("config", this.config);
         var config = {
             'baseUrl': 'http://fhirtest.uhn.ca/baseDstu3',
             'credentials': 'same-origin'
@@ -2307,7 +2308,6 @@ var FhirDatasourceDatasource = /** @class */function () {
             return !t.hide;
         });
         console.log("query", query);
-        query.targets = [];
         if (query.targets.length <= 0) {
             return this.q.when({ data: [] });
         }

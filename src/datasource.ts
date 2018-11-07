@@ -32,7 +32,7 @@ export default class FhirDatasourceDatasource {
     this.withCredentials = instanceSettings.withCredentials;
     this.headers = { 'Content-Type': 'application/json' };
     this.config = instanceSettings.jsonData;
-
+    console.log("config", this.config);
     let config: any = {
       'baseUrl': 'http://fhirtest.uhn.ca/baseDstu3',
       'credentials': 'same-origin',
@@ -64,7 +64,7 @@ export default class FhirDatasourceDatasource {
     var query = this.buildQueryParameters(options);
     query.targets = query.targets.filter(t => !t.hide);
     console.log("query", query);
-    query.targets = [];
+    
     if (query.targets.length <= 0) {
       return this.q.when({ data: [] });
     }
