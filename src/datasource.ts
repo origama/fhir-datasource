@@ -4,7 +4,7 @@ import nativeFhir from 'fhir.js/src/adapters/native';
 import { FhirConfig } from './utils/fhir/fhir.module';
 import { GrafanaHelper } from './utils/grafana/grafana.module';
 
-export default class FhirDatasourceDatasource {
+export class FhirDatasource {
   id: number;
   name: string;
   config: FhirConfig;

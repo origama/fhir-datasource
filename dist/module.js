@@ -2253,6 +2253,7 @@ if(false) {}
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.FhirDatasource = undefined;
 
 var _lodash = __webpack_require__(/*! lodash */ "lodash");
 
@@ -2266,9 +2267,9 @@ var _grafana = __webpack_require__(/*! ./utils/grafana/grafana.module */ "./util
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var FhirDatasourceDatasource = /** @class */function () {
+var FhirDatasource = /** @class */function () {
     //@ngInject
-    function FhirDatasourceDatasource(instanceSettings, $q, backendSrv, templateSrv) {
+    function FhirDatasource(instanceSettings, $q, backendSrv, templateSrv) {
         console.log("FhirDatasourceDatasource Ctor", instanceSettings);
         this.id = instanceSettings.id;
         this.type = instanceSettings.type;
@@ -2301,7 +2302,7 @@ var FhirDatasourceDatasource = /** @class */function () {
             });
         };
     }
-    FhirDatasourceDatasource.prototype.query = function (options) {
+    FhirDatasource.prototype.query = function (options) {
         console.log("FhirDatasourceDatasource Query", options);
         var query = this.buildQueryParameters(options);
         query.targets = query.targets.filter(function (t) {
@@ -2349,7 +2350,7 @@ var FhirDatasourceDatasource = /** @class */function () {
         //   method: 'POST'
         // });
     };
-    FhirDatasourceDatasource.prototype.annotationQuery = function (options) {
+    FhirDatasource.prototype.annotationQuery = function (options) {
         console.log("FhirDatasourceDatasource annotationQuery", options);
         throw new Error("Annotation Support not implemented yet.");
         // var query = this.templateSrv.replace(options.annotation.query, {}, 'glob');
@@ -2372,7 +2373,7 @@ var FhirDatasourceDatasource = /** @class */function () {
         //   return result.data;
         // });
     };
-    FhirDatasourceDatasource.prototype.metricFindQuery = function (query) {
+    FhirDatasource.prototype.metricFindQuery = function (query) {
         console.log("metricFindQuery", query);
         var interpolated = {
             target: this.templateSrv.replace(query, null, 'regex')
@@ -2385,7 +2386,7 @@ var FhirDatasourceDatasource = /** @class */function () {
             return toRet;
         });
     };
-    FhirDatasourceDatasource.prototype.testDatasource = function () {
+    FhirDatasource.prototype.testDatasource = function () {
         var _this = this;
         return this.client.conformance({}).then(function (response) {
             if (response.data) {
@@ -2406,13 +2407,13 @@ var FhirDatasourceDatasource = /** @class */function () {
      * At the moment it only checks if it has a conformance object and
      * if the conformance has a fhirVersion attribute.
     */
-    FhirDatasourceDatasource.prototype.isValidServer = function () {
+    FhirDatasource.prototype.isValidServer = function () {
         if (this.conformance != [] && this.conformance.fhirVersion) {
             return true;
         }
         return false;
     };
-    FhirDatasourceDatasource.prototype.doRequest = function (options) {
+    FhirDatasource.prototype.doRequest = function (options) {
         options.withCredentials = this.withCredentials;
         options.headers = this.headers;
         console.log("options", options);
@@ -2420,7 +2421,7 @@ var FhirDatasourceDatasource = /** @class */function () {
         console.log("backend", x);
         return x;
     };
-    FhirDatasourceDatasource.prototype.buildQueryParameters = function (options) {
+    FhirDatasource.prototype.buildQueryParameters = function (options) {
         var _this = this;
         //remove placeholder targets
         options.targets = _lodash2.default.filter(options.targets, function (target) {
@@ -2438,7 +2439,7 @@ var FhirDatasourceDatasource = /** @class */function () {
         options.targets = targets;
         return options;
     };
-    FhirDatasourceDatasource.prototype.getTagKeys = function (options) {
+    FhirDatasource.prototype.getTagKeys = function (options) {
         var _this = this;
         return new Promise(function (resolve, reject) {
             _this.doRequest({
@@ -2450,7 +2451,7 @@ var FhirDatasourceDatasource = /** @class */function () {
             });
         });
     };
-    FhirDatasourceDatasource.prototype.getTagValues = function (options) {
+    FhirDatasource.prototype.getTagValues = function (options) {
         var _this = this;
         return new Promise(function (resolve, reject) {
             _this.doRequest({
@@ -2462,9 +2463,9 @@ var FhirDatasourceDatasource = /** @class */function () {
             });
         });
     };
-    return FhirDatasourceDatasource;
+    return FhirDatasource;
 }(); ///<reference path="../node_modules/grafana-sdk-mocks/app/headers/common.d.ts" />
-exports.default = FhirDatasourceDatasource;
+exports.FhirDatasource = FhirDatasource;
 
 /***/ }),
 
@@ -2485,15 +2486,11 @@ exports.QueryOptionsCtrl = exports.AnnotationsQueryCtrl = exports.ConfigCtrl = e
 
 var _datasource = __webpack_require__(/*! ./datasource */ "./datasource.ts");
 
-var _datasource2 = _interopRequireDefault(_datasource);
-
 var _query_ctrl = __webpack_require__(/*! ./query_ctrl */ "./query_ctrl.ts");
 
 var _annotations_query_ctrl = __webpack_require__(/*! ./annotations_query_ctrl */ "./annotations_query_ctrl.ts");
 
 var _config_ctrl = __webpack_require__(/*! ./config_ctrl */ "./config_ctrl.ts");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var GenericQueryOptionsCtrl = /** @class */function () {
     function GenericQueryOptionsCtrl() {
@@ -2501,18 +2498,11 @@ var GenericQueryOptionsCtrl = /** @class */function () {
     }
     return GenericQueryOptionsCtrl;
 }();
-var GenericAnnotationsQueryCtrl = /** @class */function () {
-    function GenericAnnotationsQueryCtrl() {
-        this.templateUrl = 'partials/annotations.editor.html';
-    }
-    return GenericAnnotationsQueryCtrl;
-}();
-exports.Datasource = _datasource2.default;
+exports.Datasource = _datasource.FhirDatasource;
 exports.QueryCtrl = _query_ctrl.FhirDatasourceQueryCtrl;
 exports.ConfigCtrl = _config_ctrl.FhirDatasourceConfigCtrl;
 exports.AnnotationsQueryCtrl = _annotations_query_ctrl.FhirDatasourceAnnotationsQueryCtrl;
 exports.QueryOptionsCtrl = GenericQueryOptionsCtrl;
-//GenericAnnotationsQueryCtrl as AnnotationsQueryCtrl
 
 /***/ }),
 
