@@ -11,23 +11,23 @@ Main Status: DRAFT
 #### Features
 
 - Configuration Panel : DRAFT
-- All other Panel are missing
+- All other panels are missing
 
 ### Developer TIPS
 
-It is developed merging concept from datasource template offered by grafana github.
-We swithced from grunt to webpack.
+It is developed by merging concepts from the Grafana GitHub datasource template.
+We switched from Grunt to Webpack.
 
 We discovered a clean template here: 
 https://github.com/CorpGlory/grafana-plugin-template-webpack-typescript
 
-We made a very simplier docker-compose file to test locally the plugin
-You can find in dockerTest:
+We made a much simpler docker-compose file to test the plugin locally.
+You can find it in dockerTest:
  - base image selected
- - grafana plugins volume is mount on local dist
+ - Grafana plugins volume is mounted on local dist
  - port binding on 127.0.0.1:3000
 
-#### Usefull Reference
+#### Useful References
  
  - http://docs.grafana.org/plugins/developing/development/
  - http://docs.grafana.org/plugins/developing/datasources/
@@ -38,14 +38,14 @@ You can find in dockerTest:
 
 ### HOW TO Build
 
-npm run-scripts build
+npm run build
 
 ### HOW TO Install
 
-*Shorty:*
+*Shortly:*
 
  * ( Optional ) Build 
- * copy dist/* in  /var/lib/grafana/plugins your Grafana Host
+ * copy dist/* to /var/lib/grafana/plugins on your Grafana host
 
 *Official:*
 
