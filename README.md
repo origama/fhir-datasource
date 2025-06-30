@@ -17,6 +17,7 @@ Main Status: DRAFT
 
 It is developed by merging concepts from the Grafana GitHub datasource template.
 We switched from Grunt to Webpack.
+The project now targets **Node.js 20** and **TypeScript 5** and works with Grafana 9.
 
 We discovered a clean template here: 
 https://github.com/CorpGlory/grafana-plugin-template-webpack-typescript
