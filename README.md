@@ -17,7 +17,7 @@ Main Status: DRAFT
 
 It is developed by merging concepts from the Grafana GitHub datasource template.
 We switched from Grunt to Webpack.
-The project now targets **Node.js 20** and **TypeScript 5** and works with Grafana 9.
+The project now targets **Node.js 20** and **TypeScript 5** and works with Grafana 10.
 
 We discovered a clean template here: 
 https://github.com/CorpGlory/grafana-plugin-template-webpack-typescript
@@ -28,8 +28,8 @@ You can find it in dockerTest:
 - Grafana plugins volume is mounted on local dist
 - port binding on 127.0.0.1:3000
 - environment variable `GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS=fhir-datasource` to load the unsigned plugin
-   (required because the plugin is not signed)
-- Grafana version pinned to `9.5.21` because newer releases drop Angular plugin support
+  (required because the plugin is not signed)
+ - Grafana version pinned to `10.4.0` as the plugin now uses React and is compatible with Grafana 10+
 
 An extended compose file `docker-compose-grafana-hapi.yml` is available
 for local development. It starts Grafana together with a HAPI FHIR server
@@ -42,6 +42,9 @@ docker-compose -f dockerTest/docker-compose-grafana-hapi.yml up
 The compose setup includes a small loader container that sends the bundled
 example resources to the FHIR server using their respective resource
 endpoints, so the server accepts them without errors.
+The `synthetic-data` folder now ships two official FHIR examples and one
+patient record generated with [Synthea](https://synthetichealth.github.io/synthea/)
+to demonstrate interoperability.
 
 #### Useful References
  

@@ -22,8 +22,8 @@
     "updated": "%TODAY%"
   },
   "dependencies": {
-    "grafanaVersion": "9.5.x",
-    "plugins": [ ]
+    "grafanaDependency": ">=10.0.0",
+    "plugins": []
   },
 
   "metrics": true,

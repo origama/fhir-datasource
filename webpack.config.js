@@ -42,19 +42,13 @@ module.exports = {
     ]),
   ],
   resolve: {
-    extensions: ['.ts', '.js']
+    extensions: ['.ts', '.tsx', '.js']
   },
   module: {
     rules: [
       {
         test: /\.tsx?$/,
-        loaders: [
-          {
-            loader: 'babel-loader',
-            options: { presets: ['env'] }
-          },
-          'ts-loader'
-        ],
+        loader: 'ts-loader',
         exclude: /(node_modules)/,
       },
       {

@@ -19,5 +19,7 @@
     "noUnusedLocals": false,
     "strictNullChecks": true,
     "moduleResolution": "node",
+    "jsx": "react",
+    "esModuleInterop": true
   },
 }
