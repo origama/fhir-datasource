@@ -2,13 +2,18 @@ import _ from 'lodash';
 import { QueryCtrl } from 'grafana/app/plugins/sdk';
 import './css/query_editor.css';
 
+/**
+ * Controller used for the query editor UI.
+ */
 export class FhirDatasourceQueryCtrl extends QueryCtrl {
   static templateUrl = 'partials/query.editor.html';
   scope : any;
   defaults = {
   };
 
-  /** @ngInject **/
+  /**
+   * Angular constructor injection point.
+   */
   constructor($scope, $injector) {
     super($scope, $injector);
     console.log("FhirDatasourceQueryCtrl"),$scope;
@@ -20,6 +25,9 @@ export class FhirDatasourceQueryCtrl extends QueryCtrl {
     this.target.type = this.target.type || 'timeserie';
   }
 
+  /**
+   * Called as the user types to query metric suggestions.
+   */
   getOptions(query) {
     console.log("getOptions",query);
     return this.datasource.metricFindQuery(query || '');

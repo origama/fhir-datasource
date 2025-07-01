@@ -33,6 +33,17 @@ describe('SemVersion', () => {
     });
   });
 
+  describe('isValid', () => {
+    it('should return false for invalid version', () => {
+      const semver = new SemVersion('invalid');
+      expect(semver.isValid()).toBe(false);
+    });
+
+    it('should return true for valid version', () => {
+      expect(new SemVersion('1.2.3').isValid()).toBe(true);
+    });
+  });
+
   describe('isVersionGtOrEq', () => {
     it('should compare versions properly (a >= b)', () => {
       const cases = [

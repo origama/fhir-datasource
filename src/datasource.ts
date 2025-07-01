@@ -4,6 +4,9 @@ import nativeFhir from 'fhir.js/src/adapters/native';
 import { FhirConfig } from './utils/fhir/fhir.module';
 import { GrafanaHelper } from './utils/grafana/grafana.module';
 
+/**
+ * Datasource implementation used by Grafana to communicate with a FHIR server.
+ */
 export default class FhirDatasourceDatasource {
   id: number;
   name: string;
@@ -59,6 +62,9 @@ export default class FhirDatasourceDatasource {
 
   }
 
+  /**
+   * Executes a data query. Currently returns a mocked empty dataset.
+   */
   query(options) {
     console.log("FhirDatasourceDatasource Query", options);
     var query = this.buildQueryParameters(options);
@@ -138,6 +144,9 @@ export default class FhirDatasourceDatasource {
 
   }
 
+  /**
+   * Returns available metrics based on the server conformance statement.
+   */
   metricFindQuery(query) {
     console.log("metricFindQuery", query);
     var interpolated = {
@@ -152,6 +161,9 @@ export default class FhirDatasourceDatasource {
   }
 
 
+  /**
+   * Validates the datasource configuration by performing a conformance request.
+   */
   testDatasource() {
     return this.client.conformance({}).then(
       (response) => {
@@ -186,6 +198,9 @@ export default class FhirDatasourceDatasource {
     return false;
   }
 
+  /**
+   * Issues an HTTP request via Grafana's backend service.
+   */
   doRequest(options) {
     options.withCredentials = this.withCredentials;
     options.headers = this.headers;
@@ -195,6 +210,9 @@ export default class FhirDatasourceDatasource {
     return x;
   }
 
+  /**
+   * Helper to clean and interpolate query editor options.
+   */
   buildQueryParameters(options) {
     //remove placeholder targets
     options.targets = _.filter(options.targets, target => {
