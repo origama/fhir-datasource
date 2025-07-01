@@ -9,8 +9,9 @@ export class FhirConfig {
     set baseUrl (url : string ) {
         this._url = new URL(url);
     }
-    credential: string    
+    credential: string
     auth?: { user: string, pass: string}
+    fhiraddress?: string
 }
 
 // console.log("FHIR.mkFhir",FHIR.mkFhir);

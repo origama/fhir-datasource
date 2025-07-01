@@ -1,5 +1,12 @@
 version: '3'
 services:
+  builder:
+    image: node:20
+    working_dir: /build
+    volumes:
+      - ..:/build
+    command: sh -c "npm ci && npm run build"
+
   grafana:
     image: grafana/grafana
     container_name: grafana
@@ -9,6 +16,7 @@ services:
       - ../dist:/var/lib/grafana/plugins/fhir-datasource
       - ./fhir-datasource.yml:/etc/grafana/provisioning/datasources/fhir.yml
     depends_on:
+      - builder
       - fhir
   fhir:
     image: hapiproject/hapi:latest

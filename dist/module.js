@@ -1,101 +1,15 @@
-define(["app/plugins/sdk","lodash"], function(__WEBPACK_EXTERNAL_MODULE_grafana_app_plugins_sdk__, __WEBPACK_EXTERNAL_MODULE_lodash__) { return /******/ (function(modules) { // webpackBootstrap
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
-/******/
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId]) {
-/******/ 			return installedModules[moduleId].exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			i: moduleId,
-/******/ 			l: false,
-/******/ 			exports: {}
-/******/ 		};
-/******/
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
-/******/ 		// Flag the module as loaded
-/******/ 		module.l = true;
-/******/
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/
-/******/
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
-/******/
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
-/******/
-/******/ 	// define getter function for harmony exports
-/******/ 	__webpack_require__.d = function(exports, name, getter) {
-/******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
-/******/ 		}
-/******/ 	};
-/******/
-/******/ 	// define __esModule on exports
-/******/ 	__webpack_require__.r = function(exports) {
-/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 		}
-/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 	};
-/******/
-/******/ 	// create a fake namespace object
-/******/ 	// mode & 1: value is a module id, require it
-/******/ 	// mode & 2: merge all properties of value into the ns
-/******/ 	// mode & 4: return value when already ns object
-/******/ 	// mode & 8|1: behave like require
-/******/ 	__webpack_require__.t = function(value, mode) {
-/******/ 		if(mode & 1) value = __webpack_require__(value);
-/******/ 		if(mode & 8) return value;
-/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
-/******/ 		var ns = Object.create(null);
-/******/ 		__webpack_require__.r(ns);
-/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
-/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
-/******/ 		return ns;
-/******/ 	};
-/******/
-/******/ 	// getDefaultExport function for compatibility with non-harmony modules
-/******/ 	__webpack_require__.n = function(module) {
-/******/ 		var getter = module && module.__esModule ?
-/******/ 			function getDefault() { return module['default']; } :
-/******/ 			function getModuleExports() { return module; };
-/******/ 		__webpack_require__.d(getter, 'a', getter);
-/******/ 		return getter;
-/******/ 	};
-/******/
-/******/ 	// Object.prototype.hasOwnProperty.call
-/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-/******/
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
-/******/
-/******/
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./module.ts");
-/******/ })
-/************************************************************************/
-/******/ ({
+define(["lodash","app/plugins/sdk"], (__WEBPACK_EXTERNAL_MODULE_lodash__, __WEBPACK_EXTERNAL_MODULE_grafana_app_plugins_sdk__) => { return /******/ (() => { // webpackBootstrap
+/******/ 	var __webpack_modules__ = ({
 
 /***/ "../node_modules/Base64/base64.js":
 /*!****************************************!*\
   !*** ../node_modules/Base64/base64.js ***!
   \****************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, exports) => {
 
 ;(function () {
 
-  var object =  true ? exports : undefined; // #8: web workers
+  var object =  true ? exports : 0; // #8: web workers
   var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
 
   function InvalidCharacterError(message) {
@@ -158,109 +72,182 @@ define(["app/plugins/sdk","lodash"], function(__WEBPACK_EXTERNAL_MODULE_grafana_
 
 /***/ }),
 
-/***/ "../node_modules/css-loader/index.js?!./css/query_editor.css":
-/*!*******************************************************************!*\
-  !*** ../node_modules/css-loader??ref--5-1!./css/query_editor.css ***!
-  \*******************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ "../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./css/query_editor.css":
+/*!*************************************************************************************************!*\
+  !*** ../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./css/query_editor.css ***!
+  \*************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
-exports = module.exports = __webpack_require__(/*! ../../node_modules/css-loader/lib/css-base.js */ "../node_modules/css-loader/lib/css-base.js")(true);
-// imports
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/sourceMaps.js */ "../node_modules/css-loader/dist/runtime/sourceMaps.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/api.js */ "../node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
+// Imports
 
 
-// module
-exports.push([module.i, ".min-width-10 {\n  min-width: 10rem;\n}\n\n.min-width-12 {\n  min-width: 12rem;\n}\n\n.min-width-20 {\n  min-width: 20rem;\n}\n\n.gf-form-select-wrapper select.gf-form-input {\n  height: 2.64rem;\n}\n\n.gf-form-select-wrapper--caret-indent.gf-form-select-wrapper::after {\n  right: 0.775rem\n}\n\n.service-dropdown {\n  width: 12rem;\n}\n\n.aggregation-dropdown-wrapper {\n  max-width: 29.1rem;\n}\n\n.timegrainunit-dropdown-wrapper {\n  width: 8rem;\n}\n", "", {"version":3,"sources":["/Users/origama/repos/origama/fhir-datasource/src/css/query_editor.css"],"names":[],"mappings":"AAAA;EACE,iBAAiB;CAClB;;AAED;EACE,iBAAiB;CAClB;;AAED;EACE,iBAAiB;CAClB;;AAED;EACE,gBAAgB;CACjB;;AAED;EACE,eAAe;CAChB;;AAED;EACE,aAAa;CACd;;AAED;EACE,mBAAmB;CACpB;;AAED;EACE,YAAY;CACb","file":"query_editor.css","sourcesContent":[".min-width-10 {\n  min-width: 10rem;\n}\n\n.min-width-12 {\n  min-width: 12rem;\n}\n\n.min-width-20 {\n  min-width: 20rem;\n}\n\n.gf-form-select-wrapper select.gf-form-input {\n  height: 2.64rem;\n}\n\n.gf-form-select-wrapper--caret-indent.gf-form-select-wrapper::after {\n  right: 0.775rem\n}\n\n.service-dropdown {\n  width: 12rem;\n}\n\n.aggregation-dropdown-wrapper {\n  max-width: 29.1rem;\n}\n\n.timegrainunit-dropdown-wrapper {\n  width: 8rem;\n}\n"],"sourceRoot":""}]);
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, `.min-width-10 {
+  min-width: 10rem;
+}
 
-// exports
+.min-width-12 {
+  min-width: 12rem;
+}
+
+.min-width-20 {
+  min-width: 20rem;
+}
+
+.gf-form-select-wrapper select.gf-form-input {
+  height: 2.64rem;
+}
+
+.gf-form-select-wrapper--caret-indent.gf-form-select-wrapper::after {
+  right: 0.775rem
+}
+
+.service-dropdown {
+  width: 12rem;
+}
+
+.aggregation-dropdown-wrapper {
+  max-width: 29.1rem;
+}
+
+.timegrainunit-dropdown-wrapper {
+  width: 8rem;
+}
+`, "",{"version":3,"sources":["webpack://./css/query_editor.css"],"names":[],"mappings":"AAAA;EACE,gBAAgB;AAClB;;AAEA;EACE,gBAAgB;AAClB;;AAEA;EACE,gBAAgB;AAClB;;AAEA;EACE,eAAe;AACjB;;AAEA;EACE;AACF;;AAEA;EACE,YAAY;AACd;;AAEA;EACE,kBAAkB;AACpB;;AAEA;EACE,WAAW;AACb","sourcesContent":[".min-width-10 {\n  min-width: 10rem;\n}\n\n.min-width-12 {\n  min-width: 12rem;\n}\n\n.min-width-20 {\n  min-width: 20rem;\n}\n\n.gf-form-select-wrapper select.gf-form-input {\n  height: 2.64rem;\n}\n\n.gf-form-select-wrapper--caret-indent.gf-form-select-wrapper::after {\n  right: 0.775rem\n}\n\n.service-dropdown {\n  width: 12rem;\n}\n\n.aggregation-dropdown-wrapper {\n  max-width: 29.1rem;\n}\n\n.timegrainunit-dropdown-wrapper {\n  width: 8rem;\n}\n"],"sourceRoot":""}]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
 
 /***/ }),
 
-/***/ "../node_modules/css-loader/lib/css-base.js":
-/*!**************************************************!*\
-  !*** ../node_modules/css-loader/lib/css-base.js ***!
-  \**************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/***/ "../node_modules/css-loader/dist/runtime/api.js":
+/*!******************************************************!*\
+  !*** ../node_modules/css-loader/dist/runtime/api.js ***!
+  \******************************************************/
+/***/ ((module) => {
+
+"use strict";
+
 
 /*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
+  MIT License http://www.opensource.org/licenses/mit-license.php
+  Author Tobias Koppers @sokra
 */
-// css base code, injected by the css-loader
-module.exports = function(useSourceMap) {
-	var list = [];
+module.exports = function (cssWithMappingToString) {
+  var list = [];
 
-	// return the list of modules as css string
-	list.toString = function toString() {
-		return this.map(function (item) {
-			var content = cssWithMappingToString(item, useSourceMap);
-			if(item[2]) {
-				return "@media " + item[2] + "{" + content + "}";
-			} else {
-				return content;
-			}
-		}).join("");
-	};
+  // return the list of modules as css string
+  list.toString = function toString() {
+    return this.map(function (item) {
+      var content = "";
+      var needLayer = typeof item[5] !== "undefined";
+      if (item[4]) {
+        content += "@supports (".concat(item[4], ") {");
+      }
+      if (item[2]) {
+        content += "@media ".concat(item[2], " {");
+      }
+      if (needLayer) {
+        content += "@layer".concat(item[5].length > 0 ? " ".concat(item[5]) : "", " {");
+      }
+      content += cssWithMappingToString(item);
+      if (needLayer) {
+        content += "}";
+      }
+      if (item[2]) {
+        content += "}";
+      }
+      if (item[4]) {
+        content += "}";
+      }
+      return content;
+    }).join("");
+  };
 
-	// import a list of modules into the list
-	list.i = function(modules, mediaQuery) {
-		if(typeof modules === "string")
-			modules = [[null, modules, ""]];
-		var alreadyImportedModules = {};
-		for(var i = 0; i < this.length; i++) {
-			var id = this[i][0];
-			if(typeof id === "number")
-				alreadyImportedModules[id] = true;
-		}
-		for(i = 0; i < modules.length; i++) {
-			var item = modules[i];
-			// skip already imported module
-			// this implementation is not 100% perfect for weird media query combinations
-			//  when a module is imported multiple times with different media queries.
-			//  I hope this will never occur (Hey this way we have smaller bundles)
-			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-				if(mediaQuery && !item[2]) {
-					item[2] = mediaQuery;
-				} else if(mediaQuery) {
-					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-				}
-				list.push(item);
-			}
-		}
-	};
-	return list;
+  // import a list of modules into the list
+  list.i = function i(modules, media, dedupe, supports, layer) {
+    if (typeof modules === "string") {
+      modules = [[null, modules, undefined]];
+    }
+    var alreadyImportedModules = {};
+    if (dedupe) {
+      for (var k = 0; k < this.length; k++) {
+        var id = this[k][0];
+        if (id != null) {
+          alreadyImportedModules[id] = true;
+        }
+      }
+    }
+    for (var _k = 0; _k < modules.length; _k++) {
+      var item = [].concat(modules[_k]);
+      if (dedupe && alreadyImportedModules[item[0]]) {
+        continue;
+      }
+      if (typeof layer !== "undefined") {
+        if (typeof item[5] === "undefined") {
+          item[5] = layer;
+        } else {
+          item[1] = "@layer".concat(item[5].length > 0 ? " ".concat(item[5]) : "", " {").concat(item[1], "}");
+          item[5] = layer;
+        }
+      }
+      if (media) {
+        if (!item[2]) {
+          item[2] = media;
+        } else {
+          item[1] = "@media ".concat(item[2], " {").concat(item[1], "}");
+          item[2] = media;
+        }
+      }
+      if (supports) {
+        if (!item[4]) {
+          item[4] = "".concat(supports);
+        } else {
+          item[1] = "@supports (".concat(item[4], ") {").concat(item[1], "}");
+          item[4] = supports;
+        }
+      }
+      list.push(item);
+    }
+  };
+  return list;
 };
 
-function cssWithMappingToString(item, useSourceMap) {
-	var content = item[1] || '';
-	var cssMapping = item[3];
-	if (!cssMapping) {
-		return content;
-	}
+/***/ }),
 
-	if (useSourceMap && typeof btoa === 'function') {
-		var sourceMapping = toComment(cssMapping);
-		var sourceURLs = cssMapping.sources.map(function (source) {
-			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
-		});
+/***/ "../node_modules/css-loader/dist/runtime/sourceMaps.js":
+/*!*************************************************************!*\
+  !*** ../node_modules/css-loader/dist/runtime/sourceMaps.js ***!
+  \*************************************************************/
+/***/ ((module) => {
 
-		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
-	}
+"use strict";
 
-	return [content].join('\n');
-}
 
-// Adapted from convert-source-map (MIT)
-function toComment(sourceMap) {
-	// eslint-disable-next-line no-undef
-	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
-	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
-
-	return '/*# ' + data + ' */';
-}
-
+module.exports = function (item) {
+  var content = item[1];
+  var cssMapping = item[3];
+  if (!cssMapping) {
+    return content;
+  }
+  if (typeof btoa === "function") {
+    var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(cssMapping))));
+    var data = "sourceMappingURL=data:application/json;charset=utf-8;base64,".concat(base64);
+    var sourceMapping = "/*# ".concat(data, " */");
+    return [content].concat([sourceMapping]).join("\n");
+  }
+  return [content].join("\n");
+};
 
 /***/ }),
 
@@ -268,8 +255,7 @@ function toComment(sourceMap) {
 /*!******************************************************!*\
   !*** ../node_modules/fhir.js/src/adapters/native.js ***!
   \******************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 var mkFhir = __webpack_require__(/*! ../fhir */ "../node_modules/fhir.js/src/fhir.js");
 
@@ -306,6 +292,7 @@ var defer = function(){
 
 // Build Adapter Object
 var adapter = {
+  defer: defer,
   http: function (args) {
     var url = args.url;
     var debug = args.debug;
@@ -316,6 +303,9 @@ var adapter = {
 
     // Pass along cookies
     fetchOptions.credentials = args.credentials || '';
+    if (fetchOptions.credentials === '') {
+      delete fetchOptions.credentials;
+    }
 
     // data neeeds to map to body if data is populated and this is not a GET or HEAD request
     if (!['GET', 'HEAD'].includes(fetchOptions.method) && fetchOptions.data) {
@@ -362,7 +352,6 @@ var buildfhir = function buildfhir(config) {
   // debugger;
   return mkFhir(config, adapter);
 };
-
 buildfhir.defer = defer;
 module.exports = buildfhir;
 
@@ -373,8 +362,7 @@ module.exports = buildfhir;
 /*!***********************************************!*\
   !*** ../node_modules/fhir.js/src/decorate.js ***!
   \***********************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module) {
 
 (function() {
     var fhirAPI;
@@ -506,8 +494,7 @@ module.exports = buildfhir;
 /*!*******************************************!*\
   !*** ../node_modules/fhir.js/src/fhir.js ***!
   \*******************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 (function() {
     var utils = __webpack_require__(/*! ./utils */ "../node_modules/fhir.js/src/utils.js");
@@ -547,6 +534,7 @@ module.exports = buildfhir;
         var POST = Defaults.and($$Method('POST'));
         var PUT = Defaults.and($$Method('PUT'));
         var DELETE = Defaults.and($$Method('DELETE'));
+        var PATCH = Defaults.and($$Method('PATCH'));
 
         var http = transport.Http(cfg, adapter);
 
@@ -557,8 +545,8 @@ module.exports = buildfhir;
         var resourceTypeHxPath = resourceTypePath.slash("_history");
         var resourcePath = resourceTypePath.slash(":id || :resource.id");
         var resourceHxPath = resourcePath.slash("_history");
-        var vreadPath =  resourceHxPath.slash(":versionId || :resource.meta.versionId");
-        var resourceVersionPath = resourceHxPath.slash(":versionId || :resource.meta.versionId");
+        var vreadPath =  resourcePath.slash(":versionId || :resource.meta.versionId");
+        var metaTarget = BaseUrl.slash(":target.resourceType || :target.type").slash(":target.id").slash(':target.versionId');
 
         var ReturnHeader = $$Header('Prefer', 'return=representation');
 
@@ -577,13 +565,22 @@ module.exports = buildfhir;
             "delete": DELETE.and(resourcePath).and(ReturnHeader).end(http),
             create: POST.and(resourceTypePath).and(ReturnHeader).end(http),
             validate: POST.and(resourceTypePath.slash("_validate")).end(http),
+            meta: {
+                add: POST.and(metaTarget.slash("$meta-add")).end(http),
+                delete: POST.and(metaTarget.slash("$meta-delete")).end(http),
+                read: GET.and(metaTarget.slash("$meta")).end(http)
+            },
             search: GET.and(resourceTypePath).and(pt.$WithPatient).and(query.$SearchParams).and($Paging).end(http),
             update: PUT.and(resourcePath).and(ReturnHeader).end(http),
+            conditionalUpdate: PUT.and(resourceTypePath).and(query.$SearchParams).and(ReturnHeader).end(http),
+            conditionalDelete: DELETE.and(resourceTypePath).and(query.$SearchParams).and(ReturnHeader).end(http),
             nextPage: GET.and(bundle.$$BundleLinkUrl("next")).end(http),
-            prevPage: GET.and(bundle.$$BundleLinkUrl("prev")).end(http),
-            resolve: GET.and(refs.resolve).end(http)
+            // For previous page, bundle.link.relation can either have 'previous' or 'prev' values
+            prevPage: GET.and(bundle.$$BundleLinkUrl("previous")).and(bundle.$$BundleLinkUrl("prev")).end(http),
+            getBundleByUrl: GET.and(Path(":url")).end(http),
+            resolve: GET.and(refs.resolve).end(http),
+            patch: PATCH.and(resourcePath).and($$Header('Content-Type', 'application/json-patch+json')).end(http)
         }, adapter);
-
     };
     module.exports = fhir;
 }).call(this);
@@ -595,13 +592,12 @@ module.exports = buildfhir;
 /*!*******************************************************!*\
   !*** ../node_modules/fhir.js/src/middlewares/auth.js ***!
   \*******************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 (function() {
     var mw = __webpack_require__(/*! ./core */ "../node_modules/fhir.js/src/middlewares/core.js");
 
-    var btoa = __webpack_require__(/*! Base64 */ "../node_modules/Base64/base64.js").btoa;
+    var btoa = (__webpack_require__(/*! Base64 */ "../node_modules/Base64/base64.js").btoa);
 
     exports.$Basic = mw.$$Attr('headers.Authorization', function(args){
         if(args.auth && args.auth.user && args.auth.pass){
@@ -641,8 +637,7 @@ module.exports = buildfhir;
 /*!*********************************************************!*\
   !*** ../node_modules/fhir.js/src/middlewares/bundle.js ***!
   \*********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/***/ ((__unused_webpack_module, exports) => {
 
 exports.$$BundleLinkUrl =  function(rel){
     return function(h) {
@@ -652,11 +647,8 @@ exports.$$BundleLinkUrl =  function(rel){
             if(res && res.url){
                 args.url = res.url;
                 args.data = null;
-                return h(args);
             }
-            else{
-                throw new Error("No " + rel + " link found in bundle");
-            }
+            return h(args);
         };
     };
 };
@@ -668,8 +660,7 @@ exports.$$BundleLinkUrl =  function(rel){
 /*!*********************************************************!*\
   !*** ../node_modules/fhir.js/src/middlewares/config.js ***!
   \*********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module) {
 
 (function() {
     var copyAttr = function(from, to, attr){
@@ -704,8 +695,7 @@ exports.$$BundleLinkUrl =  function(rel){
 /*!*******************************************************!*\
   !*** ../node_modules/fhir.js/src/middlewares/core.js ***!
   \*******************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 (function() {
     var utils = __webpack_require__(/*! ../utils */ "../node_modules/fhir.js/src/utils.js");
@@ -796,8 +786,7 @@ exports.$$BundleLinkUrl =  function(rel){
 /*!*********************************************************!*\
   !*** ../node_modules/fhir.js/src/middlewares/errors.js ***!
   \*********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/***/ ((module) => {
 
 module.exports = function(h){
     return function(args){
@@ -829,8 +818,7 @@ module.exports = function(h){
 /*!*******************************************************!*\
   !*** ../node_modules/fhir.js/src/middlewares/http.js ***!
   \*******************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 (function() {
     var utils = __webpack_require__(/*! ../utils */ "../node_modules/fhir.js/src/utils.js");
@@ -849,7 +837,7 @@ module.exports = function(h){
     };
 
     var toJson = function(x){
-        return (utils.type(x) == 'object') ? JSON.stringify(x) : x;
+        return (utils.type(x) == 'object' || utils.type(x) == 'array') ? JSON.stringify(x) : x;
     };
 
     exports.$JsonData = function(h){
@@ -871,8 +859,7 @@ module.exports = function(h){
 /*!**********************************************************!*\
   !*** ../node_modules/fhir.js/src/middlewares/patient.js ***!
   \**********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 (function() {
     var mw = __webpack_require__(/*! ./core */ "../node_modules/fhir.js/src/middlewares/core.js");
@@ -952,8 +939,7 @@ module.exports = function(h){
 /*!*************************************************************!*\
   !*** ../node_modules/fhir.js/src/middlewares/references.js ***!
   \*************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 (function() {
     var utils = __webpack_require__(/*! ../utils */ "../node_modules/fhir.js/src/utils.js");
@@ -1015,190 +1001,221 @@ module.exports = function(h){
 /*!*********************************************************!*\
   !*** ../node_modules/fhir.js/src/middlewares/search.js ***!
   \*********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 (function() {
-    var utils = __webpack_require__(/*! ../utils */ "../node_modules/fhir.js/src/utils.js");
+  var utils = __webpack_require__(/*! ../utils */ "../node_modules/fhir.js/src/utils.js");
 
-    var type = utils.type;
+  var type = utils.type;
 
-    var assertArray = utils.assertArray;
+  var assertArray = utils.assertArray;
 
-    var assertObject = utils.assertObject;
+  var assertObject = utils.assertObject;
 
-    var reduceMap = utils.reduceMap;
+  var reduceMap = utils.reduceMap;
 
-    var identity = utils.identity;
+  var identity = utils.identity;
 
-    var OPERATORS = {
-        $gt: 'gt',
-        $lt: 'lt',
-        $lte: 'lte',
-        $gte: 'gte'
-    };
+  var OPERATORS = {
+    $gt: 'gt',
+    $lt: 'lt',
+    $lte: 'lte',
+    $gte: 'gte',
+    $ge: 'ge',
+    $le: 'le'
+  };
 
-    var MODIFIERS = {
-        $asc: ':asc',
-        $desc: ':desc',
-        $exact: ':exact',
-        $missing: ':missing',
-        $null: ':missing',
-        $text: ':text'
-    };
+  var MODIFIERS = {
+    $asc: ':asc',
+    $desc: ':desc',
+    $exact: ':exact',
+    $missing: ':missing',
+    $null: ':missing',
+    $text: ':text'
+  };
 
-    var isOperator = function(v) {
-        return v.indexOf('$') === 0;
-    };
+  var isOperator = function(v) {
+    return v.indexOf('$') === 0;
+  };
 
-    var expandParam = function(k, v) {
-        return reduceMap(v, function(acc, arg) {
-            var kk, o, res, vv;
-            kk = arg[0], vv = arg[1];
-            return acc.concat(kk === '$and' ? assertArray(vv).reduce((function(a, vvv) {
-                return a.concat(linearizeOne(k, vvv));
-            }), []) : kk === '$type' ? [] : isOperator(kk) ? (o = {
-                param: k
-            }, kk === '$or' ? o.value = vv : (OPERATORS[kk] ? o.operator = OPERATORS[kk] : void 0, MODIFIERS[kk] ? o.modifier = MODIFIERS[kk] : void 0, type(vv) === 'object' && vv.$or ? o.value = vv.$or : o.value = [vv]), [o]) : (v.$type ? res = ":" + v.$type : void 0, linearizeOne("" + k + (res || '') + "." + kk, vv)));
-        });
-    };
-
-    var handleSort = function(xs) {
-        var i, len, results, x;
-        assertArray(xs);
-        results = [];
-        for (i = 0, len = xs.length; i < len; i++) {
-            x = xs[i];
-            switch (type(x)) {
-            case 'array':
-                results.push({
-                    param: '_sort',
-                    value: x[0],
-                    modifier: ":" + x[1]
-                });
-                break;
-            case 'string':
-                results.push({
-                    param: '_sort',
-                    value: x
-                });
-                break;
-            default:
-                results.push(void 0);
-            }
-        }
-        return results;
-    };
-
-    var handleInclude = function(includes) {
-        return reduceMap(includes, function(acc, arg) {
-            var k, v;
-            k = arg[0], v = arg[1];
-            return acc.concat((function() {
-                switch (type(v)) {
-                case 'array':
-                    return v.map(function(x) {
-                        return {
-                            param: '_include',
-                            value: k + "." + x
-                        };
-                    });
-                case 'string':
-                    return [
-                        {
-                            param: '_include',
-                            value: k + "." + v
-                        }
-                    ];
-                }
-            })());
-        });
-    };
-
-    var linearizeOne = function(k, v) {
-        if (k === '$sort') {
-            return handleSort(v);
-        } else if (k === '$include') {
-            return handleInclude(v);
-        } else {
-            switch (type(v)) {
-            case 'object':
-                return expandParam(k, v);
-            case 'string':
-                return [
-                    {
-                        param: k,
-                        value: [v]
-                    }
-                ];
-            case 'number':
-                return [
-                    {
-                        param: k,
-                        value: [v]
-                    }
-                ];
-            case 'array':
-                return [
-                    {
-                        param: k,
-                        value: [v.join("|")]
-                    }
-                ];
-            default:
-                throw "could not linearizeParams " + (type(v));
-            }
-        }
-    };
-
-    var linearizeParams = function(query) {
-        return reduceMap(query, function(acc, arg) {
-            var k, v;
-            k = arg[0], v = arg[1];
-            return acc.concat(linearizeOne(k, v));
-        });
-    };
-
-    var buildSearchParams = function(query) {
-        var p, ps;
-        ps = (function() {
-            var i, len, ref, results;
-            ref = linearizeParams(query);
-            results = [];
-            for (i = 0, len = ref.length; i < len; i++) {
-                p = ref[i];
-                results.push([p.param, p.modifier, '=', p.operator, encodeURIComponent(p.value)].filter(identity).join(''));
-            }
-            return results;
-        })();
-        return ps.join("&");
-    };
-
-    exports._query = linearizeParams;
-
-    exports.query = buildSearchParams;
-
-    var mw = __webpack_require__(/*! ./core */ "../node_modules/fhir.js/src/middlewares/core.js");
-
-    exports.$SearchParams = mw.$$Attr('url', function(args){
-        var url = args.url;
-        if(args.query){
-             var queryStr = buildSearchParams(args.query);
-             return url + "?" + queryStr;
-        }
-        return url;
+  var expandParam = function(k, v) {
+    return reduceMap(v, function(acc, arg) {
+      var kk, o, res, vv;
+      kk = arg[0], vv = arg[1];
+      return acc.concat(kk === '$and' ? assertArray(vv).reduce((function(a, vvv) {
+        return a.concat(linearizeOne(k, vvv));
+      }), []) : kk === '$type' ? [] : isOperator(kk) ? (o = {
+        param: k
+      }, kk === '$or' ? o.value = vv : (OPERATORS[kk] ? o.operator = OPERATORS[kk] : void 0, MODIFIERS[kk] ? o.modifier = MODIFIERS[kk] : void 0, type(vv) === 'object' && vv.$or ? o.value = vv.$or : o.value = [vv]), [o]) : (v.$type ? res = ":" + v.$type : void 0, linearizeOne("" + k + (res || '') + "." + kk, vv)));
     });
+  };
+
+  var handleSort = function(xs) {
+    var i, len, results, x;
+    assertArray(xs);
+    results = [];
+    for (i = 0, len = xs.length; i < len; i++) {
+      x = xs[i];
+      switch (type(x)) {
+      case 'array':
+        results.push({
+          param: '_sort',
+          value: x[0],
+          modifier: ":" + x[1]
+        });
+        break;
+      case 'string':
+        results.push({
+          param: '_sort',
+          value: x
+        });
+        break;
+      default:
+        results.push(void 0);
+      }
+    }
+    return results;
+  };
+
+  var handleInclude = function(includes, key) {
+    return reduceMap(includes, function(acc, arg) {
+      var k, v;
+      k = arg[0], v = arg[1];
+      return acc.concat((function() {
+        switch (type(v)) {
+        case 'array':
+          return v.map(function(x) {
+            return {
+              param: key === '$include' ? '_include' : '_revinclude',
+              value: k + ":" + x
+            };
+          });
+        case 'string':
+          return [
+            {
+              param: key === '$include' ? '_include' : '_revinclude',
+              value: k + ":" + v
+            }
+          ];
+        }
+      })());
+    });
+  };
+  var handleHas = function(includes, key) {
+    return reduceMap(includes, function(acc, arg) {
+      var k, v;
+      k = arg[0], v = arg[1];
+      return acc.concat((function() {
+        switch (type(v)) {
+        case 'array':
+          return v.map(function(x) {
+            return {
+              param: '_has',
+              value: k + "=" + x
+            };
+          });
+        case 'string':
+          return [
+            {
+              param: '_has',
+              value: k + "=" + v
+            }
+          ];
+        }
+      })());
+    });
+  };
+  var linearizeOne = function(k, v) {
+    if (k === '$sort') {
+      return handleSort(v);
+    } else if (k === '$has') {
+      return handleHas(v, k);
+    } else if (k === '$include' || k === '$revInclude') {
+      return handleInclude(v, k);
+    } else {
+      switch (type(v)) {
+      case 'object':
+        return expandParam(k, v);
+      case 'string':
+        return [
+          {
+            param: k,
+            value: [v]
+          }
+        ];
+      case 'number':
+        return [
+          {
+            param: k,
+            value: [v]
+          }
+        ];
+      case 'array':
+        return [
+          {
+            param: k,
+            value: [v.join("|")]
+          }
+        ];
+      default:
+        throw "could not linearizeParams " + (type(v));
+      }
+    }
+  };
+
+  var linearizeParams = function(query) {
+    return reduceMap(query, function(acc, arg) {
+      var k, v;
+      k = arg[0], v = arg[1];
+      return acc.concat(linearizeOne(k, v));
+    });
+  };
+
+  var buildSearchParams = function(query) {
+    var p, ps, value;
+    var excludeEncode = ['_include', '_revinclude', '_has']
+    ps = (function() {
+      var i, len, ref, results;
+      ref = linearizeParams(query);
+      results = [];
+      for (i = 0, len = ref.length; i < len; i++) {
+        p = ref[i];
+        if (excludeEncode.indexOf(p.param) === -1)
+          value = encodeURIComponent(p.value);
+        else
+          value = p.value
+        results.push([p.param, p.modifier, (p.param == '_has') ? ':' : '=', p.operator, value].filter(identity).join(''));
+      }
+      return results;
+    })();
+    return ps.join("&");
+  };
+
+  exports._query = linearizeParams;
+
+  exports.query = buildSearchParams;
+
+  var mw = __webpack_require__(/*! ./core */ "../node_modules/fhir.js/src/middlewares/core.js");
+
+  exports.$SearchParams = mw.$$Attr('url', function(args){
+    var url = args.url;
+    if(args.query){
+      var queryStr = buildSearchParams(args.query);
+      return url + "?" + queryStr;
+    }
+    return url;
+  });
 
 
-    exports.$Paging = function(h){
-        return function(args){
-            var params = args.params || {};
-            if(args.since){params._since = args.since;}
-            if(args.count){params._count = args.count;}
-            args.params = params;
-            return h(args);
-        };
+  exports.$Paging = function(h){
+    return function(args){
+      var params = args.params || {};
+      if(args.since){params._since = args.since;}
+      if(args.count){params._count = args.count;}
+      args.params = params;
+      return h(args);
     };
+  };
 
 
 }).call(this);
@@ -1210,8 +1227,7 @@ module.exports = function(h){
 /*!******************************************************!*\
   !*** ../node_modules/fhir.js/src/middlewares/url.js ***!
   \******************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 (function() {
     var utils = __webpack_require__(/*! ../utils */ "../node_modules/fhir.js/src/utils.js");
@@ -1222,6 +1238,7 @@ module.exports = function(h){
 
     var get_in = function(obj, path){
         return path.split('.').reduce(function(acc,x){
+            if(x === 'versionId' && acc[x]){ return '_history/'+ acc[x] }
             if(acc == null || acc == undefined) { return null; }
             return acc[x];
         }, obj);
@@ -1246,7 +1263,7 @@ module.exports = function(h){
 
     var buildPathPart = function(pth, args){
         var k = evalExpr(pth.trim(), args);
-        if(k==null || k === undefined){ throw new Error("Parameter "+pth+" is required: " + JSON.stringify(args)); }
+        if((k==null || k === undefined) && pth.includes('target.versionId') == false){ throw new Error("Parameter "+pth+" is required: " + JSON.stringify(args)); }
         return k;
     };
 
@@ -1257,6 +1274,9 @@ module.exports = function(h){
     var Path = function(tkn, chain){
         //Chainable
         var new_chain = function(args){
+            if(chain && tkn.includes('target.versionId') && !args.target.versionId){
+                return chain(args);
+            }
             return ((chain && (chain(args) + "/")) || "") +  buildPathPart(tkn, args);
         };
         var ch = core.Attribute('url', new_chain);
@@ -1276,8 +1296,7 @@ module.exports = function(h){
 /*!********************************************!*\
   !*** ../node_modules/fhir.js/src/utils.js ***!
   \********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 (function() {
   var merge = __webpack_require__(/*! merge */ "../node_modules/merge/merge.js");
@@ -1460,11 +1479,11 @@ module.exports = function(h){
 /*!**************************************!*\
   !*** ../node_modules/merge/merge.js ***!
   \**************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-/* WEBPACK VAR INJECTION */(function(module) {/*!
- * @name JavaScript/NodeJS Merge v1.2.0
+/* module decorator */ module = __webpack_require__.nmd(module);
+/*!
+ * @name JavaScript/NodeJS Merge v1.2.1
  * @author yeikos
  * @repository https://github.com/yeikos/js.merge
 
@@ -1593,6 +1612,8 @@ module.exports = function(h){
 
 			for (var key in item) {
 
+				if (key === '__proto__') continue;
+
 				var sitem = clone ? Public.clone(item[key]) : item[key];
 
 				if (recursive) {
@@ -1637,532 +1658,280 @@ module.exports = function(h){
 
 	}
 
-})(typeof module === 'object' && module && typeof module.exports === 'object' && module.exports);
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../webpack/buildin/module.js */ "../node_modules/webpack/buildin/module.js")(module)))
+})( true && module && typeof module.exports === 'object' && module.exports);
 
 /***/ }),
 
-/***/ "../node_modules/style-loader/lib/addStyles.js":
-/*!*****************************************************!*\
-  !*** ../node_modules/style-loader/lib/addStyles.js ***!
-  \*****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ "../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js":
+/*!*****************************************************************************!*\
+  !*** ../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js ***!
+  \*****************************************************************************/
+/***/ ((module) => {
 
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
+"use strict";
 
-var stylesInDom = {};
 
-var	memoize = function (fn) {
-	var memo;
-
-	return function () {
-		if (typeof memo === "undefined") memo = fn.apply(this, arguments);
-		return memo;
-	};
+var stylesInDOM = [];
+function getIndexByIdentifier(identifier) {
+  var result = -1;
+  for (var i = 0; i < stylesInDOM.length; i++) {
+    if (stylesInDOM[i].identifier === identifier) {
+      result = i;
+      break;
+    }
+  }
+  return result;
+}
+function modulesToDom(list, options) {
+  var idCountMap = {};
+  var identifiers = [];
+  for (var i = 0; i < list.length; i++) {
+    var item = list[i];
+    var id = options.base ? item[0] + options.base : item[0];
+    var count = idCountMap[id] || 0;
+    var identifier = "".concat(id, " ").concat(count);
+    idCountMap[id] = count + 1;
+    var indexByIdentifier = getIndexByIdentifier(identifier);
+    var obj = {
+      css: item[1],
+      media: item[2],
+      sourceMap: item[3],
+      supports: item[4],
+      layer: item[5]
+    };
+    if (indexByIdentifier !== -1) {
+      stylesInDOM[indexByIdentifier].references++;
+      stylesInDOM[indexByIdentifier].updater(obj);
+    } else {
+      var updater = addElementStyle(obj, options);
+      options.byIndex = i;
+      stylesInDOM.splice(i, 0, {
+        identifier: identifier,
+        updater: updater,
+        references: 1
+      });
+    }
+    identifiers.push(identifier);
+  }
+  return identifiers;
+}
+function addElementStyle(obj, options) {
+  var api = options.domAPI(options);
+  api.update(obj);
+  var updater = function updater(newObj) {
+    if (newObj) {
+      if (newObj.css === obj.css && newObj.media === obj.media && newObj.sourceMap === obj.sourceMap && newObj.supports === obj.supports && newObj.layer === obj.layer) {
+        return;
+      }
+      api.update(obj = newObj);
+    } else {
+      api.remove();
+    }
+  };
+  return updater;
+}
+module.exports = function (list, options) {
+  options = options || {};
+  list = list || [];
+  var lastIdentifiers = modulesToDom(list, options);
+  return function update(newList) {
+    newList = newList || [];
+    for (var i = 0; i < lastIdentifiers.length; i++) {
+      var identifier = lastIdentifiers[i];
+      var index = getIndexByIdentifier(identifier);
+      stylesInDOM[index].references--;
+    }
+    var newLastIdentifiers = modulesToDom(newList, options);
+    for (var _i = 0; _i < lastIdentifiers.length; _i++) {
+      var _identifier = lastIdentifiers[_i];
+      var _index = getIndexByIdentifier(_identifier);
+      if (stylesInDOM[_index].references === 0) {
+        stylesInDOM[_index].updater();
+        stylesInDOM.splice(_index, 1);
+      }
+    }
+    lastIdentifiers = newLastIdentifiers;
+  };
 };
-
-var isOldIE = memoize(function () {
-	// Test for IE <= 9 as proposed by Browserhacks
-	// @see http://browserhacks.com/#hack-e71d8692f65334173fee715c222cb805
-	// Tests for existence of standard globals is to allow style-loader
-	// to operate correctly into non-standard environments
-	// @see https://github.com/webpack-contrib/style-loader/issues/177
-	return window && document && document.all && !window.atob;
-});
-
-var getTarget = function (target) {
-  return document.querySelector(target);
-};
-
-var getElement = (function (fn) {
-	var memo = {};
-
-	return function(target) {
-                // If passing function in options, then use it for resolve "head" element.
-                // Useful for Shadow Root style i.e
-                // {
-                //   insertInto: function () { return document.querySelector("#foo").shadowRoot }
-                // }
-                if (typeof target === 'function') {
-                        return target();
-                }
-                if (typeof memo[target] === "undefined") {
-			var styleTarget = getTarget.call(this, target);
-			// Special case to return head of iframe instead of iframe itself
-			if (window.HTMLIFrameElement && styleTarget instanceof window.HTMLIFrameElement) {
-				try {
-					// This will throw an exception if access to iframe is blocked
-					// due to cross-origin restrictions
-					styleTarget = styleTarget.contentDocument.head;
-				} catch(e) {
-					styleTarget = null;
-				}
-			}
-			memo[target] = styleTarget;
-		}
-		return memo[target]
-	};
-})();
-
-var singleton = null;
-var	singletonCounter = 0;
-var	stylesInsertedAtTop = [];
-
-var	fixUrls = __webpack_require__(/*! ./urls */ "../node_modules/style-loader/lib/urls.js");
-
-module.exports = function(list, options) {
-	if (typeof DEBUG !== "undefined" && DEBUG) {
-		if (typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
-	}
-
-	options = options || {};
-
-	options.attrs = typeof options.attrs === "object" ? options.attrs : {};
-
-	// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
-	// tags it will allow on a page
-	if (!options.singleton && typeof options.singleton !== "boolean") options.singleton = isOldIE();
-
-	// By default, add <style> tags to the <head> element
-        if (!options.insertInto) options.insertInto = "head";
-
-	// By default, add <style> tags to the bottom of the target
-	if (!options.insertAt) options.insertAt = "bottom";
-
-	var styles = listToStyles(list, options);
-
-	addStylesToDom(styles, options);
-
-	return function update (newList) {
-		var mayRemove = [];
-
-		for (var i = 0; i < styles.length; i++) {
-			var item = styles[i];
-			var domStyle = stylesInDom[item.id];
-
-			domStyle.refs--;
-			mayRemove.push(domStyle);
-		}
-
-		if(newList) {
-			var newStyles = listToStyles(newList, options);
-			addStylesToDom(newStyles, options);
-		}
-
-		for (var i = 0; i < mayRemove.length; i++) {
-			var domStyle = mayRemove[i];
-
-			if(domStyle.refs === 0) {
-				for (var j = 0; j < domStyle.parts.length; j++) domStyle.parts[j]();
-
-				delete stylesInDom[domStyle.id];
-			}
-		}
-	};
-};
-
-function addStylesToDom (styles, options) {
-	for (var i = 0; i < styles.length; i++) {
-		var item = styles[i];
-		var domStyle = stylesInDom[item.id];
-
-		if(domStyle) {
-			domStyle.refs++;
-
-			for(var j = 0; j < domStyle.parts.length; j++) {
-				domStyle.parts[j](item.parts[j]);
-			}
-
-			for(; j < item.parts.length; j++) {
-				domStyle.parts.push(addStyle(item.parts[j], options));
-			}
-		} else {
-			var parts = [];
-
-			for(var j = 0; j < item.parts.length; j++) {
-				parts.push(addStyle(item.parts[j], options));
-			}
-
-			stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
-		}
-	}
-}
-
-function listToStyles (list, options) {
-	var styles = [];
-	var newStyles = {};
-
-	for (var i = 0; i < list.length; i++) {
-		var item = list[i];
-		var id = options.base ? item[0] + options.base : item[0];
-		var css = item[1];
-		var media = item[2];
-		var sourceMap = item[3];
-		var part = {css: css, media: media, sourceMap: sourceMap};
-
-		if(!newStyles[id]) styles.push(newStyles[id] = {id: id, parts: [part]});
-		else newStyles[id].parts.push(part);
-	}
-
-	return styles;
-}
-
-function insertStyleElement (options, style) {
-	var target = getElement(options.insertInto)
-
-	if (!target) {
-		throw new Error("Couldn't find a style target. This probably means that the value for the 'insertInto' parameter is invalid.");
-	}
-
-	var lastStyleElementInsertedAtTop = stylesInsertedAtTop[stylesInsertedAtTop.length - 1];
-
-	if (options.insertAt === "top") {
-		if (!lastStyleElementInsertedAtTop) {
-			target.insertBefore(style, target.firstChild);
-		} else if (lastStyleElementInsertedAtTop.nextSibling) {
-			target.insertBefore(style, lastStyleElementInsertedAtTop.nextSibling);
-		} else {
-			target.appendChild(style);
-		}
-		stylesInsertedAtTop.push(style);
-	} else if (options.insertAt === "bottom") {
-		target.appendChild(style);
-	} else if (typeof options.insertAt === "object" && options.insertAt.before) {
-		var nextSibling = getElement(options.insertInto + " " + options.insertAt.before);
-		target.insertBefore(style, nextSibling);
-	} else {
-		throw new Error("[Style Loader]\n\n Invalid value for parameter 'insertAt' ('options.insertAt') found.\n Must be 'top', 'bottom', or Object.\n (https://github.com/webpack-contrib/style-loader#insertat)\n");
-	}
-}
-
-function removeStyleElement (style) {
-	if (style.parentNode === null) return false;
-	style.parentNode.removeChild(style);
-
-	var idx = stylesInsertedAtTop.indexOf(style);
-	if(idx >= 0) {
-		stylesInsertedAtTop.splice(idx, 1);
-	}
-}
-
-function createStyleElement (options) {
-	var style = document.createElement("style");
-
-	if(options.attrs.type === undefined) {
-		options.attrs.type = "text/css";
-	}
-
-	addAttrs(style, options.attrs);
-	insertStyleElement(options, style);
-
-	return style;
-}
-
-function createLinkElement (options) {
-	var link = document.createElement("link");
-
-	if(options.attrs.type === undefined) {
-		options.attrs.type = "text/css";
-	}
-	options.attrs.rel = "stylesheet";
-
-	addAttrs(link, options.attrs);
-	insertStyleElement(options, link);
-
-	return link;
-}
-
-function addAttrs (el, attrs) {
-	Object.keys(attrs).forEach(function (key) {
-		el.setAttribute(key, attrs[key]);
-	});
-}
-
-function addStyle (obj, options) {
-	var style, update, remove, result;
-
-	// If a transform function was defined, run it on the css
-	if (options.transform && obj.css) {
-	    result = options.transform(obj.css);
-
-	    if (result) {
-	    	// If transform returns a value, use that instead of the original css.
-	    	// This allows running runtime transformations on the css.
-	    	obj.css = result;
-	    } else {
-	    	// If the transform function returns a falsy value, don't add this css.
-	    	// This allows conditional loading of css
-	    	return function() {
-	    		// noop
-	    	};
-	    }
-	}
-
-	if (options.singleton) {
-		var styleIndex = singletonCounter++;
-
-		style = singleton || (singleton = createStyleElement(options));
-
-		update = applyToSingletonTag.bind(null, style, styleIndex, false);
-		remove = applyToSingletonTag.bind(null, style, styleIndex, true);
-
-	} else if (
-		obj.sourceMap &&
-		typeof URL === "function" &&
-		typeof URL.createObjectURL === "function" &&
-		typeof URL.revokeObjectURL === "function" &&
-		typeof Blob === "function" &&
-		typeof btoa === "function"
-	) {
-		style = createLinkElement(options);
-		update = updateLink.bind(null, style, options);
-		remove = function () {
-			removeStyleElement(style);
-
-			if(style.href) URL.revokeObjectURL(style.href);
-		};
-	} else {
-		style = createStyleElement(options);
-		update = applyToTag.bind(null, style);
-		remove = function () {
-			removeStyleElement(style);
-		};
-	}
-
-	update(obj);
-
-	return function updateStyle (newObj) {
-		if (newObj) {
-			if (
-				newObj.css === obj.css &&
-				newObj.media === obj.media &&
-				newObj.sourceMap === obj.sourceMap
-			) {
-				return;
-			}
-
-			update(obj = newObj);
-		} else {
-			remove();
-		}
-	};
-}
-
-var replaceText = (function () {
-	var textStore = [];
-
-	return function (index, replacement) {
-		textStore[index] = replacement;
-
-		return textStore.filter(Boolean).join('\n');
-	};
-})();
-
-function applyToSingletonTag (style, index, remove, obj) {
-	var css = remove ? "" : obj.css;
-
-	if (style.styleSheet) {
-		style.styleSheet.cssText = replaceText(index, css);
-	} else {
-		var cssNode = document.createTextNode(css);
-		var childNodes = style.childNodes;
-
-		if (childNodes[index]) style.removeChild(childNodes[index]);
-
-		if (childNodes.length) {
-			style.insertBefore(cssNode, childNodes[index]);
-		} else {
-			style.appendChild(cssNode);
-		}
-	}
-}
-
-function applyToTag (style, obj) {
-	var css = obj.css;
-	var media = obj.media;
-
-	if(media) {
-		style.setAttribute("media", media)
-	}
-
-	if(style.styleSheet) {
-		style.styleSheet.cssText = css;
-	} else {
-		while(style.firstChild) {
-			style.removeChild(style.firstChild);
-		}
-
-		style.appendChild(document.createTextNode(css));
-	}
-}
-
-function updateLink (link, options, obj) {
-	var css = obj.css;
-	var sourceMap = obj.sourceMap;
-
-	/*
-		If convertToAbsoluteUrls isn't defined, but sourcemaps are enabled
-		and there is no publicPath defined then lets turn convertToAbsoluteUrls
-		on by default.  Otherwise default to the convertToAbsoluteUrls option
-		directly
-	*/
-	var autoFixUrls = options.convertToAbsoluteUrls === undefined && sourceMap;
-
-	if (options.convertToAbsoluteUrls || autoFixUrls) {
-		css = fixUrls(css);
-	}
-
-	if (sourceMap) {
-		// http://stackoverflow.com/a/26603875
-		css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
-	}
-
-	var blob = new Blob([css], { type: "text/css" });
-
-	var oldSrc = link.href;
-
-	link.href = URL.createObjectURL(blob);
-
-	if(oldSrc) URL.revokeObjectURL(oldSrc);
-}
-
 
 /***/ }),
 
-/***/ "../node_modules/style-loader/lib/urls.js":
-/*!************************************************!*\
-  !*** ../node_modules/style-loader/lib/urls.js ***!
-  \************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/***/ "../node_modules/style-loader/dist/runtime/insertBySelector.js":
+/*!*********************************************************************!*\
+  !*** ../node_modules/style-loader/dist/runtime/insertBySelector.js ***!
+  \*********************************************************************/
+/***/ ((module) => {
+
+"use strict";
 
 
-/**
- * When source maps are enabled, `style-loader` uses a link element with a data-uri to
- * embed the css on the page. This breaks all relative urls because now they are relative to a
- * bundle instead of the current page.
- *
- * One solution is to only use full urls, but that may be impossible.
- *
- * Instead, this function "fixes" the relative urls to be absolute according to the current page location.
- *
- * A rudimentary test suite is located at `test/fixUrls.js` and can be run via the `npm test` command.
- *
- */
+var memo = {};
 
-module.exports = function (css) {
-  // get current location
-  var location = typeof window !== "undefined" && window.location;
+/* istanbul ignore next  */
+function getTarget(target) {
+  if (typeof memo[target] === "undefined") {
+    var styleTarget = document.querySelector(target);
 
-  if (!location) {
-    throw new Error("fixUrls requires window.location");
+    // Special case to return head of iframe instead of iframe itself
+    if (window.HTMLIFrameElement && styleTarget instanceof window.HTMLIFrameElement) {
+      try {
+        // This will throw an exception if access to iframe is blocked
+        // due to cross-origin restrictions
+        styleTarget = styleTarget.contentDocument.head;
+      } catch (e) {
+        // istanbul ignore next
+        styleTarget = null;
+      }
+    }
+    memo[target] = styleTarget;
+  }
+  return memo[target];
+}
+
+/* istanbul ignore next  */
+function insertBySelector(insert, style) {
+  var target = getTarget(insert);
+  if (!target) {
+    throw new Error("Couldn't find a style target. This probably means that the value for the 'insert' parameter is invalid.");
+  }
+  target.appendChild(style);
+}
+module.exports = insertBySelector;
+
+/***/ }),
+
+/***/ "../node_modules/style-loader/dist/runtime/insertStyleElement.js":
+/*!***********************************************************************!*\
+  !*** ../node_modules/style-loader/dist/runtime/insertStyleElement.js ***!
+  \***********************************************************************/
+/***/ ((module) => {
+
+"use strict";
+
+
+/* istanbul ignore next  */
+function insertStyleElement(options) {
+  var element = document.createElement("style");
+  options.setAttributes(element, options.attributes);
+  options.insert(element, options.options);
+  return element;
+}
+module.exports = insertStyleElement;
+
+/***/ }),
+
+/***/ "../node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js":
+/*!***********************************************************************************!*\
+  !*** ../node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js ***!
+  \***********************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+/* istanbul ignore next  */
+function setAttributesWithoutAttributes(styleElement) {
+  var nonce =  true ? __webpack_require__.nc : 0;
+  if (nonce) {
+    styleElement.setAttribute("nonce", nonce);
+  }
+}
+module.exports = setAttributesWithoutAttributes;
+
+/***/ }),
+
+/***/ "../node_modules/style-loader/dist/runtime/styleDomAPI.js":
+/*!****************************************************************!*\
+  !*** ../node_modules/style-loader/dist/runtime/styleDomAPI.js ***!
+  \****************************************************************/
+/***/ ((module) => {
+
+"use strict";
+
+
+/* istanbul ignore next  */
+function apply(styleElement, options, obj) {
+  var css = "";
+  if (obj.supports) {
+    css += "@supports (".concat(obj.supports, ") {");
+  }
+  if (obj.media) {
+    css += "@media ".concat(obj.media, " {");
+  }
+  var needLayer = typeof obj.layer !== "undefined";
+  if (needLayer) {
+    css += "@layer".concat(obj.layer.length > 0 ? " ".concat(obj.layer) : "", " {");
+  }
+  css += obj.css;
+  if (needLayer) {
+    css += "}";
+  }
+  if (obj.media) {
+    css += "}";
+  }
+  if (obj.supports) {
+    css += "}";
+  }
+  var sourceMap = obj.sourceMap;
+  if (sourceMap && typeof btoa !== "undefined") {
+    css += "\n/*# sourceMappingURL=data:application/json;base64,".concat(btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))), " */");
   }
 
-	// blank or null?
-	if (!css || typeof css !== "string") {
-	  return css;
+  // For old IE
+  /* istanbul ignore if  */
+  options.styleTagTransform(css, styleElement, options.options);
+}
+function removeStyleElement(styleElement) {
+  // istanbul ignore if
+  if (styleElement.parentNode === null) {
+    return false;
   }
+  styleElement.parentNode.removeChild(styleElement);
+}
 
-  var baseUrl = location.protocol + "//" + location.host;
-  var currentDir = baseUrl + location.pathname.replace(/\/[^\/]*$/, "/");
-
-	// convert each url(...)
-	/*
-	This regular expression is just a way to recursively match brackets within
-	a string.
-
-	 /url\s*\(  = Match on the word "url" with any whitespace after it and then a parens
-	   (  = Start a capturing group
-	     (?:  = Start a non-capturing group
-	         [^)(]  = Match anything that isn't a parentheses
-	         |  = OR
-	         \(  = Match a start parentheses
-	             (?:  = Start another non-capturing groups
-	                 [^)(]+  = Match anything that isn't a parentheses
-	                 |  = OR
-	                 \(  = Match a start parentheses
-	                     [^)(]*  = Match anything that isn't a parentheses
-	                 \)  = Match a end parentheses
-	             )  = End Group
-              *\) = Match anything and then a close parens
-          )  = Close non-capturing group
-          *  = Match anything
-       )  = Close capturing group
-	 \)  = Match a close parens
-
-	 /gi  = Get all matches, not the first.  Be case insensitive.
-	 */
-	var fixedCss = css.replace(/url\s*\(((?:[^)(]|\((?:[^)(]+|\([^)(]*\))*\))*)\)/gi, function(fullMatch, origUrl) {
-		// strip quotes (if they exist)
-		var unquotedOrigUrl = origUrl
-			.trim()
-			.replace(/^"(.*)"$/, function(o, $1){ return $1; })
-			.replace(/^'(.*)'$/, function(o, $1){ return $1; });
-
-		// already a full url? no change
-		if (/^(#|data:|http:\/\/|https:\/\/|file:\/\/\/|\s*$)/i.test(unquotedOrigUrl)) {
-		  return fullMatch;
-		}
-
-		// convert the url to a full url
-		var newUrl;
-
-		if (unquotedOrigUrl.indexOf("//") === 0) {
-		  	//TODO: should we add protocol?
-			newUrl = unquotedOrigUrl;
-		} else if (unquotedOrigUrl.indexOf("/") === 0) {
-			// path should be relative to the base url
-			newUrl = baseUrl + unquotedOrigUrl; // already starts with '/'
-		} else {
-			// path should be relative to current directory
-			newUrl = currentDir + unquotedOrigUrl.replace(/^\.\//, ""); // Strip leading './'
-		}
-
-		// send back the fixed url(...)
-		return "url(" + JSON.stringify(newUrl) + ")";
-	});
-
-	// send back the fixed css
-	return fixedCss;
-};
-
+/* istanbul ignore next  */
+function domAPI(options) {
+  if (typeof document === "undefined") {
+    return {
+      update: function update() {},
+      remove: function remove() {}
+    };
+  }
+  var styleElement = options.insertStyleElement(options);
+  return {
+    update: function update(obj) {
+      apply(styleElement, options, obj);
+    },
+    remove: function remove() {
+      removeStyleElement(styleElement);
+    }
+  };
+}
+module.exports = domAPI;
 
 /***/ }),
 
-/***/ "../node_modules/webpack/buildin/module.js":
-/*!*************************************************!*\
-  !*** ../node_modules/webpack/buildin/module.js ***!
-  \*************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/***/ "../node_modules/style-loader/dist/runtime/styleTagTransform.js":
+/*!**********************************************************************!*\
+  !*** ../node_modules/style-loader/dist/runtime/styleTagTransform.js ***!
+  \**********************************************************************/
+/***/ ((module) => {
 
-module.exports = function(module) {
-	if (!module.webpackPolyfill) {
-		module.deprecate = function() {};
-		module.paths = [];
-		// module.parent = undefined by default
-		if (!module.children) module.children = [];
-		Object.defineProperty(module, "loaded", {
-			enumerable: true,
-			get: function() {
-				return module.l;
-			}
-		});
-		Object.defineProperty(module, "id", {
-			enumerable: true,
-			get: function() {
-				return module.i;
-			}
-		});
-		module.webpackPolyfill = 1;
-	}
-	return module;
-};
+"use strict";
 
+
+/* istanbul ignore next  */
+function styleTagTransform(css, styleElement) {
+  if (styleElement.styleSheet) {
+    styleElement.styleSheet.cssText = css;
+  } else {
+    while (styleElement.firstChild) {
+      styleElement.removeChild(styleElement.firstChild);
+    }
+    styleElement.appendChild(document.createTextNode(css));
+  }
+}
+module.exports = styleTagTransform;
 
 /***/ }),
 
@@ -2170,21 +1939,26 @@ module.exports = function(module) {
 /*!***********************************!*\
   !*** ./annotations_query_ctrl.ts ***!
   \***********************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   FhirDatasourceAnnotationsQueryCtrl: () => (/* binding */ FhirDatasourceAnnotationsQueryCtrl)
+/* harmony export */ });
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, _toPropertyKey(o.key), o); } }
+function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+/**
+ * Empty controller used to satisfy Grafana's annotation UI contract.
+ */
+var FhirDatasourceAnnotationsQueryCtrl = /*#__PURE__*/_createClass(function FhirDatasourceAnnotationsQueryCtrl() {
+  _classCallCheck(this, FhirDatasourceAnnotationsQueryCtrl);
 });
-var FhirDatasourceAnnotationsQueryCtrl = /** @class */function () {
-    function FhirDatasourceAnnotationsQueryCtrl() {}
-    FhirDatasourceAnnotationsQueryCtrl.templateUrl = 'partials/annotations.editor.html';
-    return FhirDatasourceAnnotationsQueryCtrl;
-}();
-exports.FhirDatasourceAnnotationsQueryCtrl = FhirDatasourceAnnotationsQueryCtrl;
+FhirDatasourceAnnotationsQueryCtrl.templateUrl = 'partials/annotations.editor.html';
 
 /***/ }),
 
@@ -2192,21 +1966,26 @@ exports.FhirDatasourceAnnotationsQueryCtrl = FhirDatasourceAnnotationsQueryCtrl;
 /*!************************!*\
   !*** ./config_ctrl.ts ***!
   \************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   FhirDatasourceConfigCtrl: () => (/* binding */ FhirDatasourceConfigCtrl)
+/* harmony export */ });
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, _toPropertyKey(o.key), o); } }
+function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+/**
+ * Controller for the datasource configuration page.
+ */
+var FhirDatasourceConfigCtrl = /*#__PURE__*/_createClass(function FhirDatasourceConfigCtrl($scope) {
+  _classCallCheck(this, FhirDatasourceConfigCtrl);
 });
-var FhirDatasourceConfigCtrl = /** @class */function () {
-    function FhirDatasourceConfigCtrl($scope) {}
-    FhirDatasourceConfigCtrl.templateUrl = 'partials/config.html';
-    return FhirDatasourceConfigCtrl;
-}();
-exports.FhirDatasourceConfigCtrl = FhirDatasourceConfigCtrl;
+FhirDatasourceConfigCtrl.templateUrl = 'partials/config.html';
 
 /***/ }),
 
@@ -2214,29 +1993,52 @@ exports.FhirDatasourceConfigCtrl = FhirDatasourceConfigCtrl;
 /*!******************************!*\
   !*** ./css/query_editor.css ***!
   \******************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !../../node_modules/style-loader/dist/runtime/styleDomAPI.js */ "../node_modules/style-loader/dist/runtime/styleDomAPI.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../node_modules/style-loader/dist/runtime/insertBySelector.js */ "../node_modules/style-loader/dist/runtime/insertBySelector.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js */ "../node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! !../../node_modules/style-loader/dist/runtime/insertStyleElement.js */ "../node_modules/style-loader/dist/runtime/insertStyleElement.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "../node_modules/style-loader/dist/runtime/styleTagTransform.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_1_use_1_query_editor_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./query_editor.css */ "../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./css/query_editor.css");
+
+      
+      
+      
+      
+      
+      
+      
+      
+      
+
+var options = {};
+
+options.styleTagTransform = (_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default());
+options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default());
+options.insert = _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default().bind(null, "head");
+options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
+options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_1_use_1_query_editor_css__WEBPACK_IMPORTED_MODULE_6__["default"], options);
 
 
-var content = __webpack_require__(/*! !../../node_modules/css-loader??ref--5-1!./query_editor.css */ "../node_modules/css-loader/index.js?!./css/query_editor.css");
-
-if(typeof content === 'string') content = [[module.i, content, '']];
-
-var transform;
-var insertInto;
 
 
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_1_use_1_query_editor_css__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_1_use_1_query_editor_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_1_use_1_query_editor_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
 
-var options = {"hmr":true}
-
-options.transform = transform
-options.insertInto = undefined;
-
-var update = __webpack_require__(/*! ../../node_modules/style-loader/lib/addStyles.js */ "../node_modules/style-loader/lib/addStyles.js")(content, options);
-
-if(content.locals) module.exports = content.locals;
-
-if(false) {}
 
 /***/ }),
 
@@ -2244,275 +2046,255 @@ if(false) {}
 /*!***********************!*\
   !*** ./datasource.ts ***!
   \***********************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ FhirDatasourceDatasource)
+/* harmony export */ });
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash */ "lodash");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var fhir_js_src_adapters_native__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! fhir.js/src/adapters/native */ "../node_modules/fhir.js/src/adapters/native.js");
+/* harmony import */ var fhir_js_src_adapters_native__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(fhir_js_src_adapters_native__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _utils_grafana_grafana_module__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./utils/grafana/grafana.module */ "./utils/grafana/grafana.module.ts");
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, _toPropertyKey(o.key), o); } }
+function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+///<reference path="../node_modules/grafana-sdk-mocks/app/headers/common.d.ts" />
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
 
-var _lodash = __webpack_require__(/*! lodash */ "lodash");
-
-var _lodash2 = _interopRequireDefault(_lodash);
-
-var _native = __webpack_require__(/*! fhir.js/src/adapters/native */ "../node_modules/fhir.js/src/adapters/native.js");
-
-var _native2 = _interopRequireDefault(_native);
-
-var _grafana = __webpack_require__(/*! ./utils/grafana/grafana.module */ "./utils/grafana/grafana.module.ts");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var FhirDatasourceDatasource = /** @class */function () {
-    //@ngInject
-    function FhirDatasourceDatasource(instanceSettings, $q, backendSrv, templateSrv) {
-        console.log("FhirDatasourceDatasource Ctor", instanceSettings);
-        this.id = instanceSettings.id;
-        this.type = instanceSettings.type;
-        this.url = instanceSettings.url;
-        this.name = instanceSettings.name;
-        this.q = $q;
-        this.backendSrv = backendSrv;
-        this.templateSrv = templateSrv;
-        this.withCredentials = instanceSettings.withCredentials;
-        this.headers = { 'Content-Type': 'application/json' };
-        this.config = instanceSettings.jsonData;
-        var config = {
-            'baseUrl': 'http://fhirtest.uhn.ca/baseDstu3',
-            'credentials': 'same-origin'
+/**
+ * Datasource implementation used by Grafana to communicate with a FHIR server.
+ */
+var FhirDatasourceDatasource = /*#__PURE__*/function () {
+  //@ngInject
+  function FhirDatasourceDatasource(instanceSettings, $q, backendSrv, templateSrv) {
+    _classCallCheck(this, FhirDatasourceDatasource);
+    console.log("FhirDatasourceDatasource Ctor", instanceSettings);
+    this.id = instanceSettings.id;
+    this.type = instanceSettings.type;
+    this.url = instanceSettings.url;
+    this.name = instanceSettings.name;
+    this.q = $q;
+    this.backendSrv = backendSrv;
+    this.templateSrv = templateSrv;
+    this.withCredentials = instanceSettings.withCredentials;
+    this.headers = {
+      'Content-Type': 'application/json'
+    };
+    this.config = instanceSettings.jsonData;
+    var config = {
+      baseUrl: this.config.fhiraddress || this.url,
+      credentials: 'same-origin'
+    };
+    this.client = fhir_js_src_adapters_native__WEBPACK_IMPORTED_MODULE_1___default()(config);
+    window.fhir_datasource = this;
+    window.fhir_client = this.client;
+    this.client.conformance({});
+    console.log('url', this.url);
+    console.log('backendSrv', this.backendSrv);
+    console.log('templateSrv', this.templateSrv);
+  }
+  /**
+   * Executes a data query. Currently returns a mocked empty dataset.
+   */
+  return _createClass(FhirDatasourceDatasource, [{
+    key: "query",
+    value: function query(options) {
+      var _this = this;
+      console.log('FhirDatasourceDatasource Query', options);
+      var promises = options.targets.filter(function (t) {
+        return !t.hide;
+      }).map(function (t) {
+        return _this.fetchSeries(t);
+      });
+      return Promise.all(promises).then(function (data) {
+        return {
+          data: data
         };
-        config.baseUrl = this.config.baseUrl || new URL(config.baseUrl).href;
-        this.client = (0, _native2.default)(config);
-        window.fhir_datasource = this;
-        window.fhir_client = this.client;
-        this.client.conformance({});
-        console.log("url", this.url);
-        console.log("backendSrv", this.backendSrv);
-        console.log("templateSrv", this.templateSrv);
-        this.backendSrv.datasourceRequest = function (request) {
-            console.log("datasourceRequest", request);
-            return this.$q.when({
-                _request: request,
-                data: ["metric_0", "metric_1", "metric_2"]
-            });
-        };
+      });
     }
-    FhirDatasourceDatasource.prototype.query = function (options) {
-        console.log("FhirDatasourceDatasource Query", options);
-        var query = this.buildQueryParameters(options);
-        query.targets = query.targets.filter(function (t) {
-            return !t.hide;
-        });
-        console.log("query", query);
-        query.targets = [];
-        if (query.targets.length <= 0) {
-            return this.q.when({ data: [] });
+  }, {
+    key: "fetchSeries",
+    value: function fetchSeries(target) {
+      var _this2 = this;
+      var query = {};
+      if (target.searchParam && target.searchValue) {
+        query[target.searchParam] = target.searchValue;
+      }
+      return this.client.search({
+        type: target.resourceType,
+        query: query
+      }).then(function (res) {
+        return _this2.transformToSeries(res.data, target.refId || target.resourceType);
+      });
+    }
+  }, {
+    key: "transformToSeries",
+    value: function transformToSeries(bundle, target) {
+      var datapoints = [];
+      (bundle.entry || []).forEach(function (e) {
+        var r = e.resource;
+        if (!r) {
+          return;
         }
-        return this.q.when({
-            data: []
+        var ts = Date.parse(r.effectiveDateTime || r.issued || r.meta && r.meta.lastUpdated || '');
+        var val = r.valueQuantity && r.valueQuantity.value;
+        if (!isNaN(ts) && typeof val === 'number') {
+          datapoints.push([val, ts]);
+        }
+      });
+      return {
+        target: target,
+        datapoints: datapoints
+      };
+    }
+  }, {
+    key: "annotationQuery",
+    value: function annotationQuery(options) {
+      console.log("FhirDatasourceDatasource annotationQuery", options);
+      throw new Error("Annotation Support not implemented yet.");
+      // var query = this.templateSrv.replace(options.annotation.query, {}, 'glob');
+      // var annotationQuery = {
+      //   range: options.range,
+      //   annotation: {
+      //     name: options.annotation.name,
+      //     datasource: options.annotation.datasource,
+      //     enable: options.annotation.enable,
+      //     iconColor: options.annotation.iconColor,
+      //     query: query
+      //   },
+      //   rangeRaw: options.rangeRaw
+      // };
+      // return this.doRequest({
+      //   url: this.url + '/annotations',
+      //   method: 'POST',
+      //   data: annotationQuery
+      // }).then(result => {
+      //   return result.data;
+      // });
+    }
+    /**
+     * Returns available metrics based on the server conformance statement.
+     */
+  }, {
+    key: "metricFindQuery",
+    value: function metricFindQuery(query) {
+      console.log("metricFindQuery", query);
+      var interpolated = {
+        target: this.templateSrv.replace(query, null, 'regex')
+      };
+      return this.client.conformance({}).then(function (response) {
+        var toRet = [];
+        toRet = response.data.rest[0].resource.map(function (tmp) {
+          return new _utils_grafana_grafana_module__WEBPACK_IMPORTED_MODULE_2__.GrafanaHelper.Metric(tmp.type, tmp.type);
         });
-        //return this.doRequest(options);
-        //    return this.q.when(options);
-        /*    return this.q.when({
-              "range": { "from": "2015-12-22T03:06:13.851Z", "to": "2015-12-22T06:48:24.137Z" },
-              "interval": "5s",
-              "targets": [
-                { "refId": "B", "target": "upper_75" },
-                { "refId": "A", "target": "upper_90" }
-              ],
-              "format": "json",
-              "maxDataPoints": 2495, //decided by the panel
-              "data" : [ "uno","due","tre"]
-            });
-            */
-        /*
-            if (query.targets.length <= 0) {
-              return this.q.when({data: []});
-            }
-        
-            if (this.templateSrv.getAdhocFilters) {
-              query.adhocFilters = this.templateSrv.getAdhocFilters(this.name);
-            } else {
-              query.adhocFilters = [];
-            }
-           
-            let x = this.doRequest(options);
-            console.log(x)
-            return x;
-        */
-        // return this.doRequest({
-        //   url: this.url + '/query',
-        //   data: query,
-        //   method: 'POST'
-        // });
-    };
-    FhirDatasourceDatasource.prototype.annotationQuery = function (options) {
-        console.log("FhirDatasourceDatasource annotationQuery", options);
-        throw new Error("Annotation Support not implemented yet.");
-        // var query = this.templateSrv.replace(options.annotation.query, {}, 'glob');
-        // var annotationQuery = {
-        //   range: options.range,
-        //   annotation: {
-        //     name: options.annotation.name,
-        //     datasource: options.annotation.datasource,
-        //     enable: options.annotation.enable,
-        //     iconColor: options.annotation.iconColor,
-        //     query: query
-        //   },
-        //   rangeRaw: options.rangeRaw
-        // };
-        // return this.doRequest({
-        //   url: this.url + '/annotations',
-        //   method: 'POST',
-        //   data: annotationQuery
-        // }).then(result => {
-        //   return result.data;
-        // });
-    };
-    FhirDatasourceDatasource.prototype.metricFindQuery = function (query) {
-        console.log("metricFindQuery", query);
-        var interpolated = {
-            target: this.templateSrv.replace(query, null, 'regex')
-        };
-        return this.client.conformance({}).then(function (response) {
-            var toRet = [];
-            toRet = response.data.rest[0].resource.map(function (tmp) {
-                return new _grafana.GrafanaHelper.Metric(tmp.type, tmp.type);
-            });
-            return toRet;
-        });
-    };
-    FhirDatasourceDatasource.prototype.testDatasource = function () {
-        var _this = this;
-        return this.client.conformance({}).then(function (response) {
-            if (response.data) {
-                _this.conformance = response.data || [];
-                console.log(_this.conformance);
-                if (_this.isValidServer()) {
-                    return _grafana.GrafanaHelper.Response.success("Server added successfully!", _this.conformance.software.name + " is a valid Fhir Server.");
-                } else return _grafana.GrafanaHelper.Response.error("Cannot add Server!", "The server doesn't seem to be a valid one!");
-            } else return _grafana.GrafanaHelper.Response.error("Cannot add Server!", "The server's response is not compliant!");
-        }, function (err) {
-            var errmsg = "";
-            if (err.error && err.error instanceof TypeError) errmsg = err.error.message;else errmsg = "[" + err.error.status + "] " + err.error.statusText;
-            return _grafana.GrafanaHelper.Response.error("Cannot add Server!", "We couldn't add the server:\n" + errmsg);
-        });
-    };
+        return toRet;
+      });
+    }
+    /**
+     * Validates the datasource configuration by performing a conformance request.
+     */
+  }, {
+    key: "testDatasource",
+    value: function testDatasource() {
+      var _this3 = this;
+      return this.client.conformance({}).then(function (response) {
+        if (response.data) {
+          _this3.conformance = response.data || [];
+          console.log(_this3.conformance);
+          if (_this3.isValidServer()) {
+            return _utils_grafana_grafana_module__WEBPACK_IMPORTED_MODULE_2__.GrafanaHelper.Response.success("Server added successfully!", _this3.conformance.software.name + " is a valid Fhir Server.");
+          } else return _utils_grafana_grafana_module__WEBPACK_IMPORTED_MODULE_2__.GrafanaHelper.Response.error("Cannot add Server!", "The server doesn't seem to be a valid one!");
+        } else return _utils_grafana_grafana_module__WEBPACK_IMPORTED_MODULE_2__.GrafanaHelper.Response.error("Cannot add Server!", "The server's response is not compliant!");
+      }, function (err) {
+        var errmsg = "";
+        if (err.error && err.error instanceof TypeError) errmsg = err.error.message;else errmsg = "[".concat(err.error.status, "] ").concat(err.error.statusText);
+        return _utils_grafana_grafana_module__WEBPACK_IMPORTED_MODULE_2__.GrafanaHelper.Response.error("Cannot add Server!", "We couldn't add the server:\n".concat(errmsg));
+      });
+    }
     /**
      * Contains the logic to check if the provided server is a valid one.
      * At the moment it only checks if it has a conformance object and
      * if the conformance has a fhirVersion attribute.
     */
-    FhirDatasourceDatasource.prototype.isValidServer = function () {
-        if (this.conformance != [] && this.conformance.fhirVersion) {
-            return true;
-        }
-        return false;
-    };
-    FhirDatasourceDatasource.prototype.doRequest = function (options) {
-        options.withCredentials = this.withCredentials;
-        options.headers = this.headers;
-        console.log("options", options);
-        var x = this.backendSrv.datasourceRequest(options);
-        console.log("backend", x);
-        return x;
-    };
-    FhirDatasourceDatasource.prototype.buildQueryParameters = function (options) {
-        var _this = this;
-        //remove placeholder targets
-        options.targets = _lodash2.default.filter(options.targets, function (target) {
-            return target.target !== 'select metric';
-        });
-        console.log("buildQueryParameters", options);
-        var targets = _lodash2.default.map(options.targets, function (target) {
-            return {
-                target: _this.templateSrv.replace(target.target, options.scopedVars, 'regex'),
-                refId: target.refId,
-                hide: target.hide,
-                type: target.type || 'timeserie'
-            };
-        });
-        options.targets = targets;
-        return options;
-    };
-    FhirDatasourceDatasource.prototype.getTagKeys = function (options) {
-        var _this = this;
-        return new Promise(function (resolve, reject) {
-            _this.doRequest({
-                url: _this.url + '/tag-keys',
-                method: 'POST',
-                data: options
-            }).then(function (result) {
-                return resolve(result.data);
-            });
-        });
-    };
-    FhirDatasourceDatasource.prototype.getTagValues = function (options) {
-        var _this = this;
-        return new Promise(function (resolve, reject) {
-            _this.doRequest({
-                url: _this.url + '/tag-values',
-                method: 'POST',
-                data: options
-            }).then(function (result) {
-                return resolve(result.data);
-            });
-        });
-    };
-    return FhirDatasourceDatasource;
-}(); ///<reference path="../node_modules/grafana-sdk-mocks/app/headers/common.d.ts" />
-exports.default = FhirDatasourceDatasource;
-
-/***/ }),
-
-/***/ "./module.ts":
-/*!*******************!*\
-  !*** ./module.ts ***!
-  \*******************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.QueryOptionsCtrl = exports.AnnotationsQueryCtrl = exports.ConfigCtrl = exports.QueryCtrl = exports.Datasource = undefined;
-
-var _datasource = __webpack_require__(/*! ./datasource */ "./datasource.ts");
-
-var _datasource2 = _interopRequireDefault(_datasource);
-
-var _query_ctrl = __webpack_require__(/*! ./query_ctrl */ "./query_ctrl.ts");
-
-var _annotations_query_ctrl = __webpack_require__(/*! ./annotations_query_ctrl */ "./annotations_query_ctrl.ts");
-
-var _config_ctrl = __webpack_require__(/*! ./config_ctrl */ "./config_ctrl.ts");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var GenericQueryOptionsCtrl = /** @class */function () {
-    function GenericQueryOptionsCtrl() {
-        this.templateUrl = 'partials/query.options.html';
+  }, {
+    key: "isValidServer",
+    value: function isValidServer() {
+      return !!(this.conformance && this.conformance.fhirVersion);
     }
-    return GenericQueryOptionsCtrl;
-}();
-var GenericAnnotationsQueryCtrl = /** @class */function () {
-    function GenericAnnotationsQueryCtrl() {
-        this.templateUrl = 'partials/annotations.editor.html';
+    /**
+     * Issues an HTTP request via Grafana's backend service.
+     */
+  }, {
+    key: "doRequest",
+    value: function doRequest(options) {
+      options.withCredentials = this.withCredentials;
+      options.headers = this.headers;
+      console.log("options", options);
+      var x = this.backendSrv.datasourceRequest(options);
+      console.log("backend", x);
+      return x;
     }
-    return GenericAnnotationsQueryCtrl;
+    /**
+     * Helper to clean and interpolate query editor options.
+     */
+  }, {
+    key: "buildQueryParameters",
+    value: function buildQueryParameters(options) {
+      var _this4 = this;
+      //remove placeholder targets
+      options.targets = lodash__WEBPACK_IMPORTED_MODULE_0___default().filter(options.targets, function (target) {
+        return target.target !== 'select metric';
+      });
+      console.log("buildQueryParameters", options);
+      var targets = lodash__WEBPACK_IMPORTED_MODULE_0___default().map(options.targets, function (target) {
+        return {
+          target: _this4.templateSrv.replace(target.target, options.scopedVars, 'regex'),
+          refId: target.refId,
+          hide: target.hide,
+          type: target.type || 'timeserie'
+        };
+      });
+      options.targets = targets;
+      return options;
+    }
+  }, {
+    key: "getTagKeys",
+    value: function getTagKeys(options) {
+      var _this5 = this;
+      return new Promise(function (resolve, reject) {
+        _this5.doRequest({
+          url: _this5.url + '/tag-keys',
+          method: 'POST',
+          data: options
+        }).then(function (result) {
+          return resolve(result.data);
+        });
+      });
+    }
+  }, {
+    key: "getTagValues",
+    value: function getTagValues(options) {
+      var _this6 = this;
+      return new Promise(function (resolve, reject) {
+        _this6.doRequest({
+          url: _this6.url + '/tag-values',
+          method: 'POST',
+          data: options
+        }).then(function (result) {
+          return resolve(result.data);
+        });
+      });
+    }
+  }]);
 }();
-exports.Datasource = _datasource2.default;
-exports.QueryCtrl = _query_ctrl.FhirDatasourceQueryCtrl;
-exports.ConfigCtrl = _config_ctrl.FhirDatasourceConfigCtrl;
-exports.AnnotationsQueryCtrl = _annotations_query_ctrl.FhirDatasourceAnnotationsQueryCtrl;
-exports.QueryOptionsCtrl = GenericQueryOptionsCtrl;
-//GenericAnnotationsQueryCtrl as AnnotationsQueryCtrl
+
 
 /***/ }),
 
@@ -2520,65 +2302,78 @@ exports.QueryOptionsCtrl = GenericQueryOptionsCtrl;
 /*!***********************!*\
   !*** ./query_ctrl.ts ***!
   \***********************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   FhirDatasourceQueryCtrl: () => (/* binding */ FhirDatasourceQueryCtrl)
+/* harmony export */ });
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash */ "lodash");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! grafana/app/plugins/sdk */ "grafana/app/plugins/sdk");
+/* harmony import */ var grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _css_query_editor_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./css/query_editor.css */ "./css/query_editor.css");
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, _toPropertyKey(o.key), o); } }
+function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function _callSuper(t, o, e) { return o = _getPrototypeOf(o), _possibleConstructorReturn(t, _isNativeReflectConstruct() ? Reflect.construct(o, e || [], _getPrototypeOf(t).constructor) : o.apply(t, e)); }
+function _possibleConstructorReturn(t, e) { if (e && ("object" == _typeof(e) || "function" == typeof e)) return e; if (void 0 !== e) throw new TypeError("Derived constructors may only return object or undefined"); return _assertThisInitialized(t); }
+function _assertThisInitialized(e) { if (void 0 === e) throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); return e; }
+function _isNativeReflectConstruct() { try { var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); } catch (t) {} return (_isNativeReflectConstruct = function _isNativeReflectConstruct() { return !!t; })(); }
+function _getPrototypeOf(t) { return _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, _getPrototypeOf(t); }
+function _inherits(t, e) { if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function"); t.prototype = Object.create(e && e.prototype, { constructor: { value: t, writable: !0, configurable: !0 } }), Object.defineProperty(t, "prototype", { writable: !1 }), e && _setPrototypeOf(t, e); }
+function _setPrototypeOf(t, e) { return _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, _setPrototypeOf(t, e); }
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.FhirDatasourceQueryCtrl = undefined;
 
-var _sdk = __webpack_require__(/*! grafana/app/plugins/sdk */ "grafana/app/plugins/sdk");
-
-__webpack_require__(/*! ./css/query_editor.css */ "./css/query_editor.css");
-
-var __extends = undefined && undefined.__extends || function () {
-    var extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function (d, b) {
-        d.__proto__ = b;
-    } || function (d, b) {
-        for (var p in b) {
-            if (b.hasOwnProperty(p)) d[p] = b[p];
-        }
+/**
+ * Controller used for the query editor UI.
+ */
+var FhirDatasourceQueryCtrl = /*#__PURE__*/function (_QueryCtrl) {
+  /**
+   * Angular constructor injection point.
+   */
+  function FhirDatasourceQueryCtrl($scope, $injector) {
+    var _this;
+    _classCallCheck(this, FhirDatasourceQueryCtrl);
+    _this = _callSuper(this, FhirDatasourceQueryCtrl, [$scope, $injector]);
+    _this.defaults = {
+      resourceType: 'Observation',
+      searchParam: '',
+      searchValue: ''
     };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() {
-            this.constructor = d;
-        }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-}();
-
-var FhirDatasourceQueryCtrl = /** @class */function (_super) {
-    __extends(FhirDatasourceQueryCtrl, _super);
-    /** @ngInject **/
-    function FhirDatasourceQueryCtrl($scope, $injector) {
-        var _this = _super.call(this, $scope, $injector) || this;
-        _this.defaults = {};
-        console.log("FhirDatasourceQueryCtrl"), $scope;
-        _this.scope = $scope;
-        //_.defaultsDeep(this.target, this.defaults);
-        _this.target.target = _this.target.target || 'select metric';
-        _this.target.type = _this.target.type || 'timeserie';
-        return _this;
+    console.log("FhirDatasourceQueryCtrl", $scope);
+    _this.scope = $scope;
+    lodash__WEBPACK_IMPORTED_MODULE_0___default().defaultsDeep(_this.target, _this.defaults);
+    _this.target.type = _this.target.type || 'timeserie';
+    return _this;
+  }
+  /**
+   * Called as the user types to query metric suggestions.
+   */
+  _inherits(FhirDatasourceQueryCtrl, _QueryCtrl);
+  return _createClass(FhirDatasourceQueryCtrl, [{
+    key: "getResources",
+    value: function getResources(query) {
+      return this.datasource.metricFindQuery(query || '');
     }
-    FhirDatasourceQueryCtrl.prototype.getOptions = function (query) {
-        console.log("getOptions", query);
-        return this.datasource.metricFindQuery(query || '');
-    };
-    FhirDatasourceQueryCtrl.prototype.onChangeInternal = function () {
-        this.panelCtrl.refresh(); // Asks the panel to refresh data.
-    };
-    FhirDatasourceQueryCtrl.prototype.toggleEditorMode = function () {
-        this.target.rawQuery = !this.target.rawQuery;
-    };
-    FhirDatasourceQueryCtrl.templateUrl = 'partials/query.editor.html';
-    return FhirDatasourceQueryCtrl;
-}(_sdk.QueryCtrl);
-exports.FhirDatasourceQueryCtrl = FhirDatasourceQueryCtrl;
+  }, {
+    key: "onChangeInternal",
+    value: function onChangeInternal() {
+      this.panelCtrl.refresh(); // Asks the panel to refresh data.
+    }
+  }, {
+    key: "toggleEditorMode",
+    value: function toggleEditorMode() {
+      this.target.rawQuery = !this.target.rawQuery;
+    }
+  }]);
+}(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_1__.QueryCtrl);
+FhirDatasourceQueryCtrl.templateUrl = 'partials/query.editor.html';
 
 /***/ }),
 
@@ -2586,72 +2381,89 @@ exports.FhirDatasourceQueryCtrl = FhirDatasourceQueryCtrl;
 /*!*****************************************!*\
   !*** ./utils/grafana/grafana.module.ts ***!
   \*****************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-var GrafanaHelper = exports.GrafanaHelper = undefined;
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   GrafanaHelper: () => (/* binding */ GrafanaHelper)
+/* harmony export */ });
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, _toPropertyKey(o.key), o); } }
+function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+/**
+ * Collection of small helper classes used when interacting with Grafana APIs.
+ */
+var GrafanaHelper;
 (function (GrafanaHelper) {
+  /**
+   * Possible result statuses for testDatasource
+   */
+  var ReturnStatus;
+  (function (ReturnStatus) {
+    ReturnStatus["success"] = "success";
+    ReturnStatus["error"] = "error";
+  })(ReturnStatus = GrafanaHelper.ReturnStatus || (GrafanaHelper.ReturnStatus = {}));
+  /**
+   * Helper class to generate the right json object to pass over to grafana.
+   * It handles success and error object messages.
+   */
+  /**
+   * Simple container for a datasource test response.
+   */
+  var Response = /*#__PURE__*/function () {
+    function Response() {
+      _classCallCheck(this, Response);
+      this.retObj = {};
+    }
     /**
-     * Possible result statuses for testDatasource
+     * Generates error json message
+     * @param title Message title
+     * @param msg Message body
      */
-    var ReturnStatus;
-    (function (ReturnStatus) {
-        ReturnStatus["success"] = "success";
-        ReturnStatus["error"] = "error";
-    })(ReturnStatus = GrafanaHelper.ReturnStatus || (GrafanaHelper.ReturnStatus = {}));
-    /**
-     * Helper class to generate the right json object to pass over to grafana.
-     * It handles success and error object messages.
-     */
-    var Response = /** @class */function () {
-        function Response() {
-            this.retObj = {};
-        }
-        /**
-         * Generates error json message
-         * @param title Message title
-         * @param msg Message body
-         */
-        Response.error = function (title, msg) {
-            return {
-                status: ReturnStatus.error,
-                title: title,
-                message: msg
-            };
+    return _createClass(Response, null, [{
+      key: "error",
+      value: function error(title, msg) {
+        return {
+          status: ReturnStatus.error,
+          title: title,
+          message: msg
         };
-        /**
-         * Generates success json messages
-         * @param title Message title
-         * @param msg Message body
-         */
-        Response.success = function (title, msg) {
-            return {
-                status: ReturnStatus.success,
-                title: title,
-                message: msg
-            };
+      }
+      /**
+       * Generates success json messages
+       * @param title Message title
+       * @param msg Message body
+       */
+    }, {
+      key: "success",
+      value: function success(title, msg) {
+        return {
+          status: ReturnStatus.success,
+          title: title,
+          message: msg
         };
-        return Response;
-    }();
-    GrafanaHelper.Response = Response;
-    var Metric = /** @class */function () {
-        /**
-         *
-         */
-        function Metric(text, value) {
-            this.text = text;
-            this.value = value;
-        }
-        return Metric;
-    }();
-    GrafanaHelper.Metric = Metric;
-})(GrafanaHelper || (exports.GrafanaHelper = GrafanaHelper = {}));
+      }
+    }]);
+  }();
+  GrafanaHelper.Response = Response;
+  /**
+   * Structure returned by metricFindQuery containing text/value pairs.
+   */
+  var Metric = /*#__PURE__*/_createClass(
+  /**
+   *
+   */
+  function Metric(text, value) {
+    _classCallCheck(this, Metric);
+    this.text = text;
+    this.value = value;
+  });
+  GrafanaHelper.Metric = Metric;
+})(GrafanaHelper || (GrafanaHelper = {}));
 
 /***/ }),
 
@@ -2659,9 +2471,9 @@ var GrafanaHelper = exports.GrafanaHelper = undefined;
 /*!**********************************!*\
   !*** external "app/plugins/sdk" ***!
   \**********************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/***/ ((module) => {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE_grafana_app_plugins_sdk__;
 
 /***/ }),
@@ -2670,12 +2482,143 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_grafana_app_plugins_sdk__;
 /*!*************************!*\
   !*** external "lodash" ***!
   \*************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/***/ ((module) => {
 
+"use strict";
 module.exports = __WEBPACK_EXTERNAL_MODULE_lodash__;
 
 /***/ })
 
-/******/ })});;
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			id: moduleId,
+/******/ 			loaded: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Flag the module as loaded
+/******/ 		module.loaded = true;
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => (module['default']) :
+/******/ 				() => (module);
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/node module decorator */
+/******/ 	(() => {
+/******/ 		__webpack_require__.nmd = (module) => {
+/******/ 			module.paths = [];
+/******/ 			if (!module.children) module.children = [];
+/******/ 			return module;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/nonce */
+/******/ 	(() => {
+/******/ 		__webpack_require__.nc = undefined;
+/******/ 	})();
+/******/ 	
+/************************************************************************/
+var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
+(() => {
+"use strict";
+/*!*******************!*\
+  !*** ./module.ts ***!
+  \*******************/
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   AnnotationsQueryCtrl: () => (/* reexport safe */ _annotations_query_ctrl__WEBPACK_IMPORTED_MODULE_2__.FhirDatasourceAnnotationsQueryCtrl),
+/* harmony export */   ConfigCtrl: () => (/* reexport safe */ _config_ctrl__WEBPACK_IMPORTED_MODULE_3__.FhirDatasourceConfigCtrl),
+/* harmony export */   Datasource: () => (/* reexport safe */ _datasource__WEBPACK_IMPORTED_MODULE_0__["default"]),
+/* harmony export */   QueryCtrl: () => (/* reexport safe */ _query_ctrl__WEBPACK_IMPORTED_MODULE_1__.FhirDatasourceQueryCtrl),
+/* harmony export */   QueryOptionsCtrl: () => (/* binding */ GenericQueryOptionsCtrl)
+/* harmony export */ });
+/* harmony import */ var _datasource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./datasource */ "./datasource.ts");
+/* harmony import */ var _query_ctrl__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./query_ctrl */ "./query_ctrl.ts");
+/* harmony import */ var _annotations_query_ctrl__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./annotations_query_ctrl */ "./annotations_query_ctrl.ts");
+/* harmony import */ var _config_ctrl__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./config_ctrl */ "./config_ctrl.ts");
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, _toPropertyKey(o.key), o); } }
+function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+
+// Entry point used by Grafana to discover plugin components
+
+
+
+// Simple wrappers needed by Grafana's angular loader
+var GenericQueryOptionsCtrl = /*#__PURE__*/_createClass(function GenericQueryOptionsCtrl() {
+  _classCallCheck(this, GenericQueryOptionsCtrl);
+  this.templateUrl = 'partials/query.options.html';
+});
+var GenericAnnotationsQueryCtrl = /*#__PURE__*/_createClass(function GenericAnnotationsQueryCtrl() {
+  _classCallCheck(this, GenericAnnotationsQueryCtrl);
+  this.templateUrl = 'partials/annotations.editor.html';
+});
+
+//GenericAnnotationsQueryCtrl as AnnotationsQueryCtrl
+})();
+
+/******/ 	return __webpack_exports__;
+/******/ })()
+;
+});;
 //# sourceMappingURL=module.js.map

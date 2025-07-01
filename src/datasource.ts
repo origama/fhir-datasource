@@ -162,10 +162,7 @@ export default class FhirDatasourceDatasource {
    * if the conformance has a fhirVersion attribute.
   */
   isValidServer() {
-    if (this.conformance != [] && this.conformance.fhirVersion) {
-      return true;
-    }
-    return false;
+    return !!(this.conformance && this.conformance.fhirVersion);
   }
 
   /**
