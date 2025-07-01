@@ -42,7 +42,7 @@ module.exports = {
     ]),
   ],
   resolve: {
-    extensions: ['.ts', '.js']
+    extensions: ['.tsx', '.ts', '.js']
   },
   module: {
     rules: [

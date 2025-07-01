@@ -14,16 +14,23 @@
     "node": ">=20"
   },
   "dependencies": {
+    "@grafana/data": "^10.4.0",
+    "@grafana/runtime": "^10.4.0",
+    "@grafana/ui": "^10.4.0",
     "fhir.js": "^0.0.22",
     "lodash": "^4.17.21",
     "moment": "^2.30.1",
     "q": "^2.0.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "typescript": "^5.8.3"
   },
   "devDependencies": {
     "@types/angular": "^1.8.9",
     "@types/grafana": "git+https://git@github.com/CorpGlory/types-grafana.git",
     "@types/jest": "^29.5.14",
+    "@types/react": "^18.2.45",
+    "@types/react-dom": "^18.2.17",
     "@types/lodash": "^4.17.19",
     "@types/moment": "2.13.0",
     "@types/q": "^1.5.8",

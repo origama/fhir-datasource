@@ -1,4 +1,5 @@
 {
+  "$schema": "https://raw.githubusercontent.com/grafana/grafana/master/docs/sources/developers/plugins/plugin.schema.json",
   "type": "datasource",
   "name": "fhir-datasource",
   "id": "fhir-datasource",
@@ -23,10 +24,9 @@
     "updated": "%TODAY%"
   },
   "dependencies": {
-    "grafanaVersion": "9.5.x",
-    "plugins": [ ]
+    "grafanaDependency": ">=9.0.0",
+    "plugins": []
   },
 
-  "metrics": true,
-  "annotations": true
+  "metrics": true
 }
