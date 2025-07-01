@@ -1,1 +1,1 @@
-{"name":"FHIR-Test","type":"fhir-datasource","url":"http://vonk.fire.ly/","access":"proxy"}
+{"name":"FHIR-Test","type":"fhir-datasource","url":"http://fhir:8080/fhir/","access":"proxy"}

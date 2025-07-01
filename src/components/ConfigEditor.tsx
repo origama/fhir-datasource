@@ -23,7 +23,7 @@ export function ConfigEditor({ options, onOptionsChange }: Props) {
       <Input
         width={40}
         value={jsonData.fhirAddress || ''}
-        placeholder="http://localhost:8080/fhir"
+        placeholder="http://fhir:8080/fhir"
         onChange={onUrlChange}
       />
     </InlineField>

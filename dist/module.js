@@ -1,8 +1,40 @@
-import * as __WEBPACK_EXTERNAL_MODULE__grafana_data_c75919de__ from "@grafana/data";
-import * as __WEBPACK_EXTERNAL_MODULE__grafana_runtime_4c5ab4ad__ from "@grafana/runtime";
-import * as __WEBPACK_EXTERNAL_MODULE__grafana_ui_51195499__ from "@grafana/ui";
-import * as __WEBPACK_EXTERNAL_MODULE_react__ from "react";
-/******/ var __webpack_modules__ = ({
+System.register(["@grafana/data","@grafana/runtime","react","@grafana/ui"], function(__WEBPACK_DYNAMIC_EXPORT__, __system_context__) {
+	var __WEBPACK_EXTERNAL_MODULE__grafana_data__ = {};
+	var __WEBPACK_EXTERNAL_MODULE__grafana_runtime__ = {};
+	var __WEBPACK_EXTERNAL_MODULE_react__ = {};
+	var __WEBPACK_EXTERNAL_MODULE__grafana_ui__ = {};
+	Object.defineProperty(__WEBPACK_EXTERNAL_MODULE__grafana_data__, "__esModule", { value: true });
+	Object.defineProperty(__WEBPACK_EXTERNAL_MODULE__grafana_runtime__, "__esModule", { value: true });
+	Object.defineProperty(__WEBPACK_EXTERNAL_MODULE_react__, "__esModule", { value: true });
+	Object.defineProperty(__WEBPACK_EXTERNAL_MODULE__grafana_ui__, "__esModule", { value: true });
+	return {
+		setters: [
+			function(module) {
+				Object.keys(module).forEach(function(key) {
+					__WEBPACK_EXTERNAL_MODULE__grafana_data__[key] = module[key];
+				});
+			},
+			function(module) {
+				Object.keys(module).forEach(function(key) {
+					__WEBPACK_EXTERNAL_MODULE__grafana_runtime__[key] = module[key];
+				});
+			},
+			function(module) {
+				Object.keys(module).forEach(function(key) {
+					__WEBPACK_EXTERNAL_MODULE_react__[key] = module[key];
+				});
+			},
+			function(module) {
+				Object.keys(module).forEach(function(key) {
+					__WEBPACK_EXTERNAL_MODULE__grafana_ui__[key] = module[key];
+				});
+			}
+		],
+		execute: function() {
+			__WEBPACK_DYNAMIC_EXPORT__(
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+/******/ 	var __webpack_modules__ = ({
 
 /***/ "../node_modules/react/cjs/react-jsx-runtime.development.js":
 /*!******************************************************************!*\
@@ -2495,7 +2527,7 @@ function ConfigEditor({ options, onOptionsChange }) {
             },
         });
     };
-    return ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__.InlineField, { label: "FHIR base URL", labelWidth: 20, tooltip: "Root URL of the FHIR server", children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__.Input, { width: 40, value: jsonData.fhirAddress || '', placeholder: "http://localhost:8080/fhir", onChange: onUrlChange }) }));
+    return ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__.InlineField, { label: "FHIR base URL", labelWidth: 20, tooltip: "Root URL of the FHIR server", children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__.Input, { width: 40, value: jsonData.fhirAddress || '', placeholder: "http://fhir:8080/fhir", onChange: onUrlChange }) }));
 }
 
 
@@ -2632,7 +2664,7 @@ const DEFAULT_QUERY = {
   \********************************/
 /***/ ((module) => {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__grafana_data_c75919de__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__grafana_data__;
 
 /***/ }),
 
@@ -2642,7 +2674,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__grafana_data_c75919de__;
   \***********************************/
 /***/ ((module) => {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__grafana_runtime_4c5ab4ad__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__grafana_runtime__;
 
 /***/ }),
 
@@ -2652,7 +2684,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__grafana_runtime_4c5ab4ad__;
   \******************************/
 /***/ ((module) => {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__grafana_ui_51195499__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__grafana_ui__;
 
 /***/ }),
 
@@ -2666,61 +2698,61 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_react__;
 
 /***/ })
 
-/******/ });
+/******/ 	});
 /************************************************************************/
-/******/ // The module cache
-/******/ var __webpack_module_cache__ = {};
-/******/ 
-/******/ // The require function
-/******/ function __webpack_require__(moduleId) {
-/******/ 	// Check if module is in cache
-/******/ 	var cachedModule = __webpack_module_cache__[moduleId];
-/******/ 	if (cachedModule !== undefined) {
-/******/ 		return cachedModule.exports;
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
 /******/ 	}
-/******/ 	// Create a new module (and put it into the cache)
-/******/ 	var module = __webpack_module_cache__[moduleId] = {
-/******/ 		// no module.id needed
-/******/ 		// no module.loaded needed
-/******/ 		exports: {}
-/******/ 	};
-/******/ 
-/******/ 	// Execute the module function
-/******/ 	__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
-/******/ 
-/******/ 	// Return the exports of the module
-/******/ 	return module.exports;
-/******/ }
-/******/ 
+/******/ 	
 /************************************************************************/
-/******/ /* webpack/runtime/define property getters */
-/******/ (() => {
-/******/ 	// define getter functions for harmony exports
-/******/ 	__webpack_require__.d = (exports, definition) => {
-/******/ 		for(var key in definition) {
-/******/ 			if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 				Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
 /******/ 			}
-/******/ 		}
-/******/ 	};
-/******/ })();
-/******/ 
-/******/ /* webpack/runtime/hasOwnProperty shorthand */
-/******/ (() => {
-/******/ 	__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
-/******/ })();
-/******/ 
-/******/ /* webpack/runtime/make namespace object */
-/******/ (() => {
-/******/ 	// define __esModule on exports
-/******/ 	__webpack_require__.r = (exports) => {
-/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 		}
-/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 	};
-/******/ })();
-/******/ 
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
 // This entry needs to be wrapped in an IIFE because it needs to be isolated against other modules in the chunk.
@@ -2746,7 +2778,11 @@ const plugin = new _grafana_data__WEBPACK_IMPORTED_MODULE_0__.DataSourcePlugin(_
 
 })();
 
-const __webpack_exports__plugin = __webpack_exports__.plugin;
-export { __webpack_exports__plugin as plugin };
+/******/ 	return __webpack_exports__;
+/******/ })()
 
+			);
+		}
+	};
+});
 //# sourceMappingURL=module.js.map
