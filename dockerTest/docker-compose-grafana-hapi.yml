@@ -1,11 +1,11 @@
 version: '3'
 services:
-  builder:
-    image: node:20
-    working_dir: /build
-    volumes:
-      - ..:/build
-    command: sh -c "npm ci && npm run build"
+  # builder:
+  #   image: node:20
+  #   working_dir: /build
+  #   volumes:
+  #     - ..:/build
+  #   command: sh -c "npm ci && npm run build"
 
   grafana:
     image: grafana/grafana
@@ -18,18 +18,19 @@ services:
       - ../dist:/var/lib/grafana/plugins/fhir-datasource
       - ./fhir-datasource.yml:/etc/grafana/provisioning/datasources/fhir.yml
     depends_on:
-      - builder
+      # - builder
       - fhir
   fhir:
     image: hapiproject/hapi:latest
     container_name: hapi-fhir
     ports:
       - "8080:8080"
-  loader:
-    image: curlimages/curl:latest
-    depends_on:
-      - fhir
-    volumes:
-      - ../synthetic-data:/data
-      - ../synthetic-data/load_data.sh:/load_data.sh
-    entrypoint: ["/load_data.sh"]
+  # loader:
+  #   image: curlimages/curl:latest
+  #   depends_on:
+  #     - builder
+  #     - fhir
+  #   volumes:
+  #     - ../synthetic-data:/data
+  #     - ../synthetic-data/load_data.sh:/load_data.sh
+  #   entrypoint: ["/load_data.sh"]
