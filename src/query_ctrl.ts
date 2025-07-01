@@ -9,6 +9,9 @@ export class FhirDatasourceQueryCtrl extends QueryCtrl {
   static templateUrl = 'partials/query.editor.html';
   scope : any;
   defaults = {
+    resourceType: 'Observation',
+    searchParam: '',
+    searchValue: '',
   };
 
   /**
@@ -16,20 +19,17 @@ export class FhirDatasourceQueryCtrl extends QueryCtrl {
    */
   constructor($scope, $injector) {
     super($scope, $injector);
-    console.log("FhirDatasourceQueryCtrl"),$scope;
+    console.log("FhirDatasourceQueryCtrl", $scope);
     this.scope = $scope;
 
-    //_.defaultsDeep(this.target, this.defaults);
-
-    this.target.target = this.target.target || 'select metric';
+    _.defaultsDeep(this.target, this.defaults);
     this.target.type = this.target.type || 'timeserie';
   }
 
   /**
    * Called as the user types to query metric suggestions.
    */
-  getOptions(query) {
-    console.log("getOptions",query);
+  getResources(query) {
     return this.datasource.metricFindQuery(query || '');
   }
 

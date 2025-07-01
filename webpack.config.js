@@ -1,7 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
   mode:  "development",
@@ -31,15 +31,16 @@ module.exports = {
     }
   ],
   plugins: [
-    new CleanWebpackPlugin('dist', { allowExternal: true }),
-    new webpack.optimize.OccurrenceOrderPlugin(),
-    new CopyWebpackPlugin([
-      { from: 'plugin.json', to: '.' },
-      { from: '../README.md', to: '.' },
-      { from: '../LICENSE', to: '.' },
-      { from: 'partials/*', to: '.' },
-      { from: 'img/*', to: '.' },
-    ]),
+    new CleanWebpackPlugin({ cleanOnceBeforeBuildPatterns: ['dist'] }),
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: 'plugin.json', to: '.' },
+        { from: '../README.md', to: '.' },
+        { from: '../LICENSE', to: '.' },
+        { from: 'partials/*', to: '.' },
+        { from: 'img/*', to: '.' },
+      ],
+    }),
   ],
   resolve: {
     extensions: ['.ts', '.js']

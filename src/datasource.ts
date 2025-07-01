@@ -37,28 +37,17 @@ export default class FhirDatasourceDatasource {
     this.config = instanceSettings.jsonData;
 
     let config: any = {
-      'baseUrl': 'http://fhirtest.uhn.ca/baseDstu3',
-      'credentials': 'same-origin',
+      baseUrl: this.config.fhiraddress || this.url,
+      credentials: 'same-origin',
     };
-    config.baseUrl = (this.config.baseUrl || new URL(config.baseUrl).href);
 
     this.client = nativeFhir(config);
     (<any>window).fhir_datasource = this;
     (<any>window).fhir_client = this.client;
     this.client.conformance({});
-    console.log("url", this.url);
-    console.log("backendSrv", this.backendSrv);
-    console.log("templateSrv", this.templateSrv);
-
-    this.backendSrv.datasourceRequest = function (request) {
-      console.log("datasourceRequest", request);
-      return this.$q.when({
-        _request: request,
-        data: ["metric_0",
-          "metric_1",
-          "metric_2"]
-      });
-    };
+    console.log('url', this.url);
+    console.log('backendSrv', this.backendSrv);
+    console.log('templateSrv', this.templateSrv);
 
   }
 
@@ -66,54 +55,35 @@ export default class FhirDatasourceDatasource {
    * Executes a data query. Currently returns a mocked empty dataset.
    */
   query(options) {
-    console.log("FhirDatasourceDatasource Query", options);
-    var query = this.buildQueryParameters(options);
-    query.targets = query.targets.filter(t => !t.hide);
-    console.log("query", query);
-    query.targets = [];
-    if (query.targets.length <= 0) {
-      return this.q.when({ data: [] });
+    console.log('FhirDatasourceDatasource Query', options);
+    const promises = options.targets
+      .filter(t => !t.hide)
+      .map(t => this.fetchSeries(t));
+    return Promise.all(promises).then(data => ({ data }));
+  }
+
+  fetchSeries(target) {
+    const query: any = {};
+    if (target.searchParam && target.searchValue) {
+      query[target.searchParam] = target.searchValue;
     }
-    return this.q.when({
-      data: []
+    return this.client.search({ type: target.resourceType, query }).then((res) => {
+      return this.transformToSeries(res.data, target.refId || target.resourceType);
     });
+  }
 
-
-
-    //return this.doRequest(options);
-    //    return this.q.when(options);
-    /*    return this.q.when({
-          "range": { "from": "2015-12-22T03:06:13.851Z", "to": "2015-12-22T06:48:24.137Z" },
-          "interval": "5s",
-          "targets": [
-            { "refId": "B", "target": "upper_75" },
-            { "refId": "A", "target": "upper_90" }
-          ],
-          "format": "json",
-          "maxDataPoints": 2495, //decided by the panel
-          "data" : [ "uno","due","tre"]
-        });
-        */
-    /*
-        if (query.targets.length <= 0) {
-          return this.q.when({data: []});
-        }
-    
-        if (this.templateSrv.getAdhocFilters) {
-          query.adhocFilters = this.templateSrv.getAdhocFilters(this.name);
-        } else {
-          query.adhocFilters = [];
-        }
-       
-        let x = this.doRequest(options);
-        console.log(x)
-        return x;
-    */
-    // return this.doRequest({
-    //   url: this.url + '/query',
-    //   data: query,
-    //   method: 'POST'
-    // });
+  transformToSeries(bundle, target) {
+    const datapoints: Array<[number, number]> = [];
+    (bundle.entry || []).forEach((e) => {
+      const r = e.resource;
+      if (!r) { return; }
+      const ts = Date.parse(r.effectiveDateTime || r.issued || (r.meta && r.meta.lastUpdated) || '');
+      const val = r.valueQuantity && r.valueQuantity.value;
+      if (!isNaN(ts) && typeof val === 'number') {
+        datapoints.push([val, ts]);
+      }
+    });
+    return { target, datapoints };
   }
 
 
