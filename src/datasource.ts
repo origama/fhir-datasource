@@ -1,5 +1,6 @@
 import { DataSourceApi, DataSourceInstanceSettings, DataQueryRequest, DataQueryResponse, MutableDataFrame, FieldType } from '@grafana/data';
 import { getBackendSrv } from '@grafana/runtime';
+import { firstValueFrom } from 'rxjs';
 import { FhirQuery, FhirDataSourceOptions, DEFAULT_QUERY } from './types';
 
 export class DataSource extends DataSourceApi<FhirQuery, FhirDataSourceOptions> {
@@ -23,7 +24,7 @@ export class DataSource extends DataSourceApi<FhirQuery, FhirDataSourceOptions> 
   async fetchSeries(query: FhirQuery) {
     const params = query.searchParam && query.searchValue ? `?${encodeURIComponent(query.searchParam)}=${encodeURIComponent(query.searchValue)}` : '';
     const url = `${this.baseUrl}/${query.resourceType}${params}`;
-    const res = await getBackendSrv().fetch<any>({ url }).toPromise();
+    const res = await firstValueFrom(getBackendSrv().fetch<any>({ url }));
     const frame = new MutableDataFrame({ refId: query.refId, fields: [{ name: 'Time', type: FieldType.time }, { name: 'Value', type: FieldType.number }] });
     (res.data.entry || []).forEach((e: any) => {
       const r = e.resource || {};
@@ -38,7 +39,7 @@ export class DataSource extends DataSourceApi<FhirQuery, FhirDataSourceOptions> 
 
   async testDatasource() {
     try {
-      await getBackendSrv().fetch({ url: `${this.baseUrl}/metadata` }).toPromise();
+      await firstValueFrom(getBackendSrv().fetch({ url: `${this.baseUrl}/metadata` }));
       return { status: 'success', message: 'Success' };
     } catch (err) {
       return { status: 'error', message: 'Failed to connect to FHIR server' };
@@ -47,7 +48,7 @@ export class DataSource extends DataSourceApi<FhirQuery, FhirDataSourceOptions> 
 
   async getResourceTypes() {
     try {
-      const res = await getBackendSrv().fetch<any>({ url: `${this.baseUrl}/metadata` }).toPromise();
+      const res = await firstValueFrom(getBackendSrv().fetch<any>({ url: `${this.baseUrl}/metadata` }));
       const types = res.data.rest[0].resource.map((r: any) => ({ label: r.type, value: r.type }));
       return types;
     } catch (err) {
