@@ -11,11 +11,8 @@ module.exports = {
     filename: 'module.js',
     path: path.join(__dirname, 'dist'),
     library: {
-      type: 'module',
+      type: 'system',
     },
-  },
-  experiments: {
-    outputModule: true,
   },
   externals: [
     'react',
