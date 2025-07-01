@@ -28,6 +28,15 @@ You can find it in dockerTest:
  - Grafana plugins volume is mounted on local dist
  - port binding on 127.0.0.1:3000
 
+An extended compose file `docker-compose-grafana-hapi.yml` is available
+for local development. It starts Grafana together with a HAPI FHIR server
+preloaded with a few synthetic resources so you can try the datasource
+without any external dependencies:
+
+```bash
+docker-compose -f dockerTest/docker-compose-grafana-hapi.yml up
+```
+
 #### Useful References
  
  - http://docs.grafana.org/plugins/developing/development/
@@ -52,6 +61,12 @@ npm run build
 
 Read carefully and follow:
 http://docs.grafana.org/plugins/installation/
+
+### Releases
+
+Every tagged commit triggers a GitHub Actions workflow that builds the plugin
+and uploads a zip archive in the corresponding GitHub release. You can download
+prebuilt versions of the datasource from the repository release page.
 
 ### Getting Started
 
