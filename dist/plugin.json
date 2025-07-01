@@ -1,31 +1,29 @@
 {
+  "$schema": "https://raw.githubusercontent.com/grafana/grafana/main/docs/sources/developers/plugins/plugin.schema.json",
   "type": "datasource",
   "name": "fhir-datasource",
   "id": "fhir-datasource",
-
+  "module": "module.js",
+  "metrics": true,
+  "annotations": true,
   "info": {
-    "description": "A datasource for fhir",
+    "description": "A datasource for FHIR",
     "author": {
-      "name": "Your name or the company name",
-      "url": "optional url"
+      "name": "Grafana Labs"
     },
-    "keywords": ["searchable", "key", "words"],
     "logos": {
-      "small": "img/your_logo.png",
-      "large": "img/your_logo.png"
+      "small": "img/blank.png",
+      "large": "img/blank.png"
     },
     "links": [
-      {"name": "Project site", "url": "https://github.com/origama/fhir-datasource"},
-      {"name": "Apache License", "url": "https://github.com/origama/fhir-datasource/blob/master/LICENSE"}
+      { "name": "Project site", "url": "https://github.com/origama/fhir-datasource" },
+      { "name": "Apache License", "url": "https://github.com/origama/fhir-datasource/blob/master/LICENSE" }
     ],
     "version": "%VERSION%",
     "updated": "%TODAY%"
   },
   "dependencies": {
-    "grafanaVersion": "5.2.x",
-    "plugins": [ ]  
-  },
-
-  "metrics": true,
-  "annotations": true
+    "grafanaDependency": ">=12.0.0",
+    "plugins": []
+  }
 }

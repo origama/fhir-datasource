@@ -1,14 +1,24 @@
 version: '3'
 services:
+  builder:
+    image: node:20
+    working_dir: /build
+    volumes:
+      - ..:/build
+    command: sh -c "npm ci && npm run build"
+
   grafana:
     image: grafana/grafana
     container_name: grafana
+    environment:
+      - GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS=fhir-datasource
     ports:
       - "3000:3000"
     volumes:
       - ../dist:/var/lib/grafana/plugins/fhir-datasource
       - ./fhir-datasource.yml:/etc/grafana/provisioning/datasources/fhir.yml
     depends_on:
+      - builder
       - fhir
   fhir:
     image: hapiproject/hapi:latest

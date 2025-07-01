@@ -1,8 +1,17 @@
 version: '3'
 services:
+  builder:
+    image: node:20
+    working_dir: /build
+    volumes:
+      - ..:/build
+    command: sh -c "npm ci && npm run build"
+
   grafana:
     container_name: grafana
     image: grafana/grafana
+    environment:
+      - GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS=fhir-datasource
     volumes:
       - ../dist:/var/lib/grafana/plugins/fhir-datasource
       - ../../simple-json-datasource/dist:/var/lib/grafana/plugins/simple-json-datasource
@@ -10,3 +19,5 @@ services:
       - "3000:3000"
     expose:
       - "3000"
+    depends_on:
+      - builder
