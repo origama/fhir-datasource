@@ -6,7 +6,8 @@ until curl -s -o /dev/null "$FHIR_URL/metadata"; do
   sleep 5
 done
 for file in /data/*.json; do
-  echo "Loading $file"
-  curl -s -X POST -H 'Content-Type: application/fhir+json' --data @"$file" "$FHIR_URL"
+  resource=$(grep -m1 -o '"resourceType"[[:space:]]*:[[:space:]]*"[^"]*"' "$file" | cut -d'"' -f4)
+  echo "Loading $file to $FHIR_URL/$resource"
+  curl -s -X POST -H 'Content-Type: application/fhir+json' --data @"$file" "$FHIR_URL/$resource"
   echo
 done

@@ -29,6 +29,7 @@ You can find it in dockerTest:
 - port binding on 127.0.0.1:3000
 - environment variable `GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS=fhir-datasource` to load the unsigned plugin
    (required because the plugin is not signed)
+- Grafana version pinned to `9.5.21` because newer releases drop Angular plugin support
 
 An extended compose file `docker-compose-grafana-hapi.yml` is available
 for local development. It starts Grafana together with a HAPI FHIR server
@@ -38,6 +39,9 @@ without any external dependencies:
 ```bash
 docker-compose -f dockerTest/docker-compose-grafana-hapi.yml up
 ```
+The compose setup includes a small loader container that sends the bundled
+example resources to the FHIR server using their respective resource
+endpoints, so the server accepts them without errors.
 
 #### Useful References
  
