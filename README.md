@@ -24,9 +24,11 @@ https://github.com/CorpGlory/grafana-plugin-template-webpack-typescript
 
 We made a much simpler docker-compose file to test the plugin locally.
 You can find it in dockerTest:
- - base image selected
- - Grafana plugins volume is mounted on local dist
- - port binding on 127.0.0.1:3000
+- base image selected
+- Grafana plugins volume is mounted on local dist
+- port binding on 127.0.0.1:3000
+- environment variable `GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS=fhir-datasource` to load the unsigned plugin
+   (required because the plugin is not signed)
 
 An extended compose file `docker-compose-grafana-hapi.yml` is available
 for local development. It starts Grafana together with a HAPI FHIR server
