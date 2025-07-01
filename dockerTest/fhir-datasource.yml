@@ -1,0 +1,7 @@
+apiVersion: 1
+datasources:
+  - name: FHIR-Test
+    type: fhir-datasource
+    access: proxy
+    url: http://fhir:8080/fhir
+    isDefault: true

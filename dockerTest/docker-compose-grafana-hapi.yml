@@ -1,0 +1,25 @@
+version: '3'
+services:
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - ../dist:/var/lib/grafana/plugins/fhir-datasource
+      - ./fhir-datasource.yml:/etc/grafana/provisioning/datasources/fhir.yml
+    depends_on:
+      - fhir
+  fhir:
+    image: hapiproject/hapi:latest
+    container_name: hapi-fhir
+    ports:
+      - "8080:8080"
+  loader:
+    image: curlimages/curl:latest
+    depends_on:
+      - fhir
+    volumes:
+      - ../synthetic-data:/data
+      - ../synthetic-data/load_data.sh:/load_data.sh
+    entrypoint: ["/load_data.sh"]
