@@ -3,6 +3,7 @@
   "type": "datasource",
   "name": "fhir-datasource",
   "id": "fhir-datasource",
+  "module": "module.js",
   "metrics": true,
   "annotations": true,
   "info": {
@@ -11,8 +12,8 @@
       "name": "Grafana Labs"
     },
     "logos": {
-      "small": "img/your_logo.png",
-      "large": "img/your_logo.png"
+      "small": "img/blank.png",
+      "large": "img/blank.png"
     },
     "links": [
       { "name": "Project site", "url": "https://github.com/origama/fhir-datasource" },
