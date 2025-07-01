@@ -2,6 +2,7 @@
   "type": "datasource",
   "name": "fhir-datasource",
   "id": "fhir-datasource",
+  "signature": "unsigned",
 
   "info": {
     "description": "A datasource for fhir",
