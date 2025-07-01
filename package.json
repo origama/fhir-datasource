@@ -18,7 +18,12 @@
     "lodash": "^4.17.21",
     "moment": "^2.30.1",
     "q": "^2.0.3",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "@grafana/data": "^10.3.1",
+    "@grafana/runtime": "^10.3.1",
+    "@grafana/ui": "^10.3.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@types/angular": "^1.8.9",

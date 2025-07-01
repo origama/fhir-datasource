@@ -1,15 +1,10 @@
 const path = require('path');
 const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
   mode:  "development",
-  node: {
-    fs: 'empty',
-    net: 'empty',
-    tls: 'empty'
-  },
   context: path.join(__dirname, 'src'),
   entry: {
     'module': './module.ts'
@@ -31,15 +26,15 @@ module.exports = {
     }
   ],
   plugins: [
-    new CleanWebpackPlugin('dist', { allowExternal: true }),
-    new webpack.optimize.OccurrenceOrderPlugin(),
-    new CopyWebpackPlugin([
-      { from: 'plugin.json', to: '.' },
-      { from: '../README.md', to: '.' },
-      { from: '../LICENSE', to: '.' },
-      { from: 'partials/*', to: '.' },
-      { from: 'img/*', to: '.' },
-    ]),
+    new CleanWebpackPlugin({ cleanOnceBeforeBuildPatterns: ['dist'] }),
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: 'plugin.json', to: '.' },
+        { from: '../README.md', to: '.' },
+        { from: '../LICENSE', to: '.' },
+        // React plugin does not bundle html or img assets
+      ],
+    }),
   ],
   resolve: {
     extensions: ['.ts', '.tsx', '.js']
