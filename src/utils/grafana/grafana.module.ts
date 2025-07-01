@@ -1,3 +1,6 @@
+/**
+ * Collection of small helper classes used when interacting with Grafana APIs.
+ */
 export module GrafanaHelper {
     /**
      * Possible result statuses for testDatasource
@@ -10,6 +13,9 @@ export module GrafanaHelper {
     /**
      * Helper class to generate the right json object to pass over to grafana.
      * It handles success and error object messages.
+     */
+    /**
+     * Simple container for a datasource test response.
      */
     export class Response {
         retObj = {}
@@ -41,15 +47,18 @@ export module GrafanaHelper {
         }
     }
 
+    /**
+     * Structure returned by metricFindQuery containing text/value pairs.
+     */
     export class Metric {
         text: string
         value: any
         /**
          *
          */
-        constructor(text:string,value:any) {
-            this.text=text;
-            this.value=value;            
+        constructor(text: string, value: any) {
+            this.text = text;
+            this.value = value;
         }
     }
 }

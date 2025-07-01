@@ -1,3 +1,6 @@
+/**
+ * Simple configuration object used when instantiating the fhir.js client.
+ */
 export class FhirConfig {
     private _url : URL
     get baseUrl () : string {
@@ -18,6 +21,9 @@ export class FhirConfig {
     // });
     // console.log("fhir",fhir);
 
+/**
+ * Wrapper that exposes the fhir.js client instance.
+ */
 export class Fhir {
-    client : any  
+    client: any
 }
