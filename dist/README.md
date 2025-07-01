@@ -1,64 +1,25 @@
 ## TypeScript FHIR Datasource plugin
 
-This is a plugin to connect to a FHIR HL7 server 
+This is a datasource plugin for Grafana that queries a FHIR HL7 server.
+It is written in TypeScript and uses the latest Grafana plugin APIs.
 
-@Authors: Giuseppe Virzì, Scuderi Giovanni Luca
+### Developer Notes
 
-### Current Status
+The project targets **Node.js 20**, **TypeScript 5**, and Grafana **v12**.
+A simple docker-compose setup builds the plugin and starts Grafana:
 
-Main Status: DRAFT
+```bash
+docker-compose -f dockerTest/docker-compose-grafana-hapi.yml up
+```
 
-#### Features
+This starts Grafana together with a HAPI FHIR server populated with test data.
+The `builder` service compiles the plugin before Grafana starts so you always
+run the latest code without installing Node locally.
 
-- Configuration Panel : DRAFT
-- All other Panel are missing
+### Build
 
-### Developer TIPS
+```bash
+npm run build
+```
 
-It is developed merging concept from datasource template offered by grafana github.
-We swithced from grunt to webpack.
-
-We discovered a clean template here: 
-https://github.com/CorpGlory/grafana-plugin-template-webpack-typescript
-
-We made a very simplier docker-compose file to test locally the plugin
-You can find in dockerTest:
- - base image selected
- - grafana plugins volume is mount on local dist
- - port binding on 127.0.0.1:3000
-
-#### Usefull Reference
- 
- - http://docs.grafana.org/plugins/developing/development/
- - http://docs.grafana.org/plugins/developing/datasources/
- - https://github.com/grafana/grafana/tree/master/public/app/plugins/datasource
- - https://github.com/grafana/grafana-sdk-mocks
- - https://github.com/CorpGlory/types-grafana
- - https://github.com/CorpGlory/grafana-plugin-template-webpack-typescript
-
-### HOW TO Build
-
-npm run-scripts build
-
-### HOW TO Install
-
-*Shorty:*
-
- * ( Optional ) Build 
- * copy dist/* in  /var/lib/grafana/plugins your Grafana Host
-
-*Official:*
-
-Read carefully and follow:
-http://docs.grafana.org/plugins/installation/
-
-### Getting Started
-
-
-### ROADMAP
-
-No Roadmap yet!
-
-### CHANGELOG
-
-#### v0.0.0
+Copy the `dist` directory into Grafana's plugin directory to install manually.

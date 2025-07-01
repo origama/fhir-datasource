@@ -1,26 +1,13 @@
 module.exports = {
   verbose: true,
-  "globals": {
-    "ts-jest": {
-      "tsconfig": "tsconfig.jest.json"
-    }
+  globals: {
+    'ts-jest': {
+      tsconfig: 'tsconfig.jest.json',
+    },
   },
-  "moduleNameMapper": {
-    'app/core/utils/kbn': '<rootDir>/src/__mocks__/kbn.ts',
-    'app/plugins/sdk': '<rootDir>/src/__mocks__/sdk.ts',
+  transform: {
+    '^.+\\.(ts|tsx)$': 'ts-jest',
   },
-  "transformIgnorePatterns": [
-    "<rootDir>/node_modules/(?!grafana-sdk-mocks)"
-  ],
-  "transform": {
-    ".(ts|tsx)": "ts-jest"
-  },
-  "testRegex": "(\\.|/)(test)\\.ts$",
-  "moduleFileExtensions": [
-    "ts",
-    "tsx",
-    "js",
-    "jsx",
-    "json"
-  ]
+  testRegex: '(\\.|/)(test)\\.ts$',
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json'],
 };

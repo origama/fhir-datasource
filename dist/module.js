@@ -1,2242 +1,1436 @@
-define(["app/plugins/sdk","lodash"], function(__WEBPACK_EXTERNAL_MODULE_grafana_app_plugins_sdk__, __WEBPACK_EXTERNAL_MODULE_lodash__) { return /******/ (function(modules) { // webpackBootstrap
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
-/******/
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId]) {
-/******/ 			return installedModules[moduleId].exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			i: moduleId,
-/******/ 			l: false,
-/******/ 			exports: {}
-/******/ 		};
-/******/
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
-/******/ 		// Flag the module as loaded
-/******/ 		module.l = true;
-/******/
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/
-/******/
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
-/******/
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
-/******/
-/******/ 	// define getter function for harmony exports
-/******/ 	__webpack_require__.d = function(exports, name, getter) {
-/******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
-/******/ 		}
-/******/ 	};
-/******/
-/******/ 	// define __esModule on exports
-/******/ 	__webpack_require__.r = function(exports) {
-/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 		}
-/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 	};
-/******/
-/******/ 	// create a fake namespace object
-/******/ 	// mode & 1: value is a module id, require it
-/******/ 	// mode & 2: merge all properties of value into the ns
-/******/ 	// mode & 4: return value when already ns object
-/******/ 	// mode & 8|1: behave like require
-/******/ 	__webpack_require__.t = function(value, mode) {
-/******/ 		if(mode & 1) value = __webpack_require__(value);
-/******/ 		if(mode & 8) return value;
-/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
-/******/ 		var ns = Object.create(null);
-/******/ 		__webpack_require__.r(ns);
-/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
-/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
-/******/ 		return ns;
-/******/ 	};
-/******/
-/******/ 	// getDefaultExport function for compatibility with non-harmony modules
-/******/ 	__webpack_require__.n = function(module) {
-/******/ 		var getter = module && module.__esModule ?
-/******/ 			function getDefault() { return module['default']; } :
-/******/ 			function getModuleExports() { return module; };
-/******/ 		__webpack_require__.d(getter, 'a', getter);
-/******/ 		return getter;
-/******/ 	};
-/******/
-/******/ 	// Object.prototype.hasOwnProperty.call
-/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-/******/
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
-/******/
-/******/
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./module.ts");
-/******/ })
-/************************************************************************/
-/******/ ({
-
-/***/ "../node_modules/Base64/base64.js":
-/*!****************************************!*\
-  !*** ../node_modules/Base64/base64.js ***!
-  \****************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-;(function () {
-
-  var object =  true ? exports : undefined; // #8: web workers
-  var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
-
-  function InvalidCharacterError(message) {
-    this.message = message;
-  }
-  InvalidCharacterError.prototype = new Error;
-  InvalidCharacterError.prototype.name = 'InvalidCharacterError';
-
-  // encoder
-  // [https://gist.github.com/999166] by [https://github.com/nignag]
-  object.btoa || (
-  object.btoa = function (input) {
-    var str = String(input);
-    for (
-      // initialize result and counter
-      var block, charCode, idx = 0, map = chars, output = '';
-      // if the next str index does not exist:
-      //   change the mapping table to "="
-      //   check if d has no fractional digits
-      str.charAt(idx | 0) || (map = '=', idx % 1);
-      // "8 - idx % 1 * 8" generates the sequence 2, 4, 6, 8
-      output += map.charAt(63 & block >> 8 - idx % 1 * 8)
-    ) {
-      charCode = str.charCodeAt(idx += 3/4);
-      if (charCode > 0xFF) {
-        throw new InvalidCharacterError("'btoa' failed: The string to be encoded contains characters outside of the Latin1 range.");
-      }
-      block = block << 8 | charCode;
-    }
-    return output;
-  });
-
-  // decoder
-  // [https://gist.github.com/1020396] by [https://github.com/atk]
-  object.atob || (
-  object.atob = function (input) {
-    var str = String(input).replace(/=+$/, '');
-    if (str.length % 4 == 1) {
-      throw new InvalidCharacterError("'atob' failed: The string to be decoded is not correctly encoded.");
-    }
-    for (
-      // initialize result and counters
-      var bc = 0, bs, buffer, idx = 0, output = '';
-      // get next character
-      buffer = str.charAt(idx++);
-      // character found in table? initialize bit storage and add its ascii value;
-      ~buffer && (bs = bc % 4 ? bs * 64 + buffer : buffer,
-        // and if not first of each 4 characters,
-        // convert the first 8 bits to one ascii character
-        bc++ % 4) ? output += String.fromCharCode(255 & bs >> (-2 * bc & 6)) : 0
-    ) {
-      // try to find character in table (0-63, not found => -1)
-      buffer = chars.indexOf(buffer);
-    }
-    return output;
-  });
-
-}());
-
-
-/***/ }),
-
-/***/ "../node_modules/css-loader/index.js?!./css/query_editor.css":
-/*!*******************************************************************!*\
-  !*** ../node_modules/css-loader??ref--5-1!./css/query_editor.css ***!
-  \*******************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(/*! ../../node_modules/css-loader/lib/css-base.js */ "../node_modules/css-loader/lib/css-base.js")(true);
-// imports
-
-
-// module
-exports.push([module.i, ".min-width-10 {\n  min-width: 10rem;\n}\n\n.min-width-12 {\n  min-width: 12rem;\n}\n\n.min-width-20 {\n  min-width: 20rem;\n}\n\n.gf-form-select-wrapper select.gf-form-input {\n  height: 2.64rem;\n}\n\n.gf-form-select-wrapper--caret-indent.gf-form-select-wrapper::after {\n  right: 0.775rem\n}\n\n.service-dropdown {\n  width: 12rem;\n}\n\n.aggregation-dropdown-wrapper {\n  max-width: 29.1rem;\n}\n\n.timegrainunit-dropdown-wrapper {\n  width: 8rem;\n}\n", "", {"version":3,"sources":["/Users/origama/repos/origama/fhir-datasource/src/css/query_editor.css"],"names":[],"mappings":"AAAA;EACE,iBAAiB;CAClB;;AAED;EACE,iBAAiB;CAClB;;AAED;EACE,iBAAiB;CAClB;;AAED;EACE,gBAAgB;CACjB;;AAED;EACE,eAAe;CAChB;;AAED;EACE,aAAa;CACd;;AAED;EACE,mBAAmB;CACpB;;AAED;EACE,YAAY;CACb","file":"query_editor.css","sourcesContent":[".min-width-10 {\n  min-width: 10rem;\n}\n\n.min-width-12 {\n  min-width: 12rem;\n}\n\n.min-width-20 {\n  min-width: 20rem;\n}\n\n.gf-form-select-wrapper select.gf-form-input {\n  height: 2.64rem;\n}\n\n.gf-form-select-wrapper--caret-indent.gf-form-select-wrapper::after {\n  right: 0.775rem\n}\n\n.service-dropdown {\n  width: 12rem;\n}\n\n.aggregation-dropdown-wrapper {\n  max-width: 29.1rem;\n}\n\n.timegrainunit-dropdown-wrapper {\n  width: 8rem;\n}\n"],"sourceRoot":""}]);
-
-// exports
-
-
-/***/ }),
-
-/***/ "../node_modules/css-loader/lib/css-base.js":
-/*!**************************************************!*\
-  !*** ../node_modules/css-loader/lib/css-base.js ***!
-  \**************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-// css base code, injected by the css-loader
-module.exports = function(useSourceMap) {
-	var list = [];
-
-	// return the list of modules as css string
-	list.toString = function toString() {
-		return this.map(function (item) {
-			var content = cssWithMappingToString(item, useSourceMap);
-			if(item[2]) {
-				return "@media " + item[2] + "{" + content + "}";
-			} else {
-				return content;
-			}
-		}).join("");
-	};
-
-	// import a list of modules into the list
-	list.i = function(modules, mediaQuery) {
-		if(typeof modules === "string")
-			modules = [[null, modules, ""]];
-		var alreadyImportedModules = {};
-		for(var i = 0; i < this.length; i++) {
-			var id = this[i][0];
-			if(typeof id === "number")
-				alreadyImportedModules[id] = true;
-		}
-		for(i = 0; i < modules.length; i++) {
-			var item = modules[i];
-			// skip already imported module
-			// this implementation is not 100% perfect for weird media query combinations
-			//  when a module is imported multiple times with different media queries.
-			//  I hope this will never occur (Hey this way we have smaller bundles)
-			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-				if(mediaQuery && !item[2]) {
-					item[2] = mediaQuery;
-				} else if(mediaQuery) {
-					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-				}
-				list.push(item);
-			}
-		}
-	};
-	return list;
-};
-
-function cssWithMappingToString(item, useSourceMap) {
-	var content = item[1] || '';
-	var cssMapping = item[3];
-	if (!cssMapping) {
-		return content;
-	}
-
-	if (useSourceMap && typeof btoa === 'function') {
-		var sourceMapping = toComment(cssMapping);
-		var sourceURLs = cssMapping.sources.map(function (source) {
-			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
-		});
-
-		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
-	}
-
-	return [content].join('\n');
-}
-
-// Adapted from convert-source-map (MIT)
-function toComment(sourceMap) {
-	// eslint-disable-next-line no-undef
-	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
-	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
-
-	return '/*# ' + data + ' */';
-}
-
-
-/***/ }),
-
-/***/ "../node_modules/fhir.js/src/adapters/native.js":
-/*!******************************************************!*\
-  !*** ../node_modules/fhir.js/src/adapters/native.js ***!
-  \******************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-var mkFhir = __webpack_require__(/*! ../fhir */ "../node_modules/fhir.js/src/fhir.js");
-
-// Fetch Helper JSON Parsing
-function parseJSON(response) {
-
-  // response.json() throws on empty body
-  return response.text()
-  .then(function(text) {
-    return text.length > 0 ? JSON.parse(text) : "";
-  });
-
-}
-
-// Fetch Helper for Status Codes
-function checkStatus(httpResponse) {
-  return new Promise(function (resolve, reject) {
-    if (httpResponse.status < 200 || httpResponse.status > 399) {
-      reject(httpResponse);
-    }
-    resolve(httpResponse);
-  });
-}
-
-// Build a backwards compatiable defer object
-var defer = function(){
-  var def = {};
-  def.promise = new Promise(function (resolve, reject) {
-    def.resolve = resolve;
-    def.reject = reject;
-  });
-  return def;
-};
-
-// Build Adapter Object
-var adapter = {
-  http: function (args) {
-    var url = args.url;
-    var debug = args.debug;
-
-    // The arguments passed in aligh with the fetch option names.
-    // There are are few extra values, but fetch will ignore them.
-    var fetchOptions = args;
-
-    // Pass along cookies
-    fetchOptions.credentials = args.credentials || '';
-
-    // data neeeds to map to body if data is populated and this is not a GET or HEAD request
-    if (!['GET', 'HEAD'].includes(fetchOptions.method) && fetchOptions.data) {
-      fetchOptions.body = fetchOptions.data;
-    }
-
-    debug && console.log("DEBUG[native](fetchOptions)", fetchOptions);
-
-    return new Promise(function (resolve, reject) {
-      var returnableObject = {};
-
-      fetch(url, fetchOptions).then(function (response) {
-        debug && console.log("DEBUG[native](response)", response);
-        // This object is in the shape required by fhir.js lib
-        Object.assign(returnableObject, {
-          status: response.status,
-          headers: response.headers,
-          config: args,
-        });
-        return response;
-      })
-      .then(checkStatus)
-      .then(parseJSON)
-      .then(function (fhirObject) {
-        // Merge the
-        Object.assign(returnableObject, {
-          data: fhirObject,
-        });
-        debug && console.log('DEBUG[native]: (success response)', returnableObject); // eslint-disable-line
-        resolve(returnableObject);
-      })
-      .catch(function(error) {
-        Object.assign(returnableObject, {
-          error: error,
-        });
-        debug && console.log('DEBUG[native]: rejecting fetch promise');
-        reject(returnableObject);
-      });
-    });
-  },
-};
-
-var buildfhir = function buildfhir(config) {
-  // debugger;
-  return mkFhir(config, adapter);
-};
-
-buildfhir.defer = defer;
-module.exports = buildfhir;
-
-
-/***/ }),
-
-/***/ "../node_modules/fhir.js/src/decorate.js":
-/*!***********************************************!*\
-  !*** ../node_modules/fhir.js/src/decorate.js ***!
-  \***********************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-(function() {
-    var fhirAPI;
-    var adapter;
-
-    function getNext (bundle, process) {
-        var i;
-        var d = bundle.data.entry || [];
-        var entries = [];
-        for (i = 0; i < d.length; i++) {
-            entries.push(d[i].resource);
-        }
-        process(entries);
-        var def = adapter.defer();
-        fhirAPI.nextPage({bundle:bundle.data}).then(function (r) {
-            getNext(r, process).then(function (t) {
-                def.resolve();
-            });
-        }, function(err) {def.resolve()});
-        return def.promise;
-    }
-    
-    function drain (searchParams, process, done, fail) {
-        var ret = adapter.defer();
-        
-        fhirAPI.search(searchParams).then(function(data){
-            getNext(data, process).then(function() {
-                done();
-            }, function(err) {
-                fail(err);
-            });
-        }, function(err) {
-            fail(err);
-        });
-    };
-    
-    function fetchAll (searchParams){
-        var ret = adapter.defer();
-        var results = [];
-        
-        drain(
-            searchParams,
-            function(entries) {
-                entries.forEach(function(entry) {
-                    results.push(entry);
-                });
-            },
-            function () {
-                ret.resolve(results);
-            },
-            function (err) {
-                ret.reject(err);
-            }
-        );
-          
-        return ret.promise;
-    };
-
-    function fetchAllWithReferences (searchParams, resolveParams) {
-        var ret = adapter.defer();
-          
-        fhirAPI.search(searchParams)  // TODO: THIS IS NOT CORRECT (need fetchAll, but it does not return a bundle yet)
-            .then(function(results){
-
-                var resolvedReferences = {};
-
-                var queue = [function() {ret.resolve(results, resolvedReferences);}];
-                
-                function enqueue (bundle,resource,reference) {
-                  queue.push(function() {resolveReference(bundle,resource,reference)});
-                }
-
-                function next() {
-                  (queue.pop())();
-                }
-
-                function resolveReference (bundle,resource,reference) {
-                    var referenceID = reference.reference;
-                    fhirAPI.resolve({'bundle': bundle, 'resource': resource, 'reference':reference}).then(function(res){
-                      var referencedObject = res.data || res.content;
-                      resolvedReferences[referenceID] = referencedObject;
-                      next();
-                    });
-                }
-
-                var bundle = results.data;
-
-                bundle.entry && bundle.entry.forEach(function(element){
-                  var resource = element.resource;
-                  var type = resource.resourceType;
-                  resolveParams && resolveParams.forEach(function(resolveParam){
-                    var param = resolveParam.split('.');
-                    var targetType = param[0];
-                    var targetElement = param[1];
-                    var reference = resource[targetElement];
-                    if (type === targetType && reference) {
-                      var referenceID = reference.reference;
-                      if (!resolvedReferences[referenceID]) {
-                        enqueue(bundle,resource,reference);
-                      }
-                    }
-                  });
-                });
-
-                next();
-
-            }, function(){
-                ret.reject("Could not fetch search results");
-            });
-          
-        return ret.promise;
-    };
-    
-    function decorate (client, newAdapter) {
-        fhirAPI = client;
-        adapter = newAdapter;
-        client["drain"] = drain;
-        client["fetchAll"] = fetchAll;
-        client["fetchAllWithReferences"] = fetchAllWithReferences;
-        return client;
-    }
-    
-    module.exports = decorate;
-}).call(this);
-
-/***/ }),
-
-/***/ "../node_modules/fhir.js/src/fhir.js":
-/*!*******************************************!*\
-  !*** ../node_modules/fhir.js/src/fhir.js ***!
-  \*******************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-(function() {
-    var utils = __webpack_require__(/*! ./utils */ "../node_modules/fhir.js/src/utils.js");
-    var M = __webpack_require__(/*! ./middlewares/core */ "../node_modules/fhir.js/src/middlewares/core.js");
-    var query = __webpack_require__(/*! ./middlewares/search */ "../node_modules/fhir.js/src/middlewares/search.js");
-    var auth = __webpack_require__(/*! ./middlewares/auth */ "../node_modules/fhir.js/src/middlewares/auth.js");
-    var transport = __webpack_require__(/*! ./middlewares/http */ "../node_modules/fhir.js/src/middlewares/http.js");
-    var errors = __webpack_require__(/*! ./middlewares/errors */ "../node_modules/fhir.js/src/middlewares/errors.js");
-    var config = __webpack_require__(/*! ./middlewares/config */ "../node_modules/fhir.js/src/middlewares/config.js");
-    var bundle = __webpack_require__(/*! ./middlewares/bundle */ "../node_modules/fhir.js/src/middlewares/bundle.js");
-    var pt = __webpack_require__(/*! ./middlewares/patient */ "../node_modules/fhir.js/src/middlewares/patient.js");
-    var refs = __webpack_require__(/*! ./middlewares/references */ "../node_modules/fhir.js/src/middlewares/references.js");
-    var url = __webpack_require__(/*! ./middlewares/url */ "../node_modules/fhir.js/src/middlewares/url.js");
-    var decorate = __webpack_require__(/*! ./decorate */ "../node_modules/fhir.js/src/decorate.js");
-
-    var cache = {};
-
-
-    var fhir = function(cfg, adapter){
-        var Middleware = M.Middleware;
-        var $$Attr = M.$$Attr;
-
-        var $$Method = function(m){ return $$Attr('method', m);};
-        var $$Header = function(h,v) {return $$Attr('headers.' + h, v);};
-
-        var $Errors = Middleware(errors);
-        var Defaults = Middleware(config(cfg, adapter))
-                .and($Errors)
-                .and(auth.$Basic)
-                .and(auth.$Bearer)
-                .and(auth.$Credentials)
-                .and(transport.$JsonData)
-                .and($$Header('Accept', (cfg.headers && cfg.headers['Accept']) ? cfg.headers['Accept'] : 'application/json'))
-                .and($$Header('Content-Type', (cfg.headers && cfg.headers['Content-Type']) ? cfg.headers['Content-Type'] : 'application/json'));
-
-        var GET = Defaults.and($$Method('GET'));
-        var POST = Defaults.and($$Method('POST'));
-        var PUT = Defaults.and($$Method('PUT'));
-        var DELETE = Defaults.and($$Method('DELETE'));
-
-        var http = transport.Http(cfg, adapter);
-
-        var Path = url.Path;
-        var BaseUrl = Path(cfg.baseUrl);
-        var resourceTypePath = BaseUrl.slash(":type || :resource.resourceType");
-        var searchPath = resourceTypePath;
-        var resourceTypeHxPath = resourceTypePath.slash("_history");
-        var resourcePath = resourceTypePath.slash(":id || :resource.id");
-        var resourceHxPath = resourcePath.slash("_history");
-        var vreadPath =  resourceHxPath.slash(":versionId || :resource.meta.versionId");
-        var resourceVersionPath = resourceHxPath.slash(":versionId || :resource.meta.versionId");
-
-        var ReturnHeader = $$Header('Prefer', 'return=representation');
-
-        var $Paging = Middleware(query.$Paging);
-
-        return decorate({
-            conformance: GET.and(BaseUrl.slash("metadata")).end(http),
-            document: POST.and(BaseUrl.slash("Document")).end(http),
-            profile:  GET.and(BaseUrl.slash("Profile").slash(":type")).end(http),
-            transaction: POST.and(BaseUrl).end(http),
-            history: GET.and(BaseUrl.slash("_history")).and($Paging).end(http),
-            typeHistory: GET.and(resourceTypeHxPath).and($Paging).end(http),
-            resourceHistory: GET.and(resourceHxPath).and($Paging).end(http),
-            read: GET.and(pt.$WithPatient).and(resourcePath).end(http),
-            vread: GET.and(vreadPath).end(http),
-            "delete": DELETE.and(resourcePath).and(ReturnHeader).end(http),
-            create: POST.and(resourceTypePath).and(ReturnHeader).end(http),
-            validate: POST.and(resourceTypePath.slash("_validate")).end(http),
-            search: GET.and(resourceTypePath).and(pt.$WithPatient).and(query.$SearchParams).and($Paging).end(http),
-            update: PUT.and(resourcePath).and(ReturnHeader).end(http),
-            nextPage: GET.and(bundle.$$BundleLinkUrl("next")).end(http),
-            prevPage: GET.and(bundle.$$BundleLinkUrl("prev")).end(http),
-            resolve: GET.and(refs.resolve).end(http)
-        }, adapter);
-
-    };
-    module.exports = fhir;
-}).call(this);
-
-
-/***/ }),
-
-/***/ "../node_modules/fhir.js/src/middlewares/auth.js":
-/*!*******************************************************!*\
-  !*** ../node_modules/fhir.js/src/middlewares/auth.js ***!
-  \*******************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-(function() {
-    var mw = __webpack_require__(/*! ./core */ "../node_modules/fhir.js/src/middlewares/core.js");
-
-    var btoa = __webpack_require__(/*! Base64 */ "../node_modules/Base64/base64.js").btoa;
-
-    exports.$Basic = mw.$$Attr('headers.Authorization', function(args){
-        if(args.auth && args.auth.user && args.auth.pass){
-            return "Basic " + btoa(args.auth.user + ":" + args.auth.pass);
-        }
-    });
-
-    exports.$Bearer = mw.$$Attr('headers.Authorization', function(args){
-        if(args.auth && args.auth.bearer){
-            return "Bearer " + args.auth.bearer;
-        }
-    });
-
-    var credentials;
-    // this first middleware sets the credentials attribute to empty, so
-    // adapters cannot use it directly, thus enforcing a valid value to be parsed in.
-    exports.$Credentials = mw.Middleware(mw.$$Attr('credentials', function(args){
-      // Assign value for later checking
-      credentials = args.credentials
-
-      // Needs to return non-null and not-undefined
-      // in order for value to be (un)set
-      return '';
-    })).and(mw.$$Attr('credentials', function(args){
-        // check credentials for valid options, valid for fetch
-        if(['same-origin', 'include'].indexOf(credentials) > -1 ){
-            return credentials;
-        }
-    }));
-
-}).call(this);
-
-
-/***/ }),
-
-/***/ "../node_modules/fhir.js/src/middlewares/bundle.js":
-/*!*********************************************************!*\
-  !*** ../node_modules/fhir.js/src/middlewares/bundle.js ***!
-  \*********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-exports.$$BundleLinkUrl =  function(rel){
-    return function(h) {
-        return function(args){
-            var matched = function(x){return x.relation && x.relation === rel;};
-            var res =  args.bundle && (args.bundle.link || []).filter(matched)[0];
-            if(res && res.url){
-                args.url = res.url;
-                args.data = null;
-                return h(args);
-            }
-            else{
-                throw new Error("No " + rel + " link found in bundle");
-            }
-        };
-    };
-};
-
-
-/***/ }),
-
-/***/ "../node_modules/fhir.js/src/middlewares/config.js":
-/*!*********************************************************!*\
-  !*** ../node_modules/fhir.js/src/middlewares/config.js ***!
-  \*********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-(function() {
-    var copyAttr = function(from, to, attr){
-        var v =  from[attr];
-        if(v && !to[attr]) {to[attr] = v;}
-        return from;
-    };
-
-    module.exports = function(cfg, adapter){
-        return function(h){
-            return function(args){
-                copyAttr(cfg, args, 'baseUrl');
-                copyAttr(cfg, args, 'cache');
-                copyAttr(cfg, args, 'auth');
-                copyAttr(cfg, args, 'patient');
-                copyAttr(cfg, args, 'debug');
-                copyAttr(cfg, args, 'credentials');
-                copyAttr(cfg, args, 'headers');
-                copyAttr(cfg, args, 'agentOptions');
-                copyAttr(adapter, args, 'defer');
-                copyAttr(adapter, args, 'http');
-                return h(args);
-            };
-        };
-    };
-}).call(this);
-
-
-/***/ }),
-
-/***/ "../node_modules/fhir.js/src/middlewares/core.js":
-/*!*******************************************************!*\
-  !*** ../node_modules/fhir.js/src/middlewares/core.js ***!
-  \*******************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-(function() {
-    var utils = __webpack_require__(/*! ../utils */ "../node_modules/fhir.js/src/utils.js");
-
-    var id = function(x){return x;};
-    var constantly = function(x){return function(){return x;};};
-
-    var mwComposition = function(mw1, mw2){
-        return function(h){ return mw1(mw2(h)); };
-    };
-
-    var Middleware = function(mw){
-        mw.and = function(nmw){
-            return Middleware(mwComposition(mw, nmw));
-        };
-        mw.end = function(h){
-            return mw(h);
-        };
-        return mw;
-    };
-
-    // generate wm from function
-    exports.$$Simple = function(f){
-        return function(h){
-            return function(args){
-                return h(f(args));
-            };
-        };
-    };
-
-    var setAttr = function(args, attr, value){
-        var path = attr.split('.');
-        var obj = args;
-        for(var i = 0; i < (path.length - 1); i++){
-            var k = path[i];
-            obj = args[k];
-            if(!obj){
-                obj = {};
-                args[k] = obj;
-            }
-        }
-        obj[path[path.length - 1]] = value;
-        return args;
-    };
-
-    // generate wm from function
-    exports.$$Attr = function(attr, fn){
-        return Middleware(function(h){
-            return function(args) {
-                var value = null;
-                if(utils.type(fn) == 'function'){
-                   value = fn(args);
-                } else {
-                    value = fn;
-                }
-                if(value == null && value == undefined){
-                    return h(args);
-                }else {
-                    return h(setAttr(args, attr, value));
-                }
-            };
-        });
-    };
-
-    var Attribute = function(attr, fn){
-        return Middleware(function(h){
-            return function(args) {
-                args[attr] = fn(args);
-                return h(args);
-            };
-        });
-    };
-
-    var Method = function(method){
-        return Attribute('method', constantly(method));
-    };
-
-    exports.Middleware = Middleware;
-    exports.Attribute = Attribute;
-    exports.Method = Method;
-
-}).call(this);
-
-
-/***/ }),
-
-/***/ "../node_modules/fhir.js/src/middlewares/errors.js":
-/*!*********************************************************!*\
-  !*** ../node_modules/fhir.js/src/middlewares/errors.js ***!
-  \*********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = function(h){
-    return function(args){
-        try{
-            return h(args);
-        }catch(e){
-            if(args.debug){
-               console.log("\nDEBUG: (ERROR in middleware)");
-               console.log(e.message);
-               console.log(e.stack);
-            }
-            if(!args.defer) {
-                console.log("\nDEBUG: (ERROR in middleware)");
-                console.log(e.message);
-                console.log(e.stack);
-                throw new Error("I need adapter.defer");
-            }
-            var deff = args.defer();
-            deff.reject(e);
-            return deff.promise;
-        }
-    };
-};
-
-
-/***/ }),
-
-/***/ "../node_modules/fhir.js/src/middlewares/http.js":
-/*!*******************************************************!*\
-  !*** ../node_modules/fhir.js/src/middlewares/http.js ***!
-  \*******************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-(function() {
-    var utils = __webpack_require__(/*! ../utils */ "../node_modules/fhir.js/src/utils.js");
-
-    exports.Http = function(cfg, adapter){
-        return function(args){
-            if(args.debug){
-                console.log("\nDEBUG (request):", args.method, args.url, args);
-            }
-            var promise = (args.http || adapter.http  || cfg.http)(args);
-            if (args.debug && promise && promise.then){
-                promise.then(function(x){ console.log("\nDEBUG: (responce)", x);});
-            }
-            return promise;
-        };
-    };
-
-    var toJson = function(x){
-        return (utils.type(x) == 'object') ? JSON.stringify(x) : x;
-    };
-
-    exports.$JsonData = function(h){
-        return function(args){
-            var data = args.bundle || args.data || args.resource;
-            if(data){
-                args.data = toJson(data);
-            }
-            return h(args);
-        };
-    };
-
-}).call(this);
-
-
-/***/ }),
-
-/***/ "../node_modules/fhir.js/src/middlewares/patient.js":
-/*!**********************************************************!*\
-  !*** ../node_modules/fhir.js/src/middlewares/patient.js ***!
-  \**********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-(function() {
-    var mw = __webpack_require__(/*! ./core */ "../node_modules/fhir.js/src/middlewares/core.js");
-
-    // List of resources with 'patient' or 'subject' properties (as of FHIR DSTU2 1.0.0)
-    var targets = [
-        "Account",
-        "AllergyIntolerance",
-        "BodySite",
-        "CarePlan",
-        "Claim",
-        "ClinicalImpression",
-        "Communication",
-        "CommunicationRequest",
-        "Composition",
-        "Condition",
-        "Contract",
-        "DetectedIssue",
-        "Device",
-        "DeviceUseRequest",
-        "DeviceUseStatement",
-        "DiagnosticOrder",
-        "DiagnosticReport",
-        "DocumentManifest",
-        "DocumentReference",
-        "Encounter",
-        "EnrollmentRequest",
-        "EpisodeOfCare",
-        "FamilyMemberHistory",
-        "Flag",
-        "Goal",
-        "ImagingObjectSelection",
-        "ImagingStudy",
-        "Immunization",
-        "ImmunizationRecommendation",
-        "List",
-        "Media",
-        "MedicationAdministration",
-        "MedicationDispense",
-        "MedicationOrder",
-        "MedicationStatement",
-        "NutritionOrder",
-        "Observation",
-        "Order",
-        "Procedure",
-        "ProcedureRequest",
-        "QuestionnaireResponse",
-        "ReferralRequest",
-        "RelatedPerson",
-        "RiskAssessment",
-        "Specimen",
-        "SupplyDelivery",
-        "SupplyRequest",
-        "VisionPrescription"
-    ];
-
-    exports.$WithPatient = mw.$$Simple(function(args){
-        var type = args.type;
-        if (args.patient) {
-            if (type === "Patient") {
-                args.query = args.query || {};
-                args.query["_id"] = args.patient;
-                args["id"] = args.patient;
-            } else if (targets.indexOf(type) >= 0){
-                args.query = args.query || {};
-                args.query["patient"] = args.patient;
-            }
-        }
-        return args;
-    });
-}).call(this);
-
-
-/***/ }),
-
-/***/ "../node_modules/fhir.js/src/middlewares/references.js":
-/*!*************************************************************!*\
-  !*** ../node_modules/fhir.js/src/middlewares/references.js ***!
-  \*************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-(function() {
-    var utils = __webpack_require__(/*! ../utils */ "../node_modules/fhir.js/src/utils.js");
-
-    var CONTAINED = /^#(.*)/;
-    var resolveContained = function(ref, resource) {
-        var cid = ref.match(CONTAINED)[1];
-        var ret = (resource.contained || []).filter(function(r){
-            return (r.id || r._id) == cid;
-        })[0];
-        return (ret && {content: ret}) || null;
-    };
-
-    var sync = function(arg) {
-        var cache = arg.cache;
-        var reference = arg.reference;
-        var bundle = arg.bundle;
-        var ref = reference;
-        if (!ref.reference) {return null;}
-        if (ref.reference.match(CONTAINED)) {return resolveContained(ref.reference, arg.resource);}
-        var abs = utils.absoluteUrl(arg.baseUrl, ref.reference);
-        var bundled = ((bundle && bundle.entry) || []).filter( function(e){
-            return e.id === abs;
-        })[0];
-        return bundled || (cache != null ? cache[abs] : void 0) || null;
-    };
-
-    var resolve = function(h){
-        return function(args) {
-            var cacheMatched = sync(args);
-            var ref = args.reference;
-            var def = args.defer();
-            if (cacheMatched) {
-                if(!args.defer){ throw new Error("I need promise constructor 'adapter.defer' in adapter"); }
-                def.resolve(cacheMatched);
-                return def.promise;
-            }
-            if (!ref) {
-                throw new Error("No reference found");
-            }
-            if (ref && ref.reference.match(CONTAINED)) {
-                throw new Error("Contained resource not found");
-            }
-            args.url = utils.absoluteUrl(args.baseUrl, ref.reference);
-            args.data = null;
-            return h(args);
-        };
-    };
-
-    module.exports.sync = sync;
-    module.exports.resolve = resolve;
-
-}).call(this);
-
-
-/***/ }),
-
-/***/ "../node_modules/fhir.js/src/middlewares/search.js":
-/*!*********************************************************!*\
-  !*** ../node_modules/fhir.js/src/middlewares/search.js ***!
-  \*********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-(function() {
-    var utils = __webpack_require__(/*! ../utils */ "../node_modules/fhir.js/src/utils.js");
-
-    var type = utils.type;
-
-    var assertArray = utils.assertArray;
-
-    var assertObject = utils.assertObject;
-
-    var reduceMap = utils.reduceMap;
-
-    var identity = utils.identity;
-
-    var OPERATORS = {
-        $gt: 'gt',
-        $lt: 'lt',
-        $lte: 'lte',
-        $gte: 'gte'
-    };
-
-    var MODIFIERS = {
-        $asc: ':asc',
-        $desc: ':desc',
-        $exact: ':exact',
-        $missing: ':missing',
-        $null: ':missing',
-        $text: ':text'
-    };
-
-    var isOperator = function(v) {
-        return v.indexOf('$') === 0;
-    };
-
-    var expandParam = function(k, v) {
-        return reduceMap(v, function(acc, arg) {
-            var kk, o, res, vv;
-            kk = arg[0], vv = arg[1];
-            return acc.concat(kk === '$and' ? assertArray(vv).reduce((function(a, vvv) {
-                return a.concat(linearizeOne(k, vvv));
-            }), []) : kk === '$type' ? [] : isOperator(kk) ? (o = {
-                param: k
-            }, kk === '$or' ? o.value = vv : (OPERATORS[kk] ? o.operator = OPERATORS[kk] : void 0, MODIFIERS[kk] ? o.modifier = MODIFIERS[kk] : void 0, type(vv) === 'object' && vv.$or ? o.value = vv.$or : o.value = [vv]), [o]) : (v.$type ? res = ":" + v.$type : void 0, linearizeOne("" + k + (res || '') + "." + kk, vv)));
-        });
-    };
-
-    var handleSort = function(xs) {
-        var i, len, results, x;
-        assertArray(xs);
-        results = [];
-        for (i = 0, len = xs.length; i < len; i++) {
-            x = xs[i];
-            switch (type(x)) {
-            case 'array':
-                results.push({
-                    param: '_sort',
-                    value: x[0],
-                    modifier: ":" + x[1]
-                });
-                break;
-            case 'string':
-                results.push({
-                    param: '_sort',
-                    value: x
-                });
-                break;
-            default:
-                results.push(void 0);
-            }
-        }
-        return results;
-    };
-
-    var handleInclude = function(includes) {
-        return reduceMap(includes, function(acc, arg) {
-            var k, v;
-            k = arg[0], v = arg[1];
-            return acc.concat((function() {
-                switch (type(v)) {
-                case 'array':
-                    return v.map(function(x) {
-                        return {
-                            param: '_include',
-                            value: k + "." + x
-                        };
-                    });
-                case 'string':
-                    return [
-                        {
-                            param: '_include',
-                            value: k + "." + v
-                        }
-                    ];
-                }
-            })());
-        });
-    };
-
-    var linearizeOne = function(k, v) {
-        if (k === '$sort') {
-            return handleSort(v);
-        } else if (k === '$include') {
-            return handleInclude(v);
-        } else {
-            switch (type(v)) {
-            case 'object':
-                return expandParam(k, v);
-            case 'string':
-                return [
-                    {
-                        param: k,
-                        value: [v]
-                    }
-                ];
-            case 'number':
-                return [
-                    {
-                        param: k,
-                        value: [v]
-                    }
-                ];
-            case 'array':
-                return [
-                    {
-                        param: k,
-                        value: [v.join("|")]
-                    }
-                ];
-            default:
-                throw "could not linearizeParams " + (type(v));
-            }
-        }
-    };
-
-    var linearizeParams = function(query) {
-        return reduceMap(query, function(acc, arg) {
-            var k, v;
-            k = arg[0], v = arg[1];
-            return acc.concat(linearizeOne(k, v));
-        });
-    };
-
-    var buildSearchParams = function(query) {
-        var p, ps;
-        ps = (function() {
-            var i, len, ref, results;
-            ref = linearizeParams(query);
-            results = [];
-            for (i = 0, len = ref.length; i < len; i++) {
-                p = ref[i];
-                results.push([p.param, p.modifier, '=', p.operator, encodeURIComponent(p.value)].filter(identity).join(''));
-            }
-            return results;
-        })();
-        return ps.join("&");
-    };
-
-    exports._query = linearizeParams;
-
-    exports.query = buildSearchParams;
-
-    var mw = __webpack_require__(/*! ./core */ "../node_modules/fhir.js/src/middlewares/core.js");
-
-    exports.$SearchParams = mw.$$Attr('url', function(args){
-        var url = args.url;
-        if(args.query){
-             var queryStr = buildSearchParams(args.query);
-             return url + "?" + queryStr;
-        }
-        return url;
-    });
-
-
-    exports.$Paging = function(h){
-        return function(args){
-            var params = args.params || {};
-            if(args.since){params._since = args.since;}
-            if(args.count){params._count = args.count;}
-            args.params = params;
-            return h(args);
-        };
-    };
-
-
-}).call(this);
-
-
-/***/ }),
-
-/***/ "../node_modules/fhir.js/src/middlewares/url.js":
-/*!******************************************************!*\
-  !*** ../node_modules/fhir.js/src/middlewares/url.js ***!
-  \******************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-(function() {
-    var utils = __webpack_require__(/*! ../utils */ "../node_modules/fhir.js/src/utils.js");
-    var core = __webpack_require__(/*! ./core */ "../node_modules/fhir.js/src/middlewares/core.js");
-
-    var id = function(x){return x;};
-    var constantly = function(x){return function(){return x;};};
-
-    var get_in = function(obj, path){
-        return path.split('.').reduce(function(acc,x){
-            if(acc == null || acc == undefined) { return null; }
-            return acc[x];
-        }, obj);
-    };
-
-    var evalPropsExpr = function(exp, args){
-        var exps =  exp.split('||').map(function(x){return x.trim().substring(1);});
-        for(var i = 0; i < exps.length; i++){
-            var res = get_in(args, exps[i]);
-            if(res){ return res; }
-        }
-        return null;
-    };
-
-    var evalExpr = function(exp, args){
-        if (exp.indexOf(":") == 0){
-            return evalPropsExpr(exp, args);
-        } else {
-            return exp;
-        }
-    };
-
-    var buildPathPart = function(pth, args){
-        var k = evalExpr(pth.trim(), args);
-        if(k==null || k === undefined){ throw new Error("Parameter "+pth+" is required: " + JSON.stringify(args)); }
-        return k;
-    };
-
-    // path chaining function
-    // which return haldler wrapper: (h, cfg)->(args -> promise)
-    // it's chainable Path("baseUrl").slash(":type").slash(":id").slash("_history")(id, {})({id: 5, type: 'Patient'})
-    // and composable p0 = Path("baseUrl); p1 = p0.slash("path)
-    var Path = function(tkn, chain){
-        //Chainable
-        var new_chain = function(args){
-            return ((chain && (chain(args) + "/")) || "") +  buildPathPart(tkn, args);
-        };
-        var ch = core.Attribute('url', new_chain);
-        ch.slash = function(tkn){
-            return Path(tkn, new_chain);
-        };
-        return ch;
-    };
-
-    exports.Path = Path;
-}).call(this);
-
-
-/***/ }),
-
-/***/ "../node_modules/fhir.js/src/utils.js":
-/*!********************************************!*\
-  !*** ../node_modules/fhir.js/src/utils.js ***!
-  \********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-(function() {
-  var merge = __webpack_require__(/*! merge */ "../node_modules/merge/merge.js");
-
-  var RTRIM = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
-
-  var trim = function(text) {
-    return text ? text.toString().replace(RTRIM, "")  : "";
-  };
-
-  exports.trim = trim;
-
-  var addKey = function(acc, str) {
-    var pair, val;
-    if (!str) {
-      return null;
-    }
-    pair = str.split("=").map(trim);
-    val = pair[1].replace(/(^"|"$)/g, '');
-    if (val) {
-      acc[pair[0]] = val;
-    }
-    return acc;
-  };
-
-  var type = function(obj) {
-    var classToType;
-    if (obj == null && obj === undefined) {
-      return String(obj);
-    }
-    classToType = {
-      '[object Boolean]': 'boolean',
-      '[object Number]': 'number',
-      '[object String]': 'string',
-      '[object Function]': 'function',
-      '[object Array]': 'array',
-      '[object Date]': 'date',
-      '[object RegExp]': 'regexp',
-      '[object Object]': 'object'
-    };
-    return classToType[Object.prototype.toString.call(obj)];
-  };
-
-  exports.type = type;
-
-  var assertArray = function(a) {
-    if (type(a) !== 'array') {
-      throw 'not array';
-    }
-    return a;
-  };
-
-  exports.assertArray = assertArray;
-
-  var assertObject = function(a) {
-    if (type(a) !== 'object') {
-      throw 'not object';
-    }
-    return a;
-  };
-
-  exports.assertObject = assertObject;
-
-  var reduceMap = function(m, fn, acc) {
-    var k, v;
-    acc || (acc = []);
-    assertObject(m);
-    return ((function() {
-      var results;
-      results = [];
-      for (k in m) {
-        v = m[k];
-        results.push([k, v]);
-      }
-      return results;
-    })()).reduce(fn, acc);
-  };
-
-  exports.reduceMap = reduceMap;
-
-  var identity = function(x) {return x;};
-
-  exports.identity = identity;
-
-  var argsArray = function() {
-     return Array.prototype.slice.call(arguments)
-  };
-
-  exports.argsArray = argsArray;
-
-  var mergeLists = function() {
-    var reduce;
-    reduce = function(merged, nextMap) {
-      var k, ret, v;
-      ret = merge(true, merged);
-      for (k in nextMap) {
-        v = nextMap[k];
-        ret[k] = (ret[k] || []).concat(v);
-      }
-      return ret;
-    };
-    return argsArray.apply(null, arguments).reduce(reduce, {});
-  };
-
-  exports.mergeLists = mergeLists;
-
-  var absoluteUrl = function(baseUrl, ref) {
-    if (!ref.match(/https?:\/\/./)) {
-      return baseUrl + "/" + ref;
-    } else {
-      return ref;
-    }
-  };
-
-  exports.absoluteUrl = absoluteUrl;
-
-  var relativeUrl = function(baseUrl, ref) {
-    if (ref.slice(ref, baseUrl.length + 1) === baseUrl + "/") {
-      return ref.slice(baseUrl.length + 1);
-    } else {
-      return ref;
-    }
-  };
-
-  exports.relativeUrl = relativeUrl;
-
-  exports.resourceIdToUrl = function(id, baseUrl, type) {
-    baseUrl = baseUrl.replace(/\/$/, '');
-    id = id.replace(/^\//, '');
-    if (id.indexOf('/') < 0) {
-      return baseUrl + "/" + type + "/" + id;
-    } else if (id.indexOf(baseUrl) !== 0) {
-      return baseUrl + "/" + id;
-    } else {
-      return id;
-    }
-  };
-
-  var walk = function(inner, outer, data, context) {
-    var keysToMap, remapped;
-    switch (type(data)) {
-      case 'array':
-        return outer(data.map(function(item) {
-          return inner(item, [data, context]);
-        }), context);
-      case 'object':
-        keysToMap = function(acc, arg) {
-          var k, v;
-          k = arg[0], v = arg[1];
-          acc[k] = inner(v, [data].concat(context));
-          return acc;
-        };
-        remapped = reduceMap(data, keysToMap, {});
-        return outer(remapped, context);
-      default:
-        return outer(data, context);
-    }
-  };
-
-  exports.walk = walk;
-
-  var postwalk = function(f, data, context) {
-    if (!data) {
-      return function(data, context) {
-        return postwalk(f, data, context);
-      };
-    } else {
-      return walk(postwalk(f), f, data, context);
-    }
-  };
-
-  exports.postwalk = postwalk;
-
-}).call(this);
-
-
-/***/ }),
-
-/***/ "../node_modules/merge/merge.js":
-/*!**************************************!*\
-  !*** ../node_modules/merge/merge.js ***!
-  \**************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(module) {/*!
- * @name JavaScript/NodeJS Merge v1.2.0
- * @author yeikos
- * @repository https://github.com/yeikos/js.merge
-
- * Copyright 2014 yeikos - MIT license
- * https://raw.github.com/yeikos/js.merge/master/LICENSE
- */
-
-;(function(isNode) {
-
-	/**
-	 * Merge one or more objects 
-	 * @param bool? clone
-	 * @param mixed,... arguments
-	 * @return object
-	 */
-
-	var Public = function(clone) {
-
-		return merge(clone === true, false, arguments);
-
-	}, publicName = 'merge';
-
-	/**
-	 * Merge two or more objects recursively 
-	 * @param bool? clone
-	 * @param mixed,... arguments
-	 * @return object
-	 */
-
-	Public.recursive = function(clone) {
-
-		return merge(clone === true, true, arguments);
-
-	};
-
-	/**
-	 * Clone the input removing any reference
-	 * @param mixed input
-	 * @return mixed
-	 */
-
-	Public.clone = function(input) {
-
-		var output = input,
-			type = typeOf(input),
-			index, size;
-
-		if (type === 'array') {
-
-			output = [];
-			size = input.length;
-
-			for (index=0;index<size;++index)
-
-				output[index] = Public.clone(input[index]);
-
-		} else if (type === 'object') {
-
-			output = {};
-
-			for (index in input)
-
-				output[index] = Public.clone(input[index]);
-
-		}
-
-		return output;
-
-	};
-
-	/**
-	 * Merge two objects recursively
-	 * @param mixed input
-	 * @param mixed extend
-	 * @return mixed
-	 */
-
-	function merge_recursive(base, extend) {
-
-		if (typeOf(base) !== 'object')
-
-			return extend;
-
-		for (var key in extend) {
-
-			if (typeOf(base[key]) === 'object' && typeOf(extend[key]) === 'object') {
-
-				base[key] = merge_recursive(base[key], extend[key]);
-
-			} else {
-
-				base[key] = extend[key];
-
-			}
-
-		}
-
-		return base;
-
-	}
-
-	/**
-	 * Merge two or more objects
-	 * @param bool clone
-	 * @param bool recursive
-	 * @param array argv
-	 * @return object
-	 */
-
-	function merge(clone, recursive, argv) {
-
-		var result = argv[0],
-			size = argv.length;
-
-		if (clone || typeOf(result) !== 'object')
-
-			result = {};
-
-		for (var index=0;index<size;++index) {
-
-			var item = argv[index],
-
-				type = typeOf(item);
-
-			if (type !== 'object') continue;
-
-			for (var key in item) {
-
-				var sitem = clone ? Public.clone(item[key]) : item[key];
-
-				if (recursive) {
-
-					result[key] = merge_recursive(result[key], sitem);
-
-				} else {
-
-					result[key] = sitem;
-
-				}
-
-			}
-
-		}
-
-		return result;
-
-	}
-
-	/**
-	 * Get type of variable
-	 * @param mixed input
-	 * @return string
-	 *
-	 * @see http://jsperf.com/typeofvar
-	 */
-
-	function typeOf(input) {
-
-		return ({}).toString.call(input).slice(8, -1).toLowerCase();
-
-	}
-
-	if (isNode) {
-
-		module.exports = Public;
-
-	} else {
-
-		window[publicName] = Public;
-
-	}
-
-})(typeof module === 'object' && module && typeof module.exports === 'object' && module.exports);
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../webpack/buildin/module.js */ "../node_modules/webpack/buildin/module.js")(module)))
-
-/***/ }),
-
-/***/ "../node_modules/style-loader/lib/addStyles.js":
-/*!*****************************************************!*\
-  !*** ../node_modules/style-loader/lib/addStyles.js ***!
-  \*****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-
-var stylesInDom = {};
-
-var	memoize = function (fn) {
-	var memo;
-
-	return function () {
-		if (typeof memo === "undefined") memo = fn.apply(this, arguments);
-		return memo;
-	};
-};
-
-var isOldIE = memoize(function () {
-	// Test for IE <= 9 as proposed by Browserhacks
-	// @see http://browserhacks.com/#hack-e71d8692f65334173fee715c222cb805
-	// Tests for existence of standard globals is to allow style-loader
-	// to operate correctly into non-standard environments
-	// @see https://github.com/webpack-contrib/style-loader/issues/177
-	return window && document && document.all && !window.atob;
-});
-
-var getTarget = function (target) {
-  return document.querySelector(target);
-};
-
-var getElement = (function (fn) {
-	var memo = {};
-
-	return function(target) {
-                // If passing function in options, then use it for resolve "head" element.
-                // Useful for Shadow Root style i.e
-                // {
-                //   insertInto: function () { return document.querySelector("#foo").shadowRoot }
-                // }
-                if (typeof target === 'function') {
-                        return target();
-                }
-                if (typeof memo[target] === "undefined") {
-			var styleTarget = getTarget.call(this, target);
-			// Special case to return head of iframe instead of iframe itself
-			if (window.HTMLIFrameElement && styleTarget instanceof window.HTMLIFrameElement) {
-				try {
-					// This will throw an exception if access to iframe is blocked
-					// due to cross-origin restrictions
-					styleTarget = styleTarget.contentDocument.head;
-				} catch(e) {
-					styleTarget = null;
-				}
-			}
-			memo[target] = styleTarget;
-		}
-		return memo[target]
-	};
-})();
-
-var singleton = null;
-var	singletonCounter = 0;
-var	stylesInsertedAtTop = [];
-
-var	fixUrls = __webpack_require__(/*! ./urls */ "../node_modules/style-loader/lib/urls.js");
-
-module.exports = function(list, options) {
-	if (typeof DEBUG !== "undefined" && DEBUG) {
-		if (typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
-	}
-
-	options = options || {};
-
-	options.attrs = typeof options.attrs === "object" ? options.attrs : {};
-
-	// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
-	// tags it will allow on a page
-	if (!options.singleton && typeof options.singleton !== "boolean") options.singleton = isOldIE();
-
-	// By default, add <style> tags to the <head> element
-        if (!options.insertInto) options.insertInto = "head";
-
-	// By default, add <style> tags to the bottom of the target
-	if (!options.insertAt) options.insertAt = "bottom";
-
-	var styles = listToStyles(list, options);
-
-	addStylesToDom(styles, options);
-
-	return function update (newList) {
-		var mayRemove = [];
-
-		for (var i = 0; i < styles.length; i++) {
-			var item = styles[i];
-			var domStyle = stylesInDom[item.id];
-
-			domStyle.refs--;
-			mayRemove.push(domStyle);
-		}
-
-		if(newList) {
-			var newStyles = listToStyles(newList, options);
-			addStylesToDom(newStyles, options);
-		}
-
-		for (var i = 0; i < mayRemove.length; i++) {
-			var domStyle = mayRemove[i];
-
-			if(domStyle.refs === 0) {
-				for (var j = 0; j < domStyle.parts.length; j++) domStyle.parts[j]();
-
-				delete stylesInDom[domStyle.id];
-			}
-		}
-	};
-};
-
-function addStylesToDom (styles, options) {
-	for (var i = 0; i < styles.length; i++) {
-		var item = styles[i];
-		var domStyle = stylesInDom[item.id];
-
-		if(domStyle) {
-			domStyle.refs++;
-
-			for(var j = 0; j < domStyle.parts.length; j++) {
-				domStyle.parts[j](item.parts[j]);
-			}
-
-			for(; j < item.parts.length; j++) {
-				domStyle.parts.push(addStyle(item.parts[j], options));
-			}
-		} else {
-			var parts = [];
-
-			for(var j = 0; j < item.parts.length; j++) {
-				parts.push(addStyle(item.parts[j], options));
-			}
-
-			stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
-		}
-	}
-}
-
-function listToStyles (list, options) {
-	var styles = [];
-	var newStyles = {};
-
-	for (var i = 0; i < list.length; i++) {
-		var item = list[i];
-		var id = options.base ? item[0] + options.base : item[0];
-		var css = item[1];
-		var media = item[2];
-		var sourceMap = item[3];
-		var part = {css: css, media: media, sourceMap: sourceMap};
-
-		if(!newStyles[id]) styles.push(newStyles[id] = {id: id, parts: [part]});
-		else newStyles[id].parts.push(part);
-	}
-
-	return styles;
-}
-
-function insertStyleElement (options, style) {
-	var target = getElement(options.insertInto)
-
-	if (!target) {
-		throw new Error("Couldn't find a style target. This probably means that the value for the 'insertInto' parameter is invalid.");
-	}
-
-	var lastStyleElementInsertedAtTop = stylesInsertedAtTop[stylesInsertedAtTop.length - 1];
-
-	if (options.insertAt === "top") {
-		if (!lastStyleElementInsertedAtTop) {
-			target.insertBefore(style, target.firstChild);
-		} else if (lastStyleElementInsertedAtTop.nextSibling) {
-			target.insertBefore(style, lastStyleElementInsertedAtTop.nextSibling);
-		} else {
-			target.appendChild(style);
-		}
-		stylesInsertedAtTop.push(style);
-	} else if (options.insertAt === "bottom") {
-		target.appendChild(style);
-	} else if (typeof options.insertAt === "object" && options.insertAt.before) {
-		var nextSibling = getElement(options.insertInto + " " + options.insertAt.before);
-		target.insertBefore(style, nextSibling);
-	} else {
-		throw new Error("[Style Loader]\n\n Invalid value for parameter 'insertAt' ('options.insertAt') found.\n Must be 'top', 'bottom', or Object.\n (https://github.com/webpack-contrib/style-loader#insertat)\n");
-	}
-}
-
-function removeStyleElement (style) {
-	if (style.parentNode === null) return false;
-	style.parentNode.removeChild(style);
-
-	var idx = stylesInsertedAtTop.indexOf(style);
-	if(idx >= 0) {
-		stylesInsertedAtTop.splice(idx, 1);
-	}
-}
-
-function createStyleElement (options) {
-	var style = document.createElement("style");
-
-	if(options.attrs.type === undefined) {
-		options.attrs.type = "text/css";
-	}
-
-	addAttrs(style, options.attrs);
-	insertStyleElement(options, style);
-
-	return style;
-}
-
-function createLinkElement (options) {
-	var link = document.createElement("link");
-
-	if(options.attrs.type === undefined) {
-		options.attrs.type = "text/css";
-	}
-	options.attrs.rel = "stylesheet";
-
-	addAttrs(link, options.attrs);
-	insertStyleElement(options, link);
-
-	return link;
-}
-
-function addAttrs (el, attrs) {
-	Object.keys(attrs).forEach(function (key) {
-		el.setAttribute(key, attrs[key]);
-	});
-}
-
-function addStyle (obj, options) {
-	var style, update, remove, result;
-
-	// If a transform function was defined, run it on the css
-	if (options.transform && obj.css) {
-	    result = options.transform(obj.css);
-
-	    if (result) {
-	    	// If transform returns a value, use that instead of the original css.
-	    	// This allows running runtime transformations on the css.
-	    	obj.css = result;
-	    } else {
-	    	// If the transform function returns a falsy value, don't add this css.
-	    	// This allows conditional loading of css
-	    	return function() {
-	    		// noop
-	    	};
-	    }
-	}
-
-	if (options.singleton) {
-		var styleIndex = singletonCounter++;
-
-		style = singleton || (singleton = createStyleElement(options));
-
-		update = applyToSingletonTag.bind(null, style, styleIndex, false);
-		remove = applyToSingletonTag.bind(null, style, styleIndex, true);
-
-	} else if (
-		obj.sourceMap &&
-		typeof URL === "function" &&
-		typeof URL.createObjectURL === "function" &&
-		typeof URL.revokeObjectURL === "function" &&
-		typeof Blob === "function" &&
-		typeof btoa === "function"
-	) {
-		style = createLinkElement(options);
-		update = updateLink.bind(null, style, options);
-		remove = function () {
-			removeStyleElement(style);
-
-			if(style.href) URL.revokeObjectURL(style.href);
-		};
-	} else {
-		style = createStyleElement(options);
-		update = applyToTag.bind(null, style);
-		remove = function () {
-			removeStyleElement(style);
-		};
-	}
-
-	update(obj);
-
-	return function updateStyle (newObj) {
-		if (newObj) {
-			if (
-				newObj.css === obj.css &&
-				newObj.media === obj.media &&
-				newObj.sourceMap === obj.sourceMap
-			) {
-				return;
-			}
-
-			update(obj = newObj);
-		} else {
-			remove();
-		}
-	};
-}
-
-var replaceText = (function () {
-	var textStore = [];
-
-	return function (index, replacement) {
-		textStore[index] = replacement;
-
-		return textStore.filter(Boolean).join('\n');
-	};
-})();
-
-function applyToSingletonTag (style, index, remove, obj) {
-	var css = remove ? "" : obj.css;
-
-	if (style.styleSheet) {
-		style.styleSheet.cssText = replaceText(index, css);
-	} else {
-		var cssNode = document.createTextNode(css);
-		var childNodes = style.childNodes;
-
-		if (childNodes[index]) style.removeChild(childNodes[index]);
-
-		if (childNodes.length) {
-			style.insertBefore(cssNode, childNodes[index]);
-		} else {
-			style.appendChild(cssNode);
-		}
-	}
-}
-
-function applyToTag (style, obj) {
-	var css = obj.css;
-	var media = obj.media;
-
-	if(media) {
-		style.setAttribute("media", media)
-	}
-
-	if(style.styleSheet) {
-		style.styleSheet.cssText = css;
-	} else {
-		while(style.firstChild) {
-			style.removeChild(style.firstChild);
-		}
-
-		style.appendChild(document.createTextNode(css));
-	}
-}
-
-function updateLink (link, options, obj) {
-	var css = obj.css;
-	var sourceMap = obj.sourceMap;
-
-	/*
-		If convertToAbsoluteUrls isn't defined, but sourcemaps are enabled
-		and there is no publicPath defined then lets turn convertToAbsoluteUrls
-		on by default.  Otherwise default to the convertToAbsoluteUrls option
-		directly
-	*/
-	var autoFixUrls = options.convertToAbsoluteUrls === undefined && sourceMap;
-
-	if (options.convertToAbsoluteUrls || autoFixUrls) {
-		css = fixUrls(css);
-	}
-
-	if (sourceMap) {
-		// http://stackoverflow.com/a/26603875
-		css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
-	}
-
-	var blob = new Blob([css], { type: "text/css" });
-
-	var oldSrc = link.href;
-
-	link.href = URL.createObjectURL(blob);
-
-	if(oldSrc) URL.revokeObjectURL(oldSrc);
-}
-
-
-/***/ }),
-
-/***/ "../node_modules/style-loader/lib/urls.js":
-/*!************************************************!*\
-  !*** ../node_modules/style-loader/lib/urls.js ***!
-  \************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
+import * as __WEBPACK_EXTERNAL_MODULE__grafana_data_c75919de__ from "@grafana/data";
+import * as __WEBPACK_EXTERNAL_MODULE__grafana_runtime_4c5ab4ad__ from "@grafana/runtime";
+import * as __WEBPACK_EXTERNAL_MODULE__grafana_ui_51195499__ from "@grafana/ui";
+import * as __WEBPACK_EXTERNAL_MODULE_react__ from "react";
+/******/ var __webpack_modules__ = ({
+
+/***/ "../node_modules/react/cjs/react-jsx-runtime.development.js":
+/*!******************************************************************!*\
+  !*** ../node_modules/react/cjs/react-jsx-runtime.development.js ***!
+  \******************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 /**
- * When source maps are enabled, `style-loader` uses a link element with a data-uri to
- * embed the css on the page. This breaks all relative urls because now they are relative to a
- * bundle instead of the current page.
+ * @license React
+ * react-jsx-runtime.development.js
  *
- * One solution is to only use full urls, but that may be impossible.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * Instead, this function "fixes" the relative urls to be absolute according to the current page location.
- *
- * A rudimentary test suite is located at `test/fixUrls.js` and can be run via the `npm test` command.
- *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  */
 
-module.exports = function (css) {
-  // get current location
-  var location = typeof window !== "undefined" && window.location;
 
-  if (!location) {
-    throw new Error("fixUrls requires window.location");
+
+if (true) {
+  (function() {
+'use strict';
+
+var React = __webpack_require__(/*! react */ "react");
+
+// ATTENTION
+// When adding new symbols to this file,
+// Please consider also adding to 'react-devtools-shared/src/backend/ReactSymbols'
+// The Symbol used to tag the ReactElement-like types.
+var REACT_ELEMENT_TYPE = Symbol.for('react.element');
+var REACT_PORTAL_TYPE = Symbol.for('react.portal');
+var REACT_FRAGMENT_TYPE = Symbol.for('react.fragment');
+var REACT_STRICT_MODE_TYPE = Symbol.for('react.strict_mode');
+var REACT_PROFILER_TYPE = Symbol.for('react.profiler');
+var REACT_PROVIDER_TYPE = Symbol.for('react.provider');
+var REACT_CONTEXT_TYPE = Symbol.for('react.context');
+var REACT_FORWARD_REF_TYPE = Symbol.for('react.forward_ref');
+var REACT_SUSPENSE_TYPE = Symbol.for('react.suspense');
+var REACT_SUSPENSE_LIST_TYPE = Symbol.for('react.suspense_list');
+var REACT_MEMO_TYPE = Symbol.for('react.memo');
+var REACT_LAZY_TYPE = Symbol.for('react.lazy');
+var REACT_OFFSCREEN_TYPE = Symbol.for('react.offscreen');
+var MAYBE_ITERATOR_SYMBOL = Symbol.iterator;
+var FAUX_ITERATOR_SYMBOL = '@@iterator';
+function getIteratorFn(maybeIterable) {
+  if (maybeIterable === null || typeof maybeIterable !== 'object') {
+    return null;
   }
 
-	// blank or null?
-	if (!css || typeof css !== "string") {
-	  return css;
+  var maybeIterator = MAYBE_ITERATOR_SYMBOL && maybeIterable[MAYBE_ITERATOR_SYMBOL] || maybeIterable[FAUX_ITERATOR_SYMBOL];
+
+  if (typeof maybeIterator === 'function') {
+    return maybeIterator;
   }
 
-  var baseUrl = location.protocol + "//" + location.host;
-  var currentDir = baseUrl + location.pathname.replace(/\/[^\/]*$/, "/");
+  return null;
+}
 
-	// convert each url(...)
-	/*
-	This regular expression is just a way to recursively match brackets within
-	a string.
+var ReactSharedInternals = React.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
 
-	 /url\s*\(  = Match on the word "url" with any whitespace after it and then a parens
-	   (  = Start a capturing group
-	     (?:  = Start a non-capturing group
-	         [^)(]  = Match anything that isn't a parentheses
-	         |  = OR
-	         \(  = Match a start parentheses
-	             (?:  = Start another non-capturing groups
-	                 [^)(]+  = Match anything that isn't a parentheses
-	                 |  = OR
-	                 \(  = Match a start parentheses
-	                     [^)(]*  = Match anything that isn't a parentheses
-	                 \)  = Match a end parentheses
-	             )  = End Group
-              *\) = Match anything and then a close parens
-          )  = Close non-capturing group
-          *  = Match anything
-       )  = Close capturing group
-	 \)  = Match a close parens
+function error(format) {
+  {
+    {
+      for (var _len2 = arguments.length, args = new Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+        args[_key2 - 1] = arguments[_key2];
+      }
 
-	 /gi  = Get all matches, not the first.  Be case insensitive.
-	 */
-	var fixedCss = css.replace(/url\s*\(((?:[^)(]|\((?:[^)(]+|\([^)(]*\))*\))*)\)/gi, function(fullMatch, origUrl) {
-		// strip quotes (if they exist)
-		var unquotedOrigUrl = origUrl
-			.trim()
-			.replace(/^"(.*)"$/, function(o, $1){ return $1; })
-			.replace(/^'(.*)'$/, function(o, $1){ return $1; });
+      printWarning('error', format, args);
+    }
+  }
+}
 
-		// already a full url? no change
-		if (/^(#|data:|http:\/\/|https:\/\/|file:\/\/\/|\s*$)/i.test(unquotedOrigUrl)) {
-		  return fullMatch;
-		}
+function printWarning(level, format, args) {
+  // When changing this logic, you might want to also
+  // update consoleWithStackDev.www.js as well.
+  {
+    var ReactDebugCurrentFrame = ReactSharedInternals.ReactDebugCurrentFrame;
+    var stack = ReactDebugCurrentFrame.getStackAddendum();
 
-		// convert the url to a full url
-		var newUrl;
+    if (stack !== '') {
+      format += '%s';
+      args = args.concat([stack]);
+    } // eslint-disable-next-line react-internal/safe-string-coercion
 
-		if (unquotedOrigUrl.indexOf("//") === 0) {
-		  	//TODO: should we add protocol?
-			newUrl = unquotedOrigUrl;
-		} else if (unquotedOrigUrl.indexOf("/") === 0) {
-			// path should be relative to the base url
-			newUrl = baseUrl + unquotedOrigUrl; // already starts with '/'
-		} else {
-			// path should be relative to current directory
-			newUrl = currentDir + unquotedOrigUrl.replace(/^\.\//, ""); // Strip leading './'
-		}
 
-		// send back the fixed url(...)
-		return "url(" + JSON.stringify(newUrl) + ")";
-	});
+    var argsWithFormat = args.map(function (item) {
+      return String(item);
+    }); // Careful: RN currently depends on this prefix
 
-	// send back the fixed css
-	return fixedCss;
+    argsWithFormat.unshift('Warning: ' + format); // We intentionally don't use spread (or .apply) directly because it
+    // breaks IE9: https://github.com/facebook/react/issues/13610
+    // eslint-disable-next-line react-internal/no-production-logging
+
+    Function.prototype.apply.call(console[level], console, argsWithFormat);
+  }
+}
+
+// -----------------------------------------------------------------------------
+
+var enableScopeAPI = false; // Experimental Create Event Handle API.
+var enableCacheElement = false;
+var enableTransitionTracing = false; // No known bugs, but needs performance testing
+
+var enableLegacyHidden = false; // Enables unstable_avoidThisFallback feature in Fiber
+// stuff. Intended to enable React core members to more easily debug scheduling
+// issues in DEV builds.
+
+var enableDebugTracing = false; // Track which Fiber(s) schedule render work.
+
+var REACT_MODULE_REFERENCE;
+
+{
+  REACT_MODULE_REFERENCE = Symbol.for('react.module.reference');
+}
+
+function isValidElementType(type) {
+  if (typeof type === 'string' || typeof type === 'function') {
+    return true;
+  } // Note: typeof might be other than 'symbol' or 'number' (e.g. if it's a polyfill).
+
+
+  if (type === REACT_FRAGMENT_TYPE || type === REACT_PROFILER_TYPE || enableDebugTracing  || type === REACT_STRICT_MODE_TYPE || type === REACT_SUSPENSE_TYPE || type === REACT_SUSPENSE_LIST_TYPE || enableLegacyHidden  || type === REACT_OFFSCREEN_TYPE || enableScopeAPI  || enableCacheElement  || enableTransitionTracing ) {
+    return true;
+  }
+
+  if (typeof type === 'object' && type !== null) {
+    if (type.$$typeof === REACT_LAZY_TYPE || type.$$typeof === REACT_MEMO_TYPE || type.$$typeof === REACT_PROVIDER_TYPE || type.$$typeof === REACT_CONTEXT_TYPE || type.$$typeof === REACT_FORWARD_REF_TYPE || // This needs to include all possible module reference object
+    // types supported by any Flight configuration anywhere since
+    // we don't know which Flight build this will end up being used
+    // with.
+    type.$$typeof === REACT_MODULE_REFERENCE || type.getModuleId !== undefined) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+function getWrappedName(outerType, innerType, wrapperName) {
+  var displayName = outerType.displayName;
+
+  if (displayName) {
+    return displayName;
+  }
+
+  var functionName = innerType.displayName || innerType.name || '';
+  return functionName !== '' ? wrapperName + "(" + functionName + ")" : wrapperName;
+} // Keep in sync with react-reconciler/getComponentNameFromFiber
+
+
+function getContextName(type) {
+  return type.displayName || 'Context';
+} // Note that the reconciler package should generally prefer to use getComponentNameFromFiber() instead.
+
+
+function getComponentNameFromType(type) {
+  if (type == null) {
+    // Host root, text node or just invalid type.
+    return null;
+  }
+
+  {
+    if (typeof type.tag === 'number') {
+      error('Received an unexpected object in getComponentNameFromType(). ' + 'This is likely a bug in React. Please file an issue.');
+    }
+  }
+
+  if (typeof type === 'function') {
+    return type.displayName || type.name || null;
+  }
+
+  if (typeof type === 'string') {
+    return type;
+  }
+
+  switch (type) {
+    case REACT_FRAGMENT_TYPE:
+      return 'Fragment';
+
+    case REACT_PORTAL_TYPE:
+      return 'Portal';
+
+    case REACT_PROFILER_TYPE:
+      return 'Profiler';
+
+    case REACT_STRICT_MODE_TYPE:
+      return 'StrictMode';
+
+    case REACT_SUSPENSE_TYPE:
+      return 'Suspense';
+
+    case REACT_SUSPENSE_LIST_TYPE:
+      return 'SuspenseList';
+
+  }
+
+  if (typeof type === 'object') {
+    switch (type.$$typeof) {
+      case REACT_CONTEXT_TYPE:
+        var context = type;
+        return getContextName(context) + '.Consumer';
+
+      case REACT_PROVIDER_TYPE:
+        var provider = type;
+        return getContextName(provider._context) + '.Provider';
+
+      case REACT_FORWARD_REF_TYPE:
+        return getWrappedName(type, type.render, 'ForwardRef');
+
+      case REACT_MEMO_TYPE:
+        var outerName = type.displayName || null;
+
+        if (outerName !== null) {
+          return outerName;
+        }
+
+        return getComponentNameFromType(type.type) || 'Memo';
+
+      case REACT_LAZY_TYPE:
+        {
+          var lazyComponent = type;
+          var payload = lazyComponent._payload;
+          var init = lazyComponent._init;
+
+          try {
+            return getComponentNameFromType(init(payload));
+          } catch (x) {
+            return null;
+          }
+        }
+
+      // eslint-disable-next-line no-fallthrough
+    }
+  }
+
+  return null;
+}
+
+var assign = Object.assign;
+
+// Helpers to patch console.logs to avoid logging during side-effect free
+// replaying on render function. This currently only patches the object
+// lazily which won't cover if the log function was extracted eagerly.
+// We could also eagerly patch the method.
+var disabledDepth = 0;
+var prevLog;
+var prevInfo;
+var prevWarn;
+var prevError;
+var prevGroup;
+var prevGroupCollapsed;
+var prevGroupEnd;
+
+function disabledLog() {}
+
+disabledLog.__reactDisabledLog = true;
+function disableLogs() {
+  {
+    if (disabledDepth === 0) {
+      /* eslint-disable react-internal/no-production-logging */
+      prevLog = console.log;
+      prevInfo = console.info;
+      prevWarn = console.warn;
+      prevError = console.error;
+      prevGroup = console.group;
+      prevGroupCollapsed = console.groupCollapsed;
+      prevGroupEnd = console.groupEnd; // https://github.com/facebook/react/issues/19099
+
+      var props = {
+        configurable: true,
+        enumerable: true,
+        value: disabledLog,
+        writable: true
+      }; // $FlowFixMe Flow thinks console is immutable.
+
+      Object.defineProperties(console, {
+        info: props,
+        log: props,
+        warn: props,
+        error: props,
+        group: props,
+        groupCollapsed: props,
+        groupEnd: props
+      });
+      /* eslint-enable react-internal/no-production-logging */
+    }
+
+    disabledDepth++;
+  }
+}
+function reenableLogs() {
+  {
+    disabledDepth--;
+
+    if (disabledDepth === 0) {
+      /* eslint-disable react-internal/no-production-logging */
+      var props = {
+        configurable: true,
+        enumerable: true,
+        writable: true
+      }; // $FlowFixMe Flow thinks console is immutable.
+
+      Object.defineProperties(console, {
+        log: assign({}, props, {
+          value: prevLog
+        }),
+        info: assign({}, props, {
+          value: prevInfo
+        }),
+        warn: assign({}, props, {
+          value: prevWarn
+        }),
+        error: assign({}, props, {
+          value: prevError
+        }),
+        group: assign({}, props, {
+          value: prevGroup
+        }),
+        groupCollapsed: assign({}, props, {
+          value: prevGroupCollapsed
+        }),
+        groupEnd: assign({}, props, {
+          value: prevGroupEnd
+        })
+      });
+      /* eslint-enable react-internal/no-production-logging */
+    }
+
+    if (disabledDepth < 0) {
+      error('disabledDepth fell below zero. ' + 'This is a bug in React. Please file an issue.');
+    }
+  }
+}
+
+var ReactCurrentDispatcher = ReactSharedInternals.ReactCurrentDispatcher;
+var prefix;
+function describeBuiltInComponentFrame(name, source, ownerFn) {
+  {
+    if (prefix === undefined) {
+      // Extract the VM specific prefix used by each line.
+      try {
+        throw Error();
+      } catch (x) {
+        var match = x.stack.trim().match(/\n( *(at )?)/);
+        prefix = match && match[1] || '';
+      }
+    } // We use the prefix to ensure our stacks line up with native stack frames.
+
+
+    return '\n' + prefix + name;
+  }
+}
+var reentry = false;
+var componentFrameCache;
+
+{
+  var PossiblyWeakMap = typeof WeakMap === 'function' ? WeakMap : Map;
+  componentFrameCache = new PossiblyWeakMap();
+}
+
+function describeNativeComponentFrame(fn, construct) {
+  // If something asked for a stack inside a fake render, it should get ignored.
+  if ( !fn || reentry) {
+    return '';
+  }
+
+  {
+    var frame = componentFrameCache.get(fn);
+
+    if (frame !== undefined) {
+      return frame;
+    }
+  }
+
+  var control;
+  reentry = true;
+  var previousPrepareStackTrace = Error.prepareStackTrace; // $FlowFixMe It does accept undefined.
+
+  Error.prepareStackTrace = undefined;
+  var previousDispatcher;
+
+  {
+    previousDispatcher = ReactCurrentDispatcher.current; // Set the dispatcher in DEV because this might be call in the render function
+    // for warnings.
+
+    ReactCurrentDispatcher.current = null;
+    disableLogs();
+  }
+
+  try {
+    // This should throw.
+    if (construct) {
+      // Something should be setting the props in the constructor.
+      var Fake = function () {
+        throw Error();
+      }; // $FlowFixMe
+
+
+      Object.defineProperty(Fake.prototype, 'props', {
+        set: function () {
+          // We use a throwing setter instead of frozen or non-writable props
+          // because that won't throw in a non-strict mode function.
+          throw Error();
+        }
+      });
+
+      if (typeof Reflect === 'object' && Reflect.construct) {
+        // We construct a different control for this case to include any extra
+        // frames added by the construct call.
+        try {
+          Reflect.construct(Fake, []);
+        } catch (x) {
+          control = x;
+        }
+
+        Reflect.construct(fn, [], Fake);
+      } else {
+        try {
+          Fake.call();
+        } catch (x) {
+          control = x;
+        }
+
+        fn.call(Fake.prototype);
+      }
+    } else {
+      try {
+        throw Error();
+      } catch (x) {
+        control = x;
+      }
+
+      fn();
+    }
+  } catch (sample) {
+    // This is inlined manually because closure doesn't do it for us.
+    if (sample && control && typeof sample.stack === 'string') {
+      // This extracts the first frame from the sample that isn't also in the control.
+      // Skipping one frame that we assume is the frame that calls the two.
+      var sampleLines = sample.stack.split('\n');
+      var controlLines = control.stack.split('\n');
+      var s = sampleLines.length - 1;
+      var c = controlLines.length - 1;
+
+      while (s >= 1 && c >= 0 && sampleLines[s] !== controlLines[c]) {
+        // We expect at least one stack frame to be shared.
+        // Typically this will be the root most one. However, stack frames may be
+        // cut off due to maximum stack limits. In this case, one maybe cut off
+        // earlier than the other. We assume that the sample is longer or the same
+        // and there for cut off earlier. So we should find the root most frame in
+        // the sample somewhere in the control.
+        c--;
+      }
+
+      for (; s >= 1 && c >= 0; s--, c--) {
+        // Next we find the first one that isn't the same which should be the
+        // frame that called our sample function and the control.
+        if (sampleLines[s] !== controlLines[c]) {
+          // In V8, the first line is describing the message but other VMs don't.
+          // If we're about to return the first line, and the control is also on the same
+          // line, that's a pretty good indicator that our sample threw at same line as
+          // the control. I.e. before we entered the sample frame. So we ignore this result.
+          // This can happen if you passed a class to function component, or non-function.
+          if (s !== 1 || c !== 1) {
+            do {
+              s--;
+              c--; // We may still have similar intermediate frames from the construct call.
+              // The next one that isn't the same should be our match though.
+
+              if (c < 0 || sampleLines[s] !== controlLines[c]) {
+                // V8 adds a "new" prefix for native classes. Let's remove it to make it prettier.
+                var _frame = '\n' + sampleLines[s].replace(' at new ', ' at '); // If our component frame is labeled "<anonymous>"
+                // but we have a user-provided "displayName"
+                // splice it in to make the stack more readable.
+
+
+                if (fn.displayName && _frame.includes('<anonymous>')) {
+                  _frame = _frame.replace('<anonymous>', fn.displayName);
+                }
+
+                {
+                  if (typeof fn === 'function') {
+                    componentFrameCache.set(fn, _frame);
+                  }
+                } // Return the line we found.
+
+
+                return _frame;
+              }
+            } while (s >= 1 && c >= 0);
+          }
+
+          break;
+        }
+      }
+    }
+  } finally {
+    reentry = false;
+
+    {
+      ReactCurrentDispatcher.current = previousDispatcher;
+      reenableLogs();
+    }
+
+    Error.prepareStackTrace = previousPrepareStackTrace;
+  } // Fallback to just using the name if we couldn't make it throw.
+
+
+  var name = fn ? fn.displayName || fn.name : '';
+  var syntheticFrame = name ? describeBuiltInComponentFrame(name) : '';
+
+  {
+    if (typeof fn === 'function') {
+      componentFrameCache.set(fn, syntheticFrame);
+    }
+  }
+
+  return syntheticFrame;
+}
+function describeFunctionComponentFrame(fn, source, ownerFn) {
+  {
+    return describeNativeComponentFrame(fn, false);
+  }
+}
+
+function shouldConstruct(Component) {
+  var prototype = Component.prototype;
+  return !!(prototype && prototype.isReactComponent);
+}
+
+function describeUnknownElementTypeFrameInDEV(type, source, ownerFn) {
+
+  if (type == null) {
+    return '';
+  }
+
+  if (typeof type === 'function') {
+    {
+      return describeNativeComponentFrame(type, shouldConstruct(type));
+    }
+  }
+
+  if (typeof type === 'string') {
+    return describeBuiltInComponentFrame(type);
+  }
+
+  switch (type) {
+    case REACT_SUSPENSE_TYPE:
+      return describeBuiltInComponentFrame('Suspense');
+
+    case REACT_SUSPENSE_LIST_TYPE:
+      return describeBuiltInComponentFrame('SuspenseList');
+  }
+
+  if (typeof type === 'object') {
+    switch (type.$$typeof) {
+      case REACT_FORWARD_REF_TYPE:
+        return describeFunctionComponentFrame(type.render);
+
+      case REACT_MEMO_TYPE:
+        // Memo may contain any component type so we recursively resolve it.
+        return describeUnknownElementTypeFrameInDEV(type.type, source, ownerFn);
+
+      case REACT_LAZY_TYPE:
+        {
+          var lazyComponent = type;
+          var payload = lazyComponent._payload;
+          var init = lazyComponent._init;
+
+          try {
+            // Lazy may contain any component type so we recursively resolve it.
+            return describeUnknownElementTypeFrameInDEV(init(payload), source, ownerFn);
+          } catch (x) {}
+        }
+    }
+  }
+
+  return '';
+}
+
+var hasOwnProperty = Object.prototype.hasOwnProperty;
+
+var loggedTypeFailures = {};
+var ReactDebugCurrentFrame = ReactSharedInternals.ReactDebugCurrentFrame;
+
+function setCurrentlyValidatingElement(element) {
+  {
+    if (element) {
+      var owner = element._owner;
+      var stack = describeUnknownElementTypeFrameInDEV(element.type, element._source, owner ? owner.type : null);
+      ReactDebugCurrentFrame.setExtraStackFrame(stack);
+    } else {
+      ReactDebugCurrentFrame.setExtraStackFrame(null);
+    }
+  }
+}
+
+function checkPropTypes(typeSpecs, values, location, componentName, element) {
+  {
+    // $FlowFixMe This is okay but Flow doesn't know it.
+    var has = Function.call.bind(hasOwnProperty);
+
+    for (var typeSpecName in typeSpecs) {
+      if (has(typeSpecs, typeSpecName)) {
+        var error$1 = void 0; // Prop type validation may throw. In case they do, we don't want to
+        // fail the render phase where it didn't fail before. So we log it.
+        // After these have been cleaned up, we'll let them throw.
+
+        try {
+          // This is intentionally an invariant that gets caught. It's the same
+          // behavior as without this statement except with a better message.
+          if (typeof typeSpecs[typeSpecName] !== 'function') {
+            // eslint-disable-next-line react-internal/prod-error-codes
+            var err = Error((componentName || 'React class') + ': ' + location + ' type `' + typeSpecName + '` is invalid; ' + 'it must be a function, usually from the `prop-types` package, but received `' + typeof typeSpecs[typeSpecName] + '`.' + 'This often happens because of typos such as `PropTypes.function` instead of `PropTypes.func`.');
+            err.name = 'Invariant Violation';
+            throw err;
+          }
+
+          error$1 = typeSpecs[typeSpecName](values, typeSpecName, componentName, location, null, 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED');
+        } catch (ex) {
+          error$1 = ex;
+        }
+
+        if (error$1 && !(error$1 instanceof Error)) {
+          setCurrentlyValidatingElement(element);
+
+          error('%s: type specification of %s' + ' `%s` is invalid; the type checker ' + 'function must return `null` or an `Error` but returned a %s. ' + 'You may have forgotten to pass an argument to the type checker ' + 'creator (arrayOf, instanceOf, objectOf, oneOf, oneOfType, and ' + 'shape all require an argument).', componentName || 'React class', location, typeSpecName, typeof error$1);
+
+          setCurrentlyValidatingElement(null);
+        }
+
+        if (error$1 instanceof Error && !(error$1.message in loggedTypeFailures)) {
+          // Only monitor this failure once because there tends to be a lot of the
+          // same error.
+          loggedTypeFailures[error$1.message] = true;
+          setCurrentlyValidatingElement(element);
+
+          error('Failed %s type: %s', location, error$1.message);
+
+          setCurrentlyValidatingElement(null);
+        }
+      }
+    }
+  }
+}
+
+var isArrayImpl = Array.isArray; // eslint-disable-next-line no-redeclare
+
+function isArray(a) {
+  return isArrayImpl(a);
+}
+
+/*
+ * The `'' + value` pattern (used in in perf-sensitive code) throws for Symbol
+ * and Temporal.* types. See https://github.com/facebook/react/pull/22064.
+ *
+ * The functions in this module will throw an easier-to-understand,
+ * easier-to-debug exception with a clear errors message message explaining the
+ * problem. (Instead of a confusing exception thrown inside the implementation
+ * of the `value` object).
+ */
+// $FlowFixMe only called in DEV, so void return is not possible.
+function typeName(value) {
+  {
+    // toStringTag is needed for namespaced types like Temporal.Instant
+    var hasToStringTag = typeof Symbol === 'function' && Symbol.toStringTag;
+    var type = hasToStringTag && value[Symbol.toStringTag] || value.constructor.name || 'Object';
+    return type;
+  }
+} // $FlowFixMe only called in DEV, so void return is not possible.
+
+
+function willCoercionThrow(value) {
+  {
+    try {
+      testStringCoercion(value);
+      return false;
+    } catch (e) {
+      return true;
+    }
+  }
+}
+
+function testStringCoercion(value) {
+  // If you ended up here by following an exception call stack, here's what's
+  // happened: you supplied an object or symbol value to React (as a prop, key,
+  // DOM attribute, CSS property, string ref, etc.) and when React tried to
+  // coerce it to a string using `'' + value`, an exception was thrown.
+  //
+  // The most common types that will cause this exception are `Symbol` instances
+  // and Temporal objects like `Temporal.Instant`. But any object that has a
+  // `valueOf` or `[Symbol.toPrimitive]` method that throws will also cause this
+  // exception. (Library authors do this to prevent users from using built-in
+  // numeric operators like `+` or comparison operators like `>=` because custom
+  // methods are needed to perform accurate arithmetic or comparison.)
+  //
+  // To fix the problem, coerce this object or symbol value to a string before
+  // passing it to React. The most reliable way is usually `String(value)`.
+  //
+  // To find which value is throwing, check the browser or debugger console.
+  // Before this exception was thrown, there should be `console.error` output
+  // that shows the type (Symbol, Temporal.PlainDate, etc.) that caused the
+  // problem and how that type was used: key, atrribute, input value prop, etc.
+  // In most cases, this console output also shows the component and its
+  // ancestor components where the exception happened.
+  //
+  // eslint-disable-next-line react-internal/safe-string-coercion
+  return '' + value;
+}
+function checkKeyStringCoercion(value) {
+  {
+    if (willCoercionThrow(value)) {
+      error('The provided key is an unsupported type %s.' + ' This value must be coerced to a string before before using it here.', typeName(value));
+
+      return testStringCoercion(value); // throw (to help callers find troubleshooting comments)
+    }
+  }
+}
+
+var ReactCurrentOwner = ReactSharedInternals.ReactCurrentOwner;
+var RESERVED_PROPS = {
+  key: true,
+  ref: true,
+  __self: true,
+  __source: true
 };
+var specialPropKeyWarningShown;
+var specialPropRefWarningShown;
+var didWarnAboutStringRefs;
+
+{
+  didWarnAboutStringRefs = {};
+}
+
+function hasValidRef(config) {
+  {
+    if (hasOwnProperty.call(config, 'ref')) {
+      var getter = Object.getOwnPropertyDescriptor(config, 'ref').get;
+
+      if (getter && getter.isReactWarning) {
+        return false;
+      }
+    }
+  }
+
+  return config.ref !== undefined;
+}
+
+function hasValidKey(config) {
+  {
+    if (hasOwnProperty.call(config, 'key')) {
+      var getter = Object.getOwnPropertyDescriptor(config, 'key').get;
+
+      if (getter && getter.isReactWarning) {
+        return false;
+      }
+    }
+  }
+
+  return config.key !== undefined;
+}
+
+function warnIfStringRefCannotBeAutoConverted(config, self) {
+  {
+    if (typeof config.ref === 'string' && ReactCurrentOwner.current && self && ReactCurrentOwner.current.stateNode !== self) {
+      var componentName = getComponentNameFromType(ReactCurrentOwner.current.type);
+
+      if (!didWarnAboutStringRefs[componentName]) {
+        error('Component "%s" contains the string ref "%s". ' + 'Support for string refs will be removed in a future major release. ' + 'This case cannot be automatically converted to an arrow function. ' + 'We ask you to manually fix this case by using useRef() or createRef() instead. ' + 'Learn more about using refs safely here: ' + 'https://reactjs.org/link/strict-mode-string-ref', getComponentNameFromType(ReactCurrentOwner.current.type), config.ref);
+
+        didWarnAboutStringRefs[componentName] = true;
+      }
+    }
+  }
+}
+
+function defineKeyPropWarningGetter(props, displayName) {
+  {
+    var warnAboutAccessingKey = function () {
+      if (!specialPropKeyWarningShown) {
+        specialPropKeyWarningShown = true;
+
+        error('%s: `key` is not a prop. Trying to access it will result ' + 'in `undefined` being returned. If you need to access the same ' + 'value within the child component, you should pass it as a different ' + 'prop. (https://reactjs.org/link/special-props)', displayName);
+      }
+    };
+
+    warnAboutAccessingKey.isReactWarning = true;
+    Object.defineProperty(props, 'key', {
+      get: warnAboutAccessingKey,
+      configurable: true
+    });
+  }
+}
+
+function defineRefPropWarningGetter(props, displayName) {
+  {
+    var warnAboutAccessingRef = function () {
+      if (!specialPropRefWarningShown) {
+        specialPropRefWarningShown = true;
+
+        error('%s: `ref` is not a prop. Trying to access it will result ' + 'in `undefined` being returned. If you need to access the same ' + 'value within the child component, you should pass it as a different ' + 'prop. (https://reactjs.org/link/special-props)', displayName);
+      }
+    };
+
+    warnAboutAccessingRef.isReactWarning = true;
+    Object.defineProperty(props, 'ref', {
+      get: warnAboutAccessingRef,
+      configurable: true
+    });
+  }
+}
+/**
+ * Factory method to create a new React element. This no longer adheres to
+ * the class pattern, so do not use new to call it. Also, instanceof check
+ * will not work. Instead test $$typeof field against Symbol.for('react.element') to check
+ * if something is a React Element.
+ *
+ * @param {*} type
+ * @param {*} props
+ * @param {*} key
+ * @param {string|object} ref
+ * @param {*} owner
+ * @param {*} self A *temporary* helper to detect places where `this` is
+ * different from the `owner` when React.createElement is called, so that we
+ * can warn. We want to get rid of owner and replace string `ref`s with arrow
+ * functions, and as long as `this` and owner are the same, there will be no
+ * change in behavior.
+ * @param {*} source An annotation object (added by a transpiler or otherwise)
+ * indicating filename, line number, and/or other information.
+ * @internal
+ */
 
 
-/***/ }),
+var ReactElement = function (type, key, ref, self, source, owner, props) {
+  var element = {
+    // This tag allows us to uniquely identify this as a React Element
+    $$typeof: REACT_ELEMENT_TYPE,
+    // Built-in properties that belong on the element
+    type: type,
+    key: key,
+    ref: ref,
+    props: props,
+    // Record the component responsible for creating this element.
+    _owner: owner
+  };
 
-/***/ "../node_modules/webpack/buildin/module.js":
-/*!*************************************************!*\
-  !*** ../node_modules/webpack/buildin/module.js ***!
-  \*************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+  {
+    // The validation flag is currently mutative. We put it on
+    // an external backing store so that we can freeze the whole object.
+    // This can be replaced with a WeakMap once they are implemented in
+    // commonly used development environments.
+    element._store = {}; // To make comparing ReactElements easier for testing purposes, we make
+    // the validation flag non-enumerable (where possible, which should
+    // include every environment we run tests in), so the test framework
+    // ignores it.
 
-module.exports = function(module) {
-	if (!module.webpackPolyfill) {
-		module.deprecate = function() {};
-		module.paths = [];
-		// module.parent = undefined by default
-		if (!module.children) module.children = [];
-		Object.defineProperty(module, "loaded", {
-			enumerable: true,
-			get: function() {
-				return module.l;
-			}
-		});
-		Object.defineProperty(module, "id", {
-			enumerable: true,
-			get: function() {
-				return module.i;
-			}
-		});
-		module.webpackPolyfill = 1;
-	}
-	return module;
+    Object.defineProperty(element._store, 'validated', {
+      configurable: false,
+      enumerable: false,
+      writable: true,
+      value: false
+    }); // self and source are DEV only properties.
+
+    Object.defineProperty(element, '_self', {
+      configurable: false,
+      enumerable: false,
+      writable: false,
+      value: self
+    }); // Two elements created in two different places should be considered
+    // equal for testing purposes and therefore we hide it from enumeration.
+
+    Object.defineProperty(element, '_source', {
+      configurable: false,
+      enumerable: false,
+      writable: false,
+      value: source
+    });
+
+    if (Object.freeze) {
+      Object.freeze(element.props);
+      Object.freeze(element);
+    }
+  }
+
+  return element;
 };
+/**
+ * https://github.com/reactjs/rfcs/pull/107
+ * @param {*} type
+ * @param {object} props
+ * @param {string} key
+ */
+
+function jsxDEV(type, config, maybeKey, source, self) {
+  {
+    var propName; // Reserved names are extracted
+
+    var props = {};
+    var key = null;
+    var ref = null; // Currently, key can be spread in as a prop. This causes a potential
+    // issue if key is also explicitly declared (ie. <div {...props} key="Hi" />
+    // or <div key="Hi" {...props} /> ). We want to deprecate key spread,
+    // but as an intermediary step, we will use jsxDEV for everything except
+    // <div {...props} key="Hi" />, because we aren't currently able to tell if
+    // key is explicitly declared to be undefined or not.
+
+    if (maybeKey !== undefined) {
+      {
+        checkKeyStringCoercion(maybeKey);
+      }
+
+      key = '' + maybeKey;
+    }
+
+    if (hasValidKey(config)) {
+      {
+        checkKeyStringCoercion(config.key);
+      }
+
+      key = '' + config.key;
+    }
+
+    if (hasValidRef(config)) {
+      ref = config.ref;
+      warnIfStringRefCannotBeAutoConverted(config, self);
+    } // Remaining properties are added to a new props object
+
+
+    for (propName in config) {
+      if (hasOwnProperty.call(config, propName) && !RESERVED_PROPS.hasOwnProperty(propName)) {
+        props[propName] = config[propName];
+      }
+    } // Resolve default props
+
+
+    if (type && type.defaultProps) {
+      var defaultProps = type.defaultProps;
+
+      for (propName in defaultProps) {
+        if (props[propName] === undefined) {
+          props[propName] = defaultProps[propName];
+        }
+      }
+    }
+
+    if (key || ref) {
+      var displayName = typeof type === 'function' ? type.displayName || type.name || 'Unknown' : type;
+
+      if (key) {
+        defineKeyPropWarningGetter(props, displayName);
+      }
+
+      if (ref) {
+        defineRefPropWarningGetter(props, displayName);
+      }
+    }
+
+    return ReactElement(type, key, ref, self, source, ReactCurrentOwner.current, props);
+  }
+}
+
+var ReactCurrentOwner$1 = ReactSharedInternals.ReactCurrentOwner;
+var ReactDebugCurrentFrame$1 = ReactSharedInternals.ReactDebugCurrentFrame;
+
+function setCurrentlyValidatingElement$1(element) {
+  {
+    if (element) {
+      var owner = element._owner;
+      var stack = describeUnknownElementTypeFrameInDEV(element.type, element._source, owner ? owner.type : null);
+      ReactDebugCurrentFrame$1.setExtraStackFrame(stack);
+    } else {
+      ReactDebugCurrentFrame$1.setExtraStackFrame(null);
+    }
+  }
+}
+
+var propTypesMisspellWarningShown;
+
+{
+  propTypesMisspellWarningShown = false;
+}
+/**
+ * Verifies the object is a ReactElement.
+ * See https://reactjs.org/docs/react-api.html#isvalidelement
+ * @param {?object} object
+ * @return {boolean} True if `object` is a ReactElement.
+ * @final
+ */
+
+
+function isValidElement(object) {
+  {
+    return typeof object === 'object' && object !== null && object.$$typeof === REACT_ELEMENT_TYPE;
+  }
+}
+
+function getDeclarationErrorAddendum() {
+  {
+    if (ReactCurrentOwner$1.current) {
+      var name = getComponentNameFromType(ReactCurrentOwner$1.current.type);
+
+      if (name) {
+        return '\n\nCheck the render method of `' + name + '`.';
+      }
+    }
+
+    return '';
+  }
+}
+
+function getSourceInfoErrorAddendum(source) {
+  {
+    if (source !== undefined) {
+      var fileName = source.fileName.replace(/^.*[\\\/]/, '');
+      var lineNumber = source.lineNumber;
+      return '\n\nCheck your code at ' + fileName + ':' + lineNumber + '.';
+    }
+
+    return '';
+  }
+}
+/**
+ * Warn if there's no key explicitly set on dynamic arrays of children or
+ * object keys are not valid. This allows us to keep track of children between
+ * updates.
+ */
+
+
+var ownerHasKeyUseWarning = {};
+
+function getCurrentComponentErrorInfo(parentType) {
+  {
+    var info = getDeclarationErrorAddendum();
+
+    if (!info) {
+      var parentName = typeof parentType === 'string' ? parentType : parentType.displayName || parentType.name;
+
+      if (parentName) {
+        info = "\n\nCheck the top-level render call using <" + parentName + ">.";
+      }
+    }
+
+    return info;
+  }
+}
+/**
+ * Warn if the element doesn't have an explicit key assigned to it.
+ * This element is in an array. The array could grow and shrink or be
+ * reordered. All children that haven't already been validated are required to
+ * have a "key" property assigned to it. Error statuses are cached so a warning
+ * will only be shown once.
+ *
+ * @internal
+ * @param {ReactElement} element Element that requires a key.
+ * @param {*} parentType element's parent's type.
+ */
+
+
+function validateExplicitKey(element, parentType) {
+  {
+    if (!element._store || element._store.validated || element.key != null) {
+      return;
+    }
+
+    element._store.validated = true;
+    var currentComponentErrorInfo = getCurrentComponentErrorInfo(parentType);
+
+    if (ownerHasKeyUseWarning[currentComponentErrorInfo]) {
+      return;
+    }
+
+    ownerHasKeyUseWarning[currentComponentErrorInfo] = true; // Usually the current owner is the offender, but if it accepts children as a
+    // property, it may be the creator of the child that's responsible for
+    // assigning it a key.
+
+    var childOwner = '';
+
+    if (element && element._owner && element._owner !== ReactCurrentOwner$1.current) {
+      // Give the component that originally created this child.
+      childOwner = " It was passed a child from " + getComponentNameFromType(element._owner.type) + ".";
+    }
+
+    setCurrentlyValidatingElement$1(element);
+
+    error('Each child in a list should have a unique "key" prop.' + '%s%s See https://reactjs.org/link/warning-keys for more information.', currentComponentErrorInfo, childOwner);
+
+    setCurrentlyValidatingElement$1(null);
+  }
+}
+/**
+ * Ensure that every element either is passed in a static location, in an
+ * array with an explicit keys property defined, or in an object literal
+ * with valid key property.
+ *
+ * @internal
+ * @param {ReactNode} node Statically passed child of any type.
+ * @param {*} parentType node's parent's type.
+ */
+
+
+function validateChildKeys(node, parentType) {
+  {
+    if (typeof node !== 'object') {
+      return;
+    }
+
+    if (isArray(node)) {
+      for (var i = 0; i < node.length; i++) {
+        var child = node[i];
+
+        if (isValidElement(child)) {
+          validateExplicitKey(child, parentType);
+        }
+      }
+    } else if (isValidElement(node)) {
+      // This element was passed in a valid location.
+      if (node._store) {
+        node._store.validated = true;
+      }
+    } else if (node) {
+      var iteratorFn = getIteratorFn(node);
+
+      if (typeof iteratorFn === 'function') {
+        // Entry iterators used to provide implicit keys,
+        // but now we print a separate warning for them later.
+        if (iteratorFn !== node.entries) {
+          var iterator = iteratorFn.call(node);
+          var step;
+
+          while (!(step = iterator.next()).done) {
+            if (isValidElement(step.value)) {
+              validateExplicitKey(step.value, parentType);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+/**
+ * Given an element, validate that its props follow the propTypes definition,
+ * provided by the type.
+ *
+ * @param {ReactElement} element
+ */
+
+
+function validatePropTypes(element) {
+  {
+    var type = element.type;
+
+    if (type === null || type === undefined || typeof type === 'string') {
+      return;
+    }
+
+    var propTypes;
+
+    if (typeof type === 'function') {
+      propTypes = type.propTypes;
+    } else if (typeof type === 'object' && (type.$$typeof === REACT_FORWARD_REF_TYPE || // Note: Memo only checks outer props here.
+    // Inner props are checked in the reconciler.
+    type.$$typeof === REACT_MEMO_TYPE)) {
+      propTypes = type.propTypes;
+    } else {
+      return;
+    }
+
+    if (propTypes) {
+      // Intentionally inside to avoid triggering lazy initializers:
+      var name = getComponentNameFromType(type);
+      checkPropTypes(propTypes, element.props, 'prop', name, element);
+    } else if (type.PropTypes !== undefined && !propTypesMisspellWarningShown) {
+      propTypesMisspellWarningShown = true; // Intentionally inside to avoid triggering lazy initializers:
+
+      var _name = getComponentNameFromType(type);
+
+      error('Component %s declared `PropTypes` instead of `propTypes`. Did you misspell the property assignment?', _name || 'Unknown');
+    }
+
+    if (typeof type.getDefaultProps === 'function' && !type.getDefaultProps.isReactClassApproved) {
+      error('getDefaultProps is only used on classic React.createClass ' + 'definitions. Use a static property named `defaultProps` instead.');
+    }
+  }
+}
+/**
+ * Given a fragment, validate that it can only be provided with fragment props
+ * @param {ReactElement} fragment
+ */
+
+
+function validateFragmentProps(fragment) {
+  {
+    var keys = Object.keys(fragment.props);
+
+    for (var i = 0; i < keys.length; i++) {
+      var key = keys[i];
+
+      if (key !== 'children' && key !== 'key') {
+        setCurrentlyValidatingElement$1(fragment);
+
+        error('Invalid prop `%s` supplied to `React.Fragment`. ' + 'React.Fragment can only have `key` and `children` props.', key);
+
+        setCurrentlyValidatingElement$1(null);
+        break;
+      }
+    }
+
+    if (fragment.ref !== null) {
+      setCurrentlyValidatingElement$1(fragment);
+
+      error('Invalid attribute `ref` supplied to `React.Fragment`.');
+
+      setCurrentlyValidatingElement$1(null);
+    }
+  }
+}
+
+var didWarnAboutKeySpread = {};
+function jsxWithValidation(type, props, key, isStaticChildren, source, self) {
+  {
+    var validType = isValidElementType(type); // We warn in this case but don't throw. We expect the element creation to
+    // succeed and there will likely be errors in render.
+
+    if (!validType) {
+      var info = '';
+
+      if (type === undefined || typeof type === 'object' && type !== null && Object.keys(type).length === 0) {
+        info += ' You likely forgot to export your component from the file ' + "it's defined in, or you might have mixed up default and named imports.";
+      }
+
+      var sourceInfo = getSourceInfoErrorAddendum(source);
+
+      if (sourceInfo) {
+        info += sourceInfo;
+      } else {
+        info += getDeclarationErrorAddendum();
+      }
+
+      var typeString;
+
+      if (type === null) {
+        typeString = 'null';
+      } else if (isArray(type)) {
+        typeString = 'array';
+      } else if (type !== undefined && type.$$typeof === REACT_ELEMENT_TYPE) {
+        typeString = "<" + (getComponentNameFromType(type.type) || 'Unknown') + " />";
+        info = ' Did you accidentally export a JSX literal instead of a component?';
+      } else {
+        typeString = typeof type;
+      }
+
+      error('React.jsx: type is invalid -- expected a string (for ' + 'built-in components) or a class/function (for composite ' + 'components) but got: %s.%s', typeString, info);
+    }
+
+    var element = jsxDEV(type, props, key, source, self); // The result can be nullish if a mock or a custom function is used.
+    // TODO: Drop this when these are no longer allowed as the type argument.
+
+    if (element == null) {
+      return element;
+    } // Skip key warning if the type isn't valid since our key validation logic
+    // doesn't expect a non-string/function type and can throw confusing errors.
+    // We don't want exception behavior to differ between dev and prod.
+    // (Rendering will throw with a helpful message and as soon as the type is
+    // fixed, the key warnings will appear.)
+
+
+    if (validType) {
+      var children = props.children;
+
+      if (children !== undefined) {
+        if (isStaticChildren) {
+          if (isArray(children)) {
+            for (var i = 0; i < children.length; i++) {
+              validateChildKeys(children[i], type);
+            }
+
+            if (Object.freeze) {
+              Object.freeze(children);
+            }
+          } else {
+            error('React.jsx: Static children should always be an array. ' + 'You are likely explicitly calling React.jsxs or React.jsxDEV. ' + 'Use the Babel transform instead.');
+          }
+        } else {
+          validateChildKeys(children, type);
+        }
+      }
+    }
+
+    {
+      if (hasOwnProperty.call(props, 'key')) {
+        var componentName = getComponentNameFromType(type);
+        var keys = Object.keys(props).filter(function (k) {
+          return k !== 'key';
+        });
+        var beforeExample = keys.length > 0 ? '{key: someKey, ' + keys.join(': ..., ') + ': ...}' : '{key: someKey}';
+
+        if (!didWarnAboutKeySpread[componentName + beforeExample]) {
+          var afterExample = keys.length > 0 ? '{' + keys.join(': ..., ') + ': ...}' : '{}';
+
+          error('A props object containing a "key" prop is being spread into JSX:\n' + '  let props = %s;\n' + '  <%s {...props} />\n' + 'React keys must be passed directly to JSX without using spread:\n' + '  let props = %s;\n' + '  <%s key={someKey} {...props} />', beforeExample, componentName, afterExample, componentName);
+
+          didWarnAboutKeySpread[componentName + beforeExample] = true;
+        }
+      }
+    }
+
+    if (type === REACT_FRAGMENT_TYPE) {
+      validateFragmentProps(element);
+    } else {
+      validatePropTypes(element);
+    }
+
+    return element;
+  }
+} // These two functions exist to still get child warnings in dev
+// even with the prod transform. This means that jsxDEV is purely
+// opt-in behavior for better messages but that we won't stop
+// giving you warnings if you use production apis.
+
+function jsxWithValidationStatic(type, props, key) {
+  {
+    return jsxWithValidation(type, props, key, true);
+  }
+}
+function jsxWithValidationDynamic(type, props, key) {
+  {
+    return jsxWithValidation(type, props, key, false);
+  }
+}
+
+var jsx =  jsxWithValidationDynamic ; // we may want to special case jsxs internally to take advantage of static children.
+// for now we can ship identical prod functions
+
+var jsxs =  jsxWithValidationStatic ;
+
+exports.Fragment = REACT_FRAGMENT_TYPE;
+exports.jsx = jsx;
+exports.jsxs = jsxs;
+  })();
+}
 
 
 /***/ }),
 
-/***/ "./annotations_query_ctrl.ts":
-/*!***********************************!*\
-  !*** ./annotations_query_ctrl.ts ***!
-  \***********************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
+/***/ "../node_modules/react/jsx-runtime.js":
+/*!********************************************!*\
+  !*** ../node_modules/react/jsx-runtime.js ***!
+  \********************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-var FhirDatasourceAnnotationsQueryCtrl = /** @class */function () {
-    function FhirDatasourceAnnotationsQueryCtrl() {}
-    FhirDatasourceAnnotationsQueryCtrl.templateUrl = 'partials/annotations.editor.html';
-    return FhirDatasourceAnnotationsQueryCtrl;
-}();
-exports.FhirDatasourceAnnotationsQueryCtrl = FhirDatasourceAnnotationsQueryCtrl;
+
+if (false) // removed by dead control flow
+{} else {
+  module.exports = __webpack_require__(/*! ./cjs/react-jsx-runtime.development.js */ "../node_modules/react/cjs/react-jsx-runtime.development.js");
+}
+
 
 /***/ }),
 
-/***/ "./config_ctrl.ts":
-/*!************************!*\
-  !*** ./config_ctrl.ts ***!
-  \************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ "./components/ConfigEditor.tsx":
+/*!*************************************!*\
+  !*** ./components/ConfigEditor.tsx ***!
+  \*************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ConfigEditor: () => (/* binding */ ConfigEditor)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "../node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var _grafana_ui__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @grafana/ui */ "@grafana/ui");
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-var FhirDatasourceConfigCtrl = /** @class */function () {
-    function FhirDatasourceConfigCtrl($scope) {}
-    FhirDatasourceConfigCtrl.templateUrl = 'partials/config.html';
-    return FhirDatasourceConfigCtrl;
-}();
-exports.FhirDatasourceConfigCtrl = FhirDatasourceConfigCtrl;
+
+function ConfigEditor({ options, onOptionsChange }) {
+    const { jsonData } = options;
+    const onUrlChange = (event) => {
+        onOptionsChange({
+            ...options,
+            jsonData: {
+                ...jsonData,
+                fhirAddress: event.target.value,
+            },
+        });
+    };
+    return ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__.InlineField, { label: "FHIR base URL", labelWidth: 20, tooltip: "Root URL of the FHIR server", children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__.Input, { width: 40, value: jsonData.fhirAddress || '', placeholder: "http://localhost:8080/fhir", onChange: onUrlChange }) }));
+}
+
 
 /***/ }),
 
-/***/ "./css/query_editor.css":
-/*!******************************!*\
-  !*** ./css/query_editor.css ***!
-  \******************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ "./components/QueryEditor.tsx":
+/*!************************************!*\
+  !*** ./components/QueryEditor.tsx ***!
+  \************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   QueryEditor: () => (/* binding */ QueryEditor)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "../node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var _grafana_ui__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @grafana/ui */ "@grafana/ui");
 
 
-var content = __webpack_require__(/*! !../../node_modules/css-loader??ref--5-1!./query_editor.css */ "../node_modules/css-loader/index.js?!./css/query_editor.css");
 
-if(typeof content === 'string') content = [[module.i, content, '']];
+function QueryEditor({ query, datasource, onChange, onRunQuery }) {
+    const [resources, setResources] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]);
+    (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+        datasource.getResourceTypes().then((types) => setResources(types));
+    }, [datasource]);
+    const onResourceChange = (v) => {
+        onChange({ ...query, resourceType: v.value || '' });
+        onRunQuery();
+    };
+    const onParamChange = (v) => {
+        onChange({ ...query, searchParam: v.target.value });
+    };
+    const onValueChange = (v) => {
+        onChange({ ...query, searchValue: v.target.value });
+        onRunQuery();
+    };
+    return ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__.Stack, { gap: 1, wrap: false, direction: "row", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__.InlineField, { label: "Resource", children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__.Select, { options: resources, value: query.resourceType, onChange: onResourceChange, width: 20 }) }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__.InlineField, { label: "Search", children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__.Input, { width: 20, value: query.searchParam || '', onChange: onParamChange, placeholder: "code" }) }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__.InlineField, { label: "Value", children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__.Input, { width: 20, value: query.searchValue || '', onChange: onValueChange, placeholder: "*" }) })] }));
+}
 
-var transform;
-var insertInto;
-
-
-
-var options = {"hmr":true}
-
-options.transform = transform
-options.insertInto = undefined;
-
-var update = __webpack_require__(/*! ../../node_modules/style-loader/lib/addStyles.js */ "../node_modules/style-loader/lib/addStyles.js")(content, options);
-
-if(content.locals) module.exports = content.locals;
-
-if(false) {}
 
 /***/ }),
 
@@ -2244,438 +1438,208 @@ if(false) {}
 /*!***********************!*\
   !*** ./datasource.ts ***!
   \***********************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   DataSource: () => (/* binding */ DataSource)
+/* harmony export */ });
+/* harmony import */ var _grafana_data__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @grafana/data */ "@grafana/data");
+/* harmony import */ var _grafana_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @grafana/runtime */ "@grafana/runtime");
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./types */ "./types.ts");
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
 
-var _lodash = __webpack_require__(/*! lodash */ "lodash");
-
-var _lodash2 = _interopRequireDefault(_lodash);
-
-var _native = __webpack_require__(/*! fhir.js/src/adapters/native */ "../node_modules/fhir.js/src/adapters/native.js");
-
-var _native2 = _interopRequireDefault(_native);
-
-var _grafana = __webpack_require__(/*! ./utils/grafana/grafana.module */ "./utils/grafana/grafana.module.ts");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var FhirDatasourceDatasource = /** @class */function () {
-    //@ngInject
-    function FhirDatasourceDatasource(instanceSettings, $q, backendSrv, templateSrv) {
-        console.log("FhirDatasourceDatasource Ctor", instanceSettings);
-        this.id = instanceSettings.id;
-        this.type = instanceSettings.type;
-        this.url = instanceSettings.url;
-        this.name = instanceSettings.name;
-        this.q = $q;
-        this.backendSrv = backendSrv;
-        this.templateSrv = templateSrv;
-        this.withCredentials = instanceSettings.withCredentials;
-        this.headers = { 'Content-Type': 'application/json' };
-        this.config = instanceSettings.jsonData;
-        var config = {
-            'baseUrl': 'http://fhirtest.uhn.ca/baseDstu3',
-            'credentials': 'same-origin'
-        };
-        config.baseUrl = this.config.baseUrl || new URL(config.baseUrl).href;
-        this.client = (0, _native2.default)(config);
-        window.fhir_datasource = this;
-        window.fhir_client = this.client;
-        this.client.conformance({});
-        console.log("url", this.url);
-        console.log("backendSrv", this.backendSrv);
-        console.log("templateSrv", this.templateSrv);
-        this.backendSrv.datasourceRequest = function (request) {
-            console.log("datasourceRequest", request);
-            return this.$q.when({
-                _request: request,
-                data: ["metric_0", "metric_1", "metric_2"]
-            });
-        };
+class DataSource extends _grafana_data__WEBPACK_IMPORTED_MODULE_0__.DataSourceApi {
+    constructor(instanceSettings) {
+        super(instanceSettings);
+        this.baseUrl = instanceSettings.jsonData.fhirAddress || instanceSettings.url || 'http://localhost:8080/fhir';
     }
-    FhirDatasourceDatasource.prototype.query = function (options) {
-        console.log("FhirDatasourceDatasource Query", options);
-        var query = this.buildQueryParameters(options);
-        query.targets = query.targets.filter(function (t) {
-            return !t.hide;
-        });
-        console.log("query", query);
-        query.targets = [];
-        if (query.targets.length <= 0) {
-            return this.q.when({ data: [] });
-        }
-        return this.q.when({
-            data: []
-        });
-        //return this.doRequest(options);
-        //    return this.q.when(options);
-        /*    return this.q.when({
-              "range": { "from": "2015-12-22T03:06:13.851Z", "to": "2015-12-22T06:48:24.137Z" },
-              "interval": "5s",
-              "targets": [
-                { "refId": "B", "target": "upper_75" },
-                { "refId": "A", "target": "upper_90" }
-              ],
-              "format": "json",
-              "maxDataPoints": 2495, //decided by the panel
-              "data" : [ "uno","due","tre"]
-            });
-            */
-        /*
-            if (query.targets.length <= 0) {
-              return this.q.when({data: []});
+    getDefaultQuery() {
+        return _types__WEBPACK_IMPORTED_MODULE_2__.DEFAULT_QUERY;
+    }
+    async query(options) {
+        const promises = options.targets.map(t => this.fetchSeries(t));
+        const data = await Promise.all(promises);
+        return { data };
+    }
+    async fetchSeries(query) {
+        const params = query.searchParam && query.searchValue ? `?${encodeURIComponent(query.searchParam)}=${encodeURIComponent(query.searchValue)}` : '';
+        const url = `${this.baseUrl}/${query.resourceType}${params}`;
+        const res = await (0,_grafana_runtime__WEBPACK_IMPORTED_MODULE_1__.getBackendSrv)().fetch({ url }).toPromise();
+        const frame = new _grafana_data__WEBPACK_IMPORTED_MODULE_0__.MutableDataFrame({ refId: query.refId, fields: [{ name: 'Time', type: _grafana_data__WEBPACK_IMPORTED_MODULE_0__.FieldType.time }, { name: 'Value', type: _grafana_data__WEBPACK_IMPORTED_MODULE_0__.FieldType.number }] });
+        (res.data.entry || []).forEach((e) => {
+            const r = e.resource || {};
+            const ts = Date.parse(r.effectiveDateTime || r.issued || (r.meta && r.meta.lastUpdated) || '');
+            const val = r.valueQuantity && r.valueQuantity.value;
+            if (!isNaN(ts) && typeof val === 'number') {
+                frame.add({ Time: ts, Value: val });
             }
-        
-            if (this.templateSrv.getAdhocFilters) {
-              query.adhocFilters = this.templateSrv.getAdhocFilters(this.name);
-            } else {
-              query.adhocFilters = [];
-            }
-           
-            let x = this.doRequest(options);
-            console.log(x)
-            return x;
-        */
-        // return this.doRequest({
-        //   url: this.url + '/query',
-        //   data: query,
-        //   method: 'POST'
-        // });
-    };
-    FhirDatasourceDatasource.prototype.annotationQuery = function (options) {
-        console.log("FhirDatasourceDatasource annotationQuery", options);
-        throw new Error("Annotation Support not implemented yet.");
-        // var query = this.templateSrv.replace(options.annotation.query, {}, 'glob');
-        // var annotationQuery = {
-        //   range: options.range,
-        //   annotation: {
-        //     name: options.annotation.name,
-        //     datasource: options.annotation.datasource,
-        //     enable: options.annotation.enable,
-        //     iconColor: options.annotation.iconColor,
-        //     query: query
-        //   },
-        //   rangeRaw: options.rangeRaw
-        // };
-        // return this.doRequest({
-        //   url: this.url + '/annotations',
-        //   method: 'POST',
-        //   data: annotationQuery
-        // }).then(result => {
-        //   return result.data;
-        // });
-    };
-    FhirDatasourceDatasource.prototype.metricFindQuery = function (query) {
-        console.log("metricFindQuery", query);
-        var interpolated = {
-            target: this.templateSrv.replace(query, null, 'regex')
-        };
-        return this.client.conformance({}).then(function (response) {
-            var toRet = [];
-            toRet = response.data.rest[0].resource.map(function (tmp) {
-                return new _grafana.GrafanaHelper.Metric(tmp.type, tmp.type);
-            });
-            return toRet;
         });
-    };
-    FhirDatasourceDatasource.prototype.testDatasource = function () {
-        var _this = this;
-        return this.client.conformance({}).then(function (response) {
-            if (response.data) {
-                _this.conformance = response.data || [];
-                console.log(_this.conformance);
-                if (_this.isValidServer()) {
-                    return _grafana.GrafanaHelper.Response.success("Server added successfully!", _this.conformance.software.name + " is a valid Fhir Server.");
-                } else return _grafana.GrafanaHelper.Response.error("Cannot add Server!", "The server doesn't seem to be a valid one!");
-            } else return _grafana.GrafanaHelper.Response.error("Cannot add Server!", "The server's response is not compliant!");
-        }, function (err) {
-            var errmsg = "";
-            if (err.error && err.error instanceof TypeError) errmsg = err.error.message;else errmsg = "[" + err.error.status + "] " + err.error.statusText;
-            return _grafana.GrafanaHelper.Response.error("Cannot add Server!", "We couldn't add the server:\n" + errmsg);
-        });
-    };
-    /**
-     * Contains the logic to check if the provided server is a valid one.
-     * At the moment it only checks if it has a conformance object and
-     * if the conformance has a fhirVersion attribute.
-    */
-    FhirDatasourceDatasource.prototype.isValidServer = function () {
-        if (this.conformance != [] && this.conformance.fhirVersion) {
-            return true;
-        }
-        return false;
-    };
-    FhirDatasourceDatasource.prototype.doRequest = function (options) {
-        options.withCredentials = this.withCredentials;
-        options.headers = this.headers;
-        console.log("options", options);
-        var x = this.backendSrv.datasourceRequest(options);
-        console.log("backend", x);
-        return x;
-    };
-    FhirDatasourceDatasource.prototype.buildQueryParameters = function (options) {
-        var _this = this;
-        //remove placeholder targets
-        options.targets = _lodash2.default.filter(options.targets, function (target) {
-            return target.target !== 'select metric';
-        });
-        console.log("buildQueryParameters", options);
-        var targets = _lodash2.default.map(options.targets, function (target) {
-            return {
-                target: _this.templateSrv.replace(target.target, options.scopedVars, 'regex'),
-                refId: target.refId,
-                hide: target.hide,
-                type: target.type || 'timeserie'
-            };
-        });
-        options.targets = targets;
-        return options;
-    };
-    FhirDatasourceDatasource.prototype.getTagKeys = function (options) {
-        var _this = this;
-        return new Promise(function (resolve, reject) {
-            _this.doRequest({
-                url: _this.url + '/tag-keys',
-                method: 'POST',
-                data: options
-            }).then(function (result) {
-                return resolve(result.data);
-            });
-        });
-    };
-    FhirDatasourceDatasource.prototype.getTagValues = function (options) {
-        var _this = this;
-        return new Promise(function (resolve, reject) {
-            _this.doRequest({
-                url: _this.url + '/tag-values',
-                method: 'POST',
-                data: options
-            }).then(function (result) {
-                return resolve(result.data);
-            });
-        });
-    };
-    return FhirDatasourceDatasource;
-}(); ///<reference path="../node_modules/grafana-sdk-mocks/app/headers/common.d.ts" />
-exports.default = FhirDatasourceDatasource;
-
-/***/ }),
-
-/***/ "./module.ts":
-/*!*******************!*\
-  !*** ./module.ts ***!
-  \*******************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.QueryOptionsCtrl = exports.AnnotationsQueryCtrl = exports.ConfigCtrl = exports.QueryCtrl = exports.Datasource = undefined;
-
-var _datasource = __webpack_require__(/*! ./datasource */ "./datasource.ts");
-
-var _datasource2 = _interopRequireDefault(_datasource);
-
-var _query_ctrl = __webpack_require__(/*! ./query_ctrl */ "./query_ctrl.ts");
-
-var _annotations_query_ctrl = __webpack_require__(/*! ./annotations_query_ctrl */ "./annotations_query_ctrl.ts");
-
-var _config_ctrl = __webpack_require__(/*! ./config_ctrl */ "./config_ctrl.ts");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var GenericQueryOptionsCtrl = /** @class */function () {
-    function GenericQueryOptionsCtrl() {
-        this.templateUrl = 'partials/query.options.html';
+        return frame;
     }
-    return GenericQueryOptionsCtrl;
-}();
-var GenericAnnotationsQueryCtrl = /** @class */function () {
-    function GenericAnnotationsQueryCtrl() {
-        this.templateUrl = 'partials/annotations.editor.html';
+    async testDatasource() {
+        try {
+            await (0,_grafana_runtime__WEBPACK_IMPORTED_MODULE_1__.getBackendSrv)().fetch({ url: `${this.baseUrl}/metadata` }).toPromise();
+            return { status: 'success', message: 'Success' };
+        }
+        catch (err) {
+            return { status: 'error', message: 'Failed to connect to FHIR server' };
+        }
     }
-    return GenericAnnotationsQueryCtrl;
-}();
-exports.Datasource = _datasource2.default;
-exports.QueryCtrl = _query_ctrl.FhirDatasourceQueryCtrl;
-exports.ConfigCtrl = _config_ctrl.FhirDatasourceConfigCtrl;
-exports.AnnotationsQueryCtrl = _annotations_query_ctrl.FhirDatasourceAnnotationsQueryCtrl;
-exports.QueryOptionsCtrl = GenericQueryOptionsCtrl;
-//GenericAnnotationsQueryCtrl as AnnotationsQueryCtrl
-
-/***/ }),
-
-/***/ "./query_ctrl.ts":
-/*!***********************!*\
-  !*** ./query_ctrl.ts ***!
-  \***********************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.FhirDatasourceQueryCtrl = undefined;
-
-var _sdk = __webpack_require__(/*! grafana/app/plugins/sdk */ "grafana/app/plugins/sdk");
-
-__webpack_require__(/*! ./css/query_editor.css */ "./css/query_editor.css");
-
-var __extends = undefined && undefined.__extends || function () {
-    var extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function (d, b) {
-        d.__proto__ = b;
-    } || function (d, b) {
-        for (var p in b) {
-            if (b.hasOwnProperty(p)) d[p] = b[p];
+    async getResourceTypes() {
+        try {
+            const res = await (0,_grafana_runtime__WEBPACK_IMPORTED_MODULE_1__.getBackendSrv)().fetch({ url: `${this.baseUrl}/metadata` }).toPromise();
+            const types = res.data.rest[0].resource.map((r) => ({ label: r.type, value: r.type }));
+            return types;
         }
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() {
-            this.constructor = d;
+        catch (err) {
+            return [];
         }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-}();
-
-var FhirDatasourceQueryCtrl = /** @class */function (_super) {
-    __extends(FhirDatasourceQueryCtrl, _super);
-    /** @ngInject **/
-    function FhirDatasourceQueryCtrl($scope, $injector) {
-        var _this = _super.call(this, $scope, $injector) || this;
-        _this.defaults = {};
-        console.log("FhirDatasourceQueryCtrl"), $scope;
-        _this.scope = $scope;
-        //_.defaultsDeep(this.target, this.defaults);
-        _this.target.target = _this.target.target || 'select metric';
-        _this.target.type = _this.target.type || 'timeserie';
-        return _this;
     }
-    FhirDatasourceQueryCtrl.prototype.getOptions = function (query) {
-        console.log("getOptions", query);
-        return this.datasource.metricFindQuery(query || '');
-    };
-    FhirDatasourceQueryCtrl.prototype.onChangeInternal = function () {
-        this.panelCtrl.refresh(); // Asks the panel to refresh data.
-    };
-    FhirDatasourceQueryCtrl.prototype.toggleEditorMode = function () {
-        this.target.rawQuery = !this.target.rawQuery;
-    };
-    FhirDatasourceQueryCtrl.templateUrl = 'partials/query.editor.html';
-    return FhirDatasourceQueryCtrl;
-}(_sdk.QueryCtrl);
-exports.FhirDatasourceQueryCtrl = FhirDatasourceQueryCtrl;
+}
+
 
 /***/ }),
 
-/***/ "./utils/grafana/grafana.module.ts":
-/*!*****************************************!*\
-  !*** ./utils/grafana/grafana.module.ts ***!
-  \*****************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ "./types.ts":
+/*!******************!*\
+  !*** ./types.ts ***!
+  \******************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   DEFAULT_QUERY: () => (/* binding */ DEFAULT_QUERY)
+/* harmony export */ });
+const DEFAULT_QUERY = {
+    resourceType: 'Observation',
+};
 
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-var GrafanaHelper = exports.GrafanaHelper = undefined;
-(function (GrafanaHelper) {
-    /**
-     * Possible result statuses for testDatasource
-     */
-    var ReturnStatus;
-    (function (ReturnStatus) {
-        ReturnStatus["success"] = "success";
-        ReturnStatus["error"] = "error";
-    })(ReturnStatus = GrafanaHelper.ReturnStatus || (GrafanaHelper.ReturnStatus = {}));
-    /**
-     * Helper class to generate the right json object to pass over to grafana.
-     * It handles success and error object messages.
-     */
-    var Response = /** @class */function () {
-        function Response() {
-            this.retObj = {};
-        }
-        /**
-         * Generates error json message
-         * @param title Message title
-         * @param msg Message body
-         */
-        Response.error = function (title, msg) {
-            return {
-                status: ReturnStatus.error,
-                title: title,
-                message: msg
-            };
-        };
-        /**
-         * Generates success json messages
-         * @param title Message title
-         * @param msg Message body
-         */
-        Response.success = function (title, msg) {
-            return {
-                status: ReturnStatus.success,
-                title: title,
-                message: msg
-            };
-        };
-        return Response;
-    }();
-    GrafanaHelper.Response = Response;
-    var Metric = /** @class */function () {
-        /**
-         *
-         */
-        function Metric(text, value) {
-            this.text = text;
-            this.value = value;
-        }
-        return Metric;
-    }();
-    GrafanaHelper.Metric = Metric;
-})(GrafanaHelper || (exports.GrafanaHelper = GrafanaHelper = {}));
 
 /***/ }),
 
-/***/ "grafana/app/plugins/sdk":
-/*!**********************************!*\
-  !*** external "app/plugins/sdk" ***!
-  \**********************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/***/ "@grafana/data":
+/*!********************************!*\
+  !*** external "@grafana/data" ***!
+  \********************************/
+/***/ ((module) => {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE_grafana_app_plugins_sdk__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__grafana_data_c75919de__;
 
 /***/ }),
 
-/***/ "lodash":
-/*!*************************!*\
-  !*** external "lodash" ***!
-  \*************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/***/ "@grafana/runtime":
+/*!***********************************!*\
+  !*** external "@grafana/runtime" ***!
+  \***********************************/
+/***/ ((module) => {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE_lodash__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__grafana_runtime_4c5ab4ad__;
+
+/***/ }),
+
+/***/ "@grafana/ui":
+/*!******************************!*\
+  !*** external "@grafana/ui" ***!
+  \******************************/
+/***/ ((module) => {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__grafana_ui_51195499__;
+
+/***/ }),
+
+/***/ "react":
+/*!************************!*\
+  !*** external "react" ***!
+  \************************/
+/***/ ((module) => {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE_react__;
 
 /***/ })
 
-/******/ })});;
+/******/ });
+/************************************************************************/
+/******/ // The module cache
+/******/ var __webpack_module_cache__ = {};
+/******/ 
+/******/ // The require function
+/******/ function __webpack_require__(moduleId) {
+/******/ 	// Check if module is in cache
+/******/ 	var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 	if (cachedModule !== undefined) {
+/******/ 		return cachedModule.exports;
+/******/ 	}
+/******/ 	// Create a new module (and put it into the cache)
+/******/ 	var module = __webpack_module_cache__[moduleId] = {
+/******/ 		// no module.id needed
+/******/ 		// no module.loaded needed
+/******/ 		exports: {}
+/******/ 	};
+/******/ 
+/******/ 	// Execute the module function
+/******/ 	__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 
+/******/ 	// Return the exports of the module
+/******/ 	return module.exports;
+/******/ }
+/******/ 
+/************************************************************************/
+/******/ /* webpack/runtime/define property getters */
+/******/ (() => {
+/******/ 	// define getter functions for harmony exports
+/******/ 	__webpack_require__.d = (exports, definition) => {
+/******/ 		for(var key in definition) {
+/******/ 			if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 				Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 			}
+/******/ 		}
+/******/ 	};
+/******/ })();
+/******/ 
+/******/ /* webpack/runtime/hasOwnProperty shorthand */
+/******/ (() => {
+/******/ 	__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ })();
+/******/ 
+/******/ /* webpack/runtime/make namespace object */
+/******/ (() => {
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = (exports) => {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/ })();
+/******/ 
+/************************************************************************/
+var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be isolated against other modules in the chunk.
+(() => {
+/*!*******************!*\
+  !*** ./module.ts ***!
+  \*******************/
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   plugin: () => (/* binding */ plugin)
+/* harmony export */ });
+/* harmony import */ var _grafana_data__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @grafana/data */ "@grafana/data");
+/* harmony import */ var _datasource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./datasource */ "./datasource.ts");
+/* harmony import */ var _components_ConfigEditor__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/ConfigEditor */ "./components/ConfigEditor.tsx");
+/* harmony import */ var _components_QueryEditor__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/QueryEditor */ "./components/QueryEditor.tsx");
+
+
+
+
+const plugin = new _grafana_data__WEBPACK_IMPORTED_MODULE_0__.DataSourcePlugin(_datasource__WEBPACK_IMPORTED_MODULE_1__.DataSource)
+    .setConfigEditor(_components_ConfigEditor__WEBPACK_IMPORTED_MODULE_2__.ConfigEditor)
+    .setQueryEditor(_components_QueryEditor__WEBPACK_IMPORTED_MODULE_3__.QueryEditor);
+
+})();
+
+const __webpack_exports__plugin = __webpack_exports__.plugin;
+export { __webpack_exports__plugin as plugin };
+
 //# sourceMappingURL=module.js.map
