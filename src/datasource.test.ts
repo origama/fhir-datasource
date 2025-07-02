@@ -6,11 +6,45 @@ jest.mock('@grafana/runtime', () => ({
   getBackendSrv: jest.fn(),
 }));
 
-jest.mock('@grafana/data', () => ({
-  DataSourceApi: class {},
-  MutableDataFrame: class { constructor(public _opts?: any) {} add() {} },
-  FieldType: { time: 'time', number: 'number' },
-}));
+jest.mock('@grafana/data', () => {
+  const addMock = jest.fn();
+  class MockFrame {
+    _opts: any;
+    add = addMock;
+    constructor(opts?: any) {
+      this._opts = opts;
+    }
+  }
+  return {
+    DataSourceApi: class {},
+    MutableDataFrame: MockFrame,
+    FieldType: { time: 'time', number: 'number', string: 'string' },
+    __addMock: addMock,
+  };
+});
+
+describe('DataSource.fetchSeries', () => {
+  it('converts resources to a dataframe', async () => {
+    const { __addMock } = jest.requireMock('@grafana/data');
+    __addMock.mockClear();
+    const fetch = jest.fn().mockReturnValue(
+      of({ data: { entry: [{ resource: { id: '1', name: 'Alice' } }, { resource: { id: '2', name: 'Bob' } }] } })
+    );
+    (getBackendSrv as jest.Mock).mockReturnValue({ fetch });
+
+    const ds = new DataSource(makeSettings('http://example.com'));
+    const frame: any = await ds.fetchSeries({ resourceType: 'Patient', refId: 'A' } as any);
+
+    expect(fetch).toHaveBeenCalledWith({ url: '/api/datasources/proxy/1/Patient' });
+    expect(frame._opts.fields).toEqual([
+      { name: 'id', type: 'string' },
+      { name: 'name', type: 'string' },
+    ]);
+    expect(__addMock).toHaveBeenCalledTimes(2);
+    expect(__addMock.mock.calls[0][0]).toEqual({ id: '1', name: 'Alice' });
+    expect(__addMock.mock.calls[1][0]).toEqual({ id: '2', name: 'Bob' });
+  });
+});
 
 function makeSettings(url: string, useProxy = true) {
   return {

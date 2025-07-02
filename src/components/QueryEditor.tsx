@@ -36,7 +36,7 @@ export function QueryEditor({ query, datasource, onChange, onRunQuery }: Props) 
   };
 
   return (
-    <Stack gap={1} wrap={false} direction="row">
+    <Stack gap={1} wrap="nowrap" direction="row">
       <InlineField label="Resource">
         <Select options={resources} value={query.resourceType} onChange={onResourceChange} width={20} />
       </InlineField>
