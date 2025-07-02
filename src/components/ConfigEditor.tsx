@@ -9,11 +9,13 @@ export function ConfigEditor({ options, onOptionsChange }: Props) {
   const { jsonData } = options;
 
   const onUrlChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
     onOptionsChange({
       ...options,
+      url: value,
       jsonData: {
         ...jsonData,
-        fhirAddress: event.target.value,
+        fhirAddress: value,
       },
     });
   };

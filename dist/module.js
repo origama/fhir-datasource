@@ -2520,11 +2520,13 @@ function ConfigEditor({ options, onOptionsChange }) {
     var _a;
     const { jsonData } = options;
     const onUrlChange = (event) => {
+        const value = event.target.value;
         onOptionsChange({
             ...options,
+            url: value,
             jsonData: {
                 ...jsonData,
-                fhirAddress: event.target.value,
+                fhirAddress: value,
             },
         });
     };
