@@ -2516,8 +2516,28 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-function ConfigEditor() {
-    return ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__.Alert, { title: "Configuration", severity: "info", children: ["Use the built-in ", (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("strong", { children: "URL" }), " field above to configure the FHIR server."] }));
+function ConfigEditor({ options, onOptionsChange }) {
+    var _a;
+    const { jsonData } = options;
+    const onUrlChange = (event) => {
+        onOptionsChange({
+            ...options,
+            jsonData: {
+                ...jsonData,
+                fhirAddress: event.target.value,
+            },
+        });
+    };
+    const onProxyChange = (event) => {
+        onOptionsChange({
+            ...options,
+            jsonData: {
+                ...jsonData,
+                useProxy: event.target.checked,
+            },
+        });
+    };
+    return ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__.Stack, { gap: 1, direction: "column", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__.InlineField, { label: "FHIR base URL", labelWidth: 20, tooltip: "Root URL of the FHIR server", children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__.Input, { width: 40, value: jsonData.fhirAddress || '', placeholder: "http://fhir:8080/fhir", onChange: onUrlChange }) }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__.InlineField, { label: "Use proxy", labelWidth: 20, tooltip: "Route requests through Grafana", children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__.InlineSwitch, { value: (_a = jsonData.useProxy) !== null && _a !== void 0 ? _a : false, onChange: onProxyChange }) })] }));
 }
 
 
@@ -2587,6 +2607,14 @@ class DataSource extends _grafana_data__WEBPACK_IMPORTED_MODULE_0__.DataSourceAp
     getProxyBase() {
         return `/api/datasources/proxy/${this.instanceSettings.id}`;
     }
+    getDirectBase() {
+        const { jsonData, url } = this.instanceSettings;
+        return jsonData.fhirAddress || url || 'http://localhost:8080/fhir';
+    }
+    getBaseUrl() {
+        const { jsonData } = this.instanceSettings;
+        return jsonData.useProxy ? this.getProxyBase() : this.getDirectBase();
+    }
     getDefaultQuery() {
         return _types__WEBPACK_IMPORTED_MODULE_2__.DEFAULT_QUERY;
     }
@@ -2597,7 +2625,7 @@ class DataSource extends _grafana_data__WEBPACK_IMPORTED_MODULE_0__.DataSourceAp
     }
     async fetchSeries(query) {
         const params = query.searchParam && query.searchValue ? `?${encodeURIComponent(query.searchParam)}=${encodeURIComponent(query.searchValue)}` : '';
-        const url = `${this.getProxyBase()}/${query.resourceType}${params}`;
+        const url = `${this.getBaseUrl()}/${query.resourceType}${params}`;
         const res = await (0,rxjs__WEBPACK_IMPORTED_MODULE_3__.firstValueFrom)((0,_grafana_runtime__WEBPACK_IMPORTED_MODULE_1__.getBackendSrv)().fetch({ url }));
         const frame = new _grafana_data__WEBPACK_IMPORTED_MODULE_0__.MutableDataFrame({ refId: query.refId, fields: [{ name: 'Time', type: _grafana_data__WEBPACK_IMPORTED_MODULE_0__.FieldType.time }, { name: 'Value', type: _grafana_data__WEBPACK_IMPORTED_MODULE_0__.FieldType.number }] });
         (res.data.entry || []).forEach((e) => {
@@ -2612,7 +2640,7 @@ class DataSource extends _grafana_data__WEBPACK_IMPORTED_MODULE_0__.DataSourceAp
     }
     async testDatasource() {
         try {
-            await (0,rxjs__WEBPACK_IMPORTED_MODULE_3__.firstValueFrom)((0,_grafana_runtime__WEBPACK_IMPORTED_MODULE_1__.getBackendSrv)().fetch({ url: `${this.getProxyBase()}/metadata` }));
+            await (0,rxjs__WEBPACK_IMPORTED_MODULE_3__.firstValueFrom)((0,_grafana_runtime__WEBPACK_IMPORTED_MODULE_1__.getBackendSrv)().fetch({ url: `${this.getBaseUrl()}/metadata` }));
             return { status: 'success', message: 'Success' };
         }
         catch (err) {
@@ -2621,7 +2649,7 @@ class DataSource extends _grafana_data__WEBPACK_IMPORTED_MODULE_0__.DataSourceAp
     }
     async getResourceTypes() {
         try {
-            const res = await (0,rxjs__WEBPACK_IMPORTED_MODULE_3__.firstValueFrom)((0,_grafana_runtime__WEBPACK_IMPORTED_MODULE_1__.getBackendSrv)().fetch({ url: `${this.getProxyBase()}/metadata` }));
+            const res = await (0,rxjs__WEBPACK_IMPORTED_MODULE_3__.firstValueFrom)((0,_grafana_runtime__WEBPACK_IMPORTED_MODULE_1__.getBackendSrv)().fetch({ url: `${this.getBaseUrl()}/metadata` }));
             const types = res.data.rest[0].resource.map((r) => ({ label: r.type, value: r.type }));
             return types;
         }

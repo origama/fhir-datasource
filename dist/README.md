@@ -26,7 +26,7 @@ Grafana will load the compiled plugin from `dist` without rebuilding it.
 
 ### Configuration
 
-Set the FHIR server address using the built-in **URL** option when adding the datasource in Grafana. Requests are routed through Grafana's proxy so the server does not need CORS enabled.
+Specify the FHIR server address in the **FHIR base URL** field on the datasource configuration page. Enable **Use proxy** to route requests through Grafana's datasource proxy (recommended to avoid CORS issues) or disable it for direct connectivity.
 
 ### Build
 
