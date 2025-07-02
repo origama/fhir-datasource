@@ -8,6 +8,10 @@ type Props = QueryEditorProps<DataSource, FhirQuery, FhirDataSourceOptions>;
 
 export function QueryEditor({ query, datasource, onChange, onRunQuery }: Props) {
   const [resources, setResources] = useState<Array<SelectableValue<string>>>([]);
+  const operatorOptions = [
+    { label: '==', value: '==' },
+    { label: '!=', value: '!=' },
+  ];
 
   useEffect(() => {
     datasource.getResourceTypes().then((types) => setResources(types));
@@ -22,6 +26,10 @@ export function QueryEditor({ query, datasource, onChange, onRunQuery }: Props) 
     onChange({ ...query, searchParam: v.target.value });
   };
 
+  const onOperatorChange = (v: SelectableValue<string>) => {
+    onChange({ ...query, operator: v.value || '==' });
+  };
+
   const onValueChange = (v: React.ChangeEvent<HTMLInputElement>) => {
     onChange({ ...query, searchValue: v.target.value });
     onRunQuery();
@@ -34,6 +42,9 @@ export function QueryEditor({ query, datasource, onChange, onRunQuery }: Props) 
       </InlineField>
       <InlineField label="Search">
         <Input width={20} value={query.searchParam || ''} onChange={onParamChange} placeholder="code" />
+      </InlineField>
+      <InlineField label="Op">
+        <Select options={operatorOptions} value={query.operator} onChange={onOperatorChange} width={8} />
       </InlineField>
       <InlineField label="Value">
         <Input width={20} value={query.searchValue || ''} onChange={onValueChange} placeholder="*" />

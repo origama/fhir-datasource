@@ -36,7 +36,11 @@ export class DataSource extends DataSourceApi<FhirQuery, FhirDataSourceOptions> 
   }
 
   async fetchSeries(query: FhirQuery) {
-    const params = query.searchParam && query.searchValue ? `?${encodeURIComponent(query.searchParam)}=${encodeURIComponent(query.searchValue)}` : '';
+    let params = '';
+    if (query.searchParam && query.searchValue) {
+      const prefix = query.operator === '!=' ? ':ne' : '';
+      params = `?${encodeURIComponent(query.searchParam)}${prefix}=${encodeURIComponent(query.searchValue)}`;
+    }
     const url = `${this.getBaseUrl()}/${query.resourceType}${params}`;
     const res = await firstValueFrom(getBackendSrv().fetch<any>({ url }));
     const frame = new MutableDataFrame({ refId: query.refId, fields: [{ name: 'Time', type: FieldType.time }, { name: 'Value', type: FieldType.number }] });
