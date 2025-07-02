@@ -4,11 +4,25 @@ import { firstValueFrom } from 'rxjs';
 import { FhirQuery, FhirDataSourceOptions, DEFAULT_QUERY } from './types';
 
 export class DataSource extends DataSourceApi<FhirQuery, FhirDataSourceOptions> {
-  baseUrl: string;
+  instanceSettings: DataSourceInstanceSettings<FhirDataSourceOptions>;
 
   constructor(instanceSettings: DataSourceInstanceSettings<FhirDataSourceOptions>) {
     super(instanceSettings);
-    this.baseUrl = instanceSettings.jsonData.fhirAddress || instanceSettings.url || 'http://localhost:8080/fhir';
+    this.instanceSettings = instanceSettings;
+  }
+
+  private getProxyBase() {
+    return `/api/datasources/proxy/${this.instanceSettings.id}`;
+  }
+
+  private getDirectBase() {
+    const { jsonData, url } = this.instanceSettings;
+    return jsonData.fhirAddress || url || 'http://localhost:8080/fhir';
+  }
+
+  private getBaseUrl() {
+    const { jsonData } = this.instanceSettings;
+    return jsonData.useProxy ? this.getProxyBase() : this.getDirectBase();
   }
 
   getDefaultQuery() {
@@ -23,7 +37,7 @@ export class DataSource extends DataSourceApi<FhirQuery, FhirDataSourceOptions> 
 
   async fetchSeries(query: FhirQuery) {
     const params = query.searchParam && query.searchValue ? `?${encodeURIComponent(query.searchParam)}=${encodeURIComponent(query.searchValue)}` : '';
-    const url = `${this.baseUrl}/${query.resourceType}${params}`;
+    const url = `${this.getBaseUrl()}/${query.resourceType}${params}`;
     const res = await firstValueFrom(getBackendSrv().fetch<any>({ url }));
     const frame = new MutableDataFrame({ refId: query.refId, fields: [{ name: 'Time', type: FieldType.time }, { name: 'Value', type: FieldType.number }] });
     (res.data.entry || []).forEach((e: any) => {
@@ -39,7 +53,7 @@ export class DataSource extends DataSourceApi<FhirQuery, FhirDataSourceOptions> 
 
   async testDatasource() {
     try {
-      await firstValueFrom(getBackendSrv().fetch({ url: `${this.baseUrl}/metadata` }));
+      await firstValueFrom(getBackendSrv().fetch({ url: `${this.getBaseUrl()}/metadata` }));
       return { status: 'success', message: 'Success' };
     } catch (err) {
       return { status: 'error', message: 'Failed to connect to FHIR server' };
@@ -48,7 +62,7 @@ export class DataSource extends DataSourceApi<FhirQuery, FhirDataSourceOptions> 
 
   async getResourceTypes() {
     try {
-      const res = await firstValueFrom(getBackendSrv().fetch<any>({ url: `${this.baseUrl}/metadata` }));
+      const res = await firstValueFrom(getBackendSrv().fetch<any>({ url: `${this.getBaseUrl()}/metadata` }));
       const types = res.data.rest[0].resource.map((r: any) => ({ label: r.type, value: r.type }));
       return types;
     } catch (err) {

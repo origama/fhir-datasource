@@ -12,6 +12,7 @@ export const DEFAULT_QUERY: Partial<FhirQuery> = {
 
 export interface FhirDataSourceOptions extends DataSourceJsonData {
   fhirAddress?: string;
+  useProxy?: boolean;
 }
 
 export interface FhirSecureJsonData {}

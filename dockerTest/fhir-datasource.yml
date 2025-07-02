@@ -5,3 +5,5 @@ datasources:
     access: proxy
     url: http://fhir:8080/fhir
     isDefault: true
+    readOnly: false
+    editable: true

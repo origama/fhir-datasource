@@ -6,15 +6,27 @@ It is written in TypeScript and uses the latest Grafana plugin APIs.
 ### Developer Notes
 
 The project targets **Node.js 20**, **TypeScript 5**, and Grafana **v12**.
-A simple docker-compose setup builds the plugin and starts Grafana:
+A simple docker-compose setup can build the plugin and start Grafana.
+First build the datasource using the dedicated compose file:
 
 ```bash
-docker-compose -f dockerTest/docker-compose-grafana-hapi.yml up
+docker compose -f dockerTest/docker-compose.build.yml run --rm builder
 ```
 
-This starts Grafana together with a HAPI FHIR server populated with test data.
-The `builder` service compiles the plugin before Grafana starts so you always
-run the latest code without installing Node locally.
+This runs a Node 20 container that installs dependencies and executes the
+build command, producing the `dist` directory.
+
+Then start Grafana:
+
+```bash
+docker compose -f dockerTest/docker-compose-grafana-hapi.yml up
+```
+
+Grafana will load the compiled plugin from `dist` without rebuilding it.
+
+### Configuration
+
+Specify the FHIR server address in the **FHIR base URL** field on the datasource configuration page. Enable **Use proxy** to route requests through Grafana's datasource proxy (recommended to avoid CORS issues) or disable it for direct connectivity.
 
 ### Build
 
