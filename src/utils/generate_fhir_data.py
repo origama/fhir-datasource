@@ -4,6 +4,7 @@ generate_fhir_data.py
 --------------------------------------------------
 • 10 Person + 10 matching Patient resources
 • 10 DiagnosticReport resources per Patient
+• 10 Observation resources per Patient with recent values
 • Uses urn:uuid: placeholders so order doesn’t matter
 • Optional POST to a FHIR endpoint
 """
@@ -43,6 +44,14 @@ SNOMED_CODES = [
     ("104177005", "Chest X-ray")
 ]
 
+OBSERVATION_CODES = [
+    ("29463-7", "Body Weight", "kg"),
+    ("8867-4", "Heart rate", "beats/min"),
+    ("8480-6", "Systolic blood pressure", "mmHg"),
+    ("8462-4", "Diastolic blood pressure", "mmHg"),
+    ("8310-5", "Body temperature", "°C"),
+]
+
 # ---------------------------------------------------------------------------
 # Helper functions
 # ---------------------------------------------------------------------------
@@ -59,6 +68,27 @@ def random_datetime(start_year: int = 2020) -> str:
     e = dt.datetime.now().timestamp()
     ts = random.uniform(s, e)
     return dt.datetime.fromtimestamp(ts).replace(microsecond=0).isoformat()
+
+
+def random_recent_datetime(days: int = 15) -> str:
+    now = dt.datetime.now()
+    earliest = now - dt.timedelta(days=days)
+    ts = random.uniform(earliest.timestamp(), now.timestamp())
+    return dt.datetime.fromtimestamp(ts).replace(microsecond=0).isoformat()
+
+
+def observation_value(code: str) -> float:
+    if code == "29463-7":  # Body Weight
+        return round(random.uniform(50.0, 100.0), 1)
+    if code == "8867-4":  # Heart rate
+        return random.randint(60, 100)
+    if code == "8480-6":  # Systolic blood pressure
+        return random.randint(110, 140)
+    if code == "8462-4":  # Diastolic blood pressure
+        return random.randint(70, 90)
+    if code == "8310-5":  # Body temperature
+        return round(random.uniform(36.0, 38.0), 1)
+    return random.uniform(0, 100)
 
 
 # ---------------------------------------------------------------------------
@@ -154,6 +184,35 @@ def build_bundle(n: int = 10) -> dict:
             }
             entries.append(tx_entry(report, f"urn:uuid:{report_uuid}"))
 
+        # ----------------- 10 Observations ---------------------------------
+        for _ in range(10):
+            obs_uuid = str(uuid.uuid4())
+            code_val, code_txt, unit = random.choice(OBSERVATION_CODES)
+            eff = random_recent_datetime()
+            value = observation_value(code_val)
+
+            observation = {
+                "resourceType": "Observation",
+                "id": obs_uuid,
+                "status": "final",
+                "code": {
+                    "coding": [{
+                        "system": "http://loinc.org",
+                        "code": code_val,
+                        "display": code_txt
+                    }],
+                    "text": code_txt
+                },
+                "subject": {"reference": patient_ref},
+                "effectiveDateTime": eff,
+                "valueQuantity": {
+                    "value": value,
+                    "unit": unit,
+                    "system": "http://unitsofmeasure.org"
+                }
+            }
+            entries.append(tx_entry(observation, f"urn:uuid:{obs_uuid}"))
+
     return {
         "resourceType": "Bundle",
         "type": "transaction",
@@ -168,7 +227,7 @@ def build_bundle(n: int = 10) -> dict:
 
 def main() -> None:
     ap = argparse.ArgumentParser(
-        description="Generate random Person, Patient, DiagnosticReport data"
+        description="Generate random Person, Patient, DiagnosticReport and Observation data",
     )
     ap.add_argument("-o", "--outfile", default="bundle.json",
                     help="Output file (default: bundle.json)")
