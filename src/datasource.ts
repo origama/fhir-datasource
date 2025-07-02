@@ -36,18 +36,38 @@ export class DataSource extends DataSourceApi<FhirQuery, FhirDataSourceOptions> 
   }
 
   async fetchSeries(query: FhirQuery) {
-    const params = query.searchParam && query.searchValue ? `?${encodeURIComponent(query.searchParam)}=${encodeURIComponent(query.searchValue)}` : '';
+    let params = '';
+    if (query.searchParam && query.searchValue) {
+      const prefix = query.operator === '!=' ? ':ne' : '';
+      params = `?${encodeURIComponent(query.searchParam)}${prefix}=${encodeURIComponent(query.searchValue)}`;
+    }
     const url = `${this.getBaseUrl()}/${query.resourceType}${params}`;
     const res = await firstValueFrom(getBackendSrv().fetch<any>({ url }));
-    const frame = new MutableDataFrame({ refId: query.refId, fields: [{ name: 'Time', type: FieldType.time }, { name: 'Value', type: FieldType.number }] });
-    (res.data.entry || []).forEach((e: any) => {
-      const r = e.resource || {};
-      const ts = Date.parse(r.effectiveDateTime || r.issued || (r.meta && r.meta.lastUpdated) || '');
-      const val = r.valueQuantity && r.valueQuantity.value;
-      if (!isNaN(ts) && typeof val === 'number') {
-        frame.add({ Time: ts, Value: val });
-      }
+
+    const resources = (res.data.entry || []).map((e: any) => e.resource || {});
+    if (resources.length === 0) {
+      return new MutableDataFrame({ refId: query.refId, fields: [] });
+    }
+
+    const columns: string[] = Array.from(new Set(resources.flatMap((r: any) => Object.keys(r)))) as string[];
+    const fields = columns.map((name: string) => ({ name, type: FieldType.string }));
+    const frame = new MutableDataFrame({ refId: query.refId, fields });
+
+    resources.forEach((r: any) => {
+      const row: Record<string, any> = {};
+      columns.forEach((c) => {
+        const v = r[c];
+        if (v === null || v === undefined) {
+          row[c] = null;
+        } else if (typeof v === 'object') {
+          row[c] = JSON.stringify(v);
+        } else {
+          row[c] = v;
+        }
+      });
+      frame.add(row);
     });
+
     return frame;
   }
 

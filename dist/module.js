@@ -2563,6 +2563,10 @@ __webpack_require__.r(__webpack_exports__);
 
 function QueryEditor({ query, datasource, onChange, onRunQuery }) {
     const [resources, setResources] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]);
+    const operatorOptions = [
+        { label: '==', value: '==' },
+        { label: '!=', value: '!=' },
+    ];
     (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
         datasource.getResourceTypes().then((types) => setResources(types));
     }, [datasource]);
@@ -2573,11 +2577,14 @@ function QueryEditor({ query, datasource, onChange, onRunQuery }) {
     const onParamChange = (v) => {
         onChange({ ...query, searchParam: v.target.value });
     };
+    const onOperatorChange = (v) => {
+        onChange({ ...query, operator: v.value || '==' });
+    };
     const onValueChange = (v) => {
         onChange({ ...query, searchValue: v.target.value });
         onRunQuery();
     };
-    return ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__.Stack, { gap: 1, wrap: false, direction: "row", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__.InlineField, { label: "Resource", children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__.Select, { options: resources, value: query.resourceType, onChange: onResourceChange, width: 20 }) }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__.InlineField, { label: "Search", children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__.Input, { width: 20, value: query.searchParam || '', onChange: onParamChange, placeholder: "code" }) }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__.InlineField, { label: "Value", children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__.Input, { width: 20, value: query.searchValue || '', onChange: onValueChange, placeholder: "*" }) })] }));
+    return ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__.Stack, { gap: 1, wrap: "nowrap", direction: "row", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__.InlineField, { label: "Resource", children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__.Select, { options: resources, value: query.resourceType, onChange: onResourceChange, width: 20 }) }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__.InlineField, { label: "Search", children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__.Input, { width: 20, value: query.searchParam || '', onChange: onParamChange, placeholder: "code" }) }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__.InlineField, { label: "Op", children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__.Select, { options: operatorOptions, value: query.operator, onChange: onOperatorChange, width: 8 }) }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__.InlineField, { label: "Value", children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__.Input, { width: 20, value: query.searchValue || '', onChange: onValueChange, placeholder: "*" }) })] }));
 }
 
 
@@ -2626,17 +2633,35 @@ class DataSource extends _grafana_data__WEBPACK_IMPORTED_MODULE_0__.DataSourceAp
         return { data };
     }
     async fetchSeries(query) {
-        const params = query.searchParam && query.searchValue ? `?${encodeURIComponent(query.searchParam)}=${encodeURIComponent(query.searchValue)}` : '';
+        let params = '';
+        if (query.searchParam && query.searchValue) {
+            const prefix = query.operator === '!=' ? ':ne' : '';
+            params = `?${encodeURIComponent(query.searchParam)}${prefix}=${encodeURIComponent(query.searchValue)}`;
+        }
         const url = `${this.getBaseUrl()}/${query.resourceType}${params}`;
         const res = await (0,rxjs__WEBPACK_IMPORTED_MODULE_3__.firstValueFrom)((0,_grafana_runtime__WEBPACK_IMPORTED_MODULE_1__.getBackendSrv)().fetch({ url }));
-        const frame = new _grafana_data__WEBPACK_IMPORTED_MODULE_0__.MutableDataFrame({ refId: query.refId, fields: [{ name: 'Time', type: _grafana_data__WEBPACK_IMPORTED_MODULE_0__.FieldType.time }, { name: 'Value', type: _grafana_data__WEBPACK_IMPORTED_MODULE_0__.FieldType.number }] });
-        (res.data.entry || []).forEach((e) => {
-            const r = e.resource || {};
-            const ts = Date.parse(r.effectiveDateTime || r.issued || (r.meta && r.meta.lastUpdated) || '');
-            const val = r.valueQuantity && r.valueQuantity.value;
-            if (!isNaN(ts) && typeof val === 'number') {
-                frame.add({ Time: ts, Value: val });
-            }
+        const resources = (res.data.entry || []).map((e) => e.resource || {});
+        if (resources.length === 0) {
+            return new _grafana_data__WEBPACK_IMPORTED_MODULE_0__.MutableDataFrame({ refId: query.refId, fields: [] });
+        }
+        const columns = Array.from(new Set(resources.flatMap((r) => Object.keys(r))));
+        const fields = columns.map((name) => ({ name, type: _grafana_data__WEBPACK_IMPORTED_MODULE_0__.FieldType.string }));
+        const frame = new _grafana_data__WEBPACK_IMPORTED_MODULE_0__.MutableDataFrame({ refId: query.refId, fields });
+        resources.forEach((r) => {
+            const row = {};
+            columns.forEach((c) => {
+                const v = r[c];
+                if (v === null || v === undefined) {
+                    row[c] = null;
+                }
+                else if (typeof v === 'object') {
+                    row[c] = JSON.stringify(v);
+                }
+                else {
+                    row[c] = v;
+                }
+            });
+            frame.add(row);
         });
         return frame;
     }
@@ -2676,6 +2701,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 const DEFAULT_QUERY = {
     resourceType: 'Observation',
+    operator: '==',
 };
 
 
