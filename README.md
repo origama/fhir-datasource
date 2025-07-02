@@ -14,7 +14,9 @@ docker compose -f dockerTest/docker-compose.build.yml run --rm builder
 ```
 
 This runs a Node 20 container that installs dependencies and executes the
-build command, producing the `dist` directory.
+build command. The compiled plugin files are written to the `dist` directory.
+The folder is generated on demand during development and release and is not
+tracked in version control.
 
 Then start Grafana:
 
@@ -33,5 +35,5 @@ Specify the FHIR server address in the **FHIR base URL** field on the datasource
 ```bash
 npm run build
 ```
-
-Copy the `dist` directory into Grafana's plugin directory to install manually.
+Run the build script before manually installing the plugin. Copy the generated
+`dist` directory into Grafana's plugin directory to install it.
