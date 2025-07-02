@@ -1,31 +1,14 @@
-import React, { ChangeEvent } from 'react';
+import React from 'react';
 import { DataSourcePluginOptionsEditorProps } from '@grafana/data';
-import { InlineField, Input } from '@grafana/ui';
+import { Alert } from '@grafana/ui';
 import { FhirDataSourceOptions, FhirSecureJsonData } from '../types';
 
 interface Props extends DataSourcePluginOptionsEditorProps<FhirDataSourceOptions, FhirSecureJsonData> {}
 
-export function ConfigEditor({ options, onOptionsChange }: Props) {
-  const { jsonData } = options;
-
-  const onUrlChange = (event: ChangeEvent<HTMLInputElement>) => {
-    onOptionsChange({
-      ...options,
-      jsonData: {
-        ...jsonData,
-        fhirAddress: event.target.value,
-      },
-    });
-  };
-
+export function ConfigEditor() {
   return (
-    <InlineField label="FHIR base URL" labelWidth={20} tooltip="Root URL of the FHIR server">
-      <Input
-        width={40}
-        value={jsonData.fhirAddress || ''}
-        placeholder="http://fhir:8080/fhir"
-        onChange={onUrlChange}
-      />
-    </InlineField>
+    <Alert title="Configuration" severity="info">
+      Use the built-in <strong>URL</strong> field above to configure the FHIR server.
+    </Alert>
   );
 }

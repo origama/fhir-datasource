@@ -11,14 +11,8 @@ export class DataSource extends DataSourceApi<FhirQuery, FhirDataSourceOptions> 
     this.instanceSettings = instanceSettings;
   }
 
-  private getBaseUrl() {
-    const { jsonData, url } = this.instanceSettings;
-    return jsonData.fhirAddress || url || 'http://localhost:8080/fhir';
-  }
-
-  // backward compatibility for callers using `baseUrl`
-  get baseUrl(): string {
-    return this.getBaseUrl();
+  private getProxyBase() {
+    return `/api/datasources/proxy/${this.instanceSettings.id}`;
   }
 
   getDefaultQuery() {
@@ -33,7 +27,7 @@ export class DataSource extends DataSourceApi<FhirQuery, FhirDataSourceOptions> 
 
   async fetchSeries(query: FhirQuery) {
     const params = query.searchParam && query.searchValue ? `?${encodeURIComponent(query.searchParam)}=${encodeURIComponent(query.searchValue)}` : '';
-    const url = `${this.baseUrl}/${query.resourceType}${params}`;
+    const url = `${this.getProxyBase()}/${query.resourceType}${params}`;
     const res = await firstValueFrom(getBackendSrv().fetch<any>({ url }));
     const frame = new MutableDataFrame({ refId: query.refId, fields: [{ name: 'Time', type: FieldType.time }, { name: 'Value', type: FieldType.number }] });
     (res.data.entry || []).forEach((e: any) => {
@@ -49,7 +43,7 @@ export class DataSource extends DataSourceApi<FhirQuery, FhirDataSourceOptions> 
 
   async testDatasource() {
     try {
-      await firstValueFrom(getBackendSrv().fetch({ url: `${this.baseUrl}/metadata` }));
+      await firstValueFrom(getBackendSrv().fetch({ url: `${this.getProxyBase()}/metadata` }));
       return { status: 'success', message: 'Success' };
     } catch (err) {
       return { status: 'error', message: 'Failed to connect to FHIR server' };
@@ -58,7 +52,7 @@ export class DataSource extends DataSourceApi<FhirQuery, FhirDataSourceOptions> 
 
   async getResourceTypes() {
     try {
-      const res = await firstValueFrom(getBackendSrv().fetch<any>({ url: `${this.baseUrl}/metadata` }));
+      const res = await firstValueFrom(getBackendSrv().fetch<any>({ url: `${this.getProxyBase()}/metadata` }));
       const types = res.data.rest[0].resource.map((r: any) => ({ label: r.type, value: r.type }));
       return types;
     } catch (err) {

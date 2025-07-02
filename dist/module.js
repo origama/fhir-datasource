@@ -2516,18 +2516,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-function ConfigEditor({ options, onOptionsChange }) {
-    const { jsonData } = options;
-    const onUrlChange = (event) => {
-        onOptionsChange({
-            ...options,
-            jsonData: {
-                ...jsonData,
-                fhirAddress: event.target.value,
-            },
-        });
-    };
-    return ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__.InlineField, { label: "FHIR base URL", labelWidth: 20, tooltip: "Root URL of the FHIR server", children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__.Input, { width: 40, value: jsonData.fhirAddress || '', placeholder: "http://fhir:8080/fhir", onChange: onUrlChange }) }));
+function ConfigEditor() {
+    return ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__.Alert, { title: "Configuration", severity: "info", children: ["Use the built-in ", (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("strong", { children: "URL" }), " field above to configure the FHIR server."] }));
 }
 
 
@@ -2594,13 +2584,8 @@ class DataSource extends _grafana_data__WEBPACK_IMPORTED_MODULE_0__.DataSourceAp
         super(instanceSettings);
         this.instanceSettings = instanceSettings;
     }
-    getBaseUrl() {
-        const { jsonData, url } = this.instanceSettings;
-        return jsonData.fhirAddress || url || 'http://localhost:8080/fhir';
-    }
-    // backward compatibility for callers using `baseUrl`
-    get baseUrl() {
-        return this.getBaseUrl();
+    getProxyBase() {
+        return `/api/datasources/proxy/${this.instanceSettings.id}`;
     }
     getDefaultQuery() {
         return _types__WEBPACK_IMPORTED_MODULE_2__.DEFAULT_QUERY;
@@ -2612,7 +2597,7 @@ class DataSource extends _grafana_data__WEBPACK_IMPORTED_MODULE_0__.DataSourceAp
     }
     async fetchSeries(query) {
         const params = query.searchParam && query.searchValue ? `?${encodeURIComponent(query.searchParam)}=${encodeURIComponent(query.searchValue)}` : '';
-        const url = `${this.baseUrl}/${query.resourceType}${params}`;
+        const url = `${this.getProxyBase()}/${query.resourceType}${params}`;
         const res = await (0,rxjs__WEBPACK_IMPORTED_MODULE_3__.firstValueFrom)((0,_grafana_runtime__WEBPACK_IMPORTED_MODULE_1__.getBackendSrv)().fetch({ url }));
         const frame = new _grafana_data__WEBPACK_IMPORTED_MODULE_0__.MutableDataFrame({ refId: query.refId, fields: [{ name: 'Time', type: _grafana_data__WEBPACK_IMPORTED_MODULE_0__.FieldType.time }, { name: 'Value', type: _grafana_data__WEBPACK_IMPORTED_MODULE_0__.FieldType.number }] });
         (res.data.entry || []).forEach((e) => {
@@ -2627,7 +2612,7 @@ class DataSource extends _grafana_data__WEBPACK_IMPORTED_MODULE_0__.DataSourceAp
     }
     async testDatasource() {
         try {
-            await (0,rxjs__WEBPACK_IMPORTED_MODULE_3__.firstValueFrom)((0,_grafana_runtime__WEBPACK_IMPORTED_MODULE_1__.getBackendSrv)().fetch({ url: `${this.baseUrl}/metadata` }));
+            await (0,rxjs__WEBPACK_IMPORTED_MODULE_3__.firstValueFrom)((0,_grafana_runtime__WEBPACK_IMPORTED_MODULE_1__.getBackendSrv)().fetch({ url: `${this.getProxyBase()}/metadata` }));
             return { status: 'success', message: 'Success' };
         }
         catch (err) {
@@ -2636,7 +2621,7 @@ class DataSource extends _grafana_data__WEBPACK_IMPORTED_MODULE_0__.DataSourceAp
     }
     async getResourceTypes() {
         try {
-            const res = await (0,rxjs__WEBPACK_IMPORTED_MODULE_3__.firstValueFrom)((0,_grafana_runtime__WEBPACK_IMPORTED_MODULE_1__.getBackendSrv)().fetch({ url: `${this.baseUrl}/metadata` }));
+            const res = await (0,rxjs__WEBPACK_IMPORTED_MODULE_3__.firstValueFrom)((0,_grafana_runtime__WEBPACK_IMPORTED_MODULE_1__.getBackendSrv)().fetch({ url: `${this.getProxyBase()}/metadata` }));
             const types = res.data.rest[0].resource.map((r) => ({ label: r.type, value: r.type }));
             return types;
         }

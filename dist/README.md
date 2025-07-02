@@ -24,6 +24,10 @@ docker compose -f dockerTest/docker-compose-grafana-hapi.yml up
 
 Grafana will load the compiled plugin from `dist` without rebuilding it.
 
+### Configuration
+
+Set the FHIR server address using the built-in **URL** option when adding the datasource in Grafana. Requests are routed through Grafana's proxy so the server does not need CORS enabled.
+
 ### Build
 
 ```bash
