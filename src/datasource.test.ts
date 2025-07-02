@@ -31,4 +31,15 @@ describe('DataSource.testDatasource', () => {
     expect(fetch).toHaveBeenCalledWith({ url: 'http://example.com/metadata' });
     expect(result).toEqual({ status: 'success', message: 'Success' });
   });
+
+  it('uses updated URL when settings change', async () => {
+    const fetch = jest.fn().mockReturnValue(of({ data: {} }));
+    (getBackendSrv as jest.Mock).mockReturnValue({ fetch });
+    const settings = makeSettings('http://example.com');
+    const ds = new DataSource(settings);
+    settings.jsonData.fhirAddress = 'http://another.com';
+    const result = await ds.testDatasource();
+    expect(fetch).toHaveBeenCalledWith({ url: 'http://another.com/metadata' });
+    expect(result).toEqual({ status: 'success', message: 'Success' });
+  });
 });

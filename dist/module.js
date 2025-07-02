@@ -2592,7 +2592,15 @@ __webpack_require__.r(__webpack_exports__);
 class DataSource extends _grafana_data__WEBPACK_IMPORTED_MODULE_0__.DataSourceApi {
     constructor(instanceSettings) {
         super(instanceSettings);
-        this.baseUrl = instanceSettings.jsonData.fhirAddress || instanceSettings.url || 'http://localhost:8080/fhir';
+        this.instanceSettings = instanceSettings;
+    }
+    getBaseUrl() {
+        const { jsonData, url } = this.instanceSettings;
+        return jsonData.fhirAddress || url || 'http://localhost:8080/fhir';
+    }
+    // backward compatibility for callers using `baseUrl`
+    get baseUrl() {
+        return this.getBaseUrl();
     }
     getDefaultQuery() {
         return _types__WEBPACK_IMPORTED_MODULE_2__.DEFAULT_QUERY;

@@ -4,11 +4,21 @@ import { firstValueFrom } from 'rxjs';
 import { FhirQuery, FhirDataSourceOptions, DEFAULT_QUERY } from './types';
 
 export class DataSource extends DataSourceApi<FhirQuery, FhirDataSourceOptions> {
-  baseUrl: string;
+  instanceSettings: DataSourceInstanceSettings<FhirDataSourceOptions>;
 
   constructor(instanceSettings: DataSourceInstanceSettings<FhirDataSourceOptions>) {
     super(instanceSettings);
-    this.baseUrl = instanceSettings.jsonData.fhirAddress || instanceSettings.url || 'http://localhost:8080/fhir';
+    this.instanceSettings = instanceSettings;
+  }
+
+  private getBaseUrl() {
+    const { jsonData, url } = this.instanceSettings;
+    return jsonData.fhirAddress || url || 'http://localhost:8080/fhir';
+  }
+
+  // backward compatibility for callers using `baseUrl`
+  get baseUrl(): string {
+    return this.getBaseUrl();
   }
 
   getDefaultQuery() {
