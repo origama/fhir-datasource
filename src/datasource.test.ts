@@ -1,4 +1,4 @@
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { DataSource } from './datasource';
 import { getBackendSrv } from '@grafana/runtime';
 
@@ -73,5 +73,33 @@ describe('DataSource.testDatasource', () => {
     const result = await ds.testDatasource();
     expect(fetch).toHaveBeenCalledWith({ url: 'http://example.com/metadata' });
     expect(result).toEqual({ status: 'success', message: 'Success' });
+  });
+
+  it('returns error message with status code', async () => {
+    const fetch = jest.fn().mockReturnValue(throwError(() => ({ status: 404, statusText: 'Not Found' })));
+    (getBackendSrv as jest.Mock).mockReturnValue({ fetch });
+    const ds = new DataSource(makeSettings('http://example.com'));
+    const result = await ds.testDatasource();
+    expect(result.status).toBe('error');
+    expect(result.message).toContain('404');
+  });
+
+  it('returns error message with error text', async () => {
+    const fetch = jest.fn().mockReturnValue(throwError(() => new Error('boom')));
+    (getBackendSrv as jest.Mock).mockReturnValue({ fetch });
+    const ds = new DataSource(makeSettings('http://example.com'));
+    const result = await ds.testDatasource();
+    expect(result.status).toBe('error');
+    expect(result.message).toContain('boom');
+  });
+});
+
+describe('DataSource.getResourceTypes', () => {
+  it('propagates errors', async () => {
+    const error = new Error('oops');
+    const fetch = jest.fn().mockReturnValue(throwError(() => error));
+    (getBackendSrv as jest.Mock).mockReturnValue({ fetch });
+    const ds = new DataSource(makeSettings('http://example.com'));
+    await expect(ds.getResourceTypes()).rejects.toThrow('oops');
   });
 });
