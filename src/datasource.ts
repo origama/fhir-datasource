@@ -76,7 +76,10 @@ export class DataSource extends DataSourceApi<FhirQuery, FhirDataSourceOptions> 
       await firstValueFrom(getBackendSrv().fetch({ url: `${this.getBaseUrl()}/metadata` }));
       return { status: 'success', message: 'Success' };
     } catch (err) {
-      return { status: 'error', message: 'Failed to connect to FHIR server' };
+      const e: any = err;
+      const detail = e?.status ? e.status : e?.message;
+      const msg = detail ? `Failed to connect to FHIR server: ${detail}` : 'Failed to connect to FHIR server';
+      return { status: 'error', message: msg };
     }
   }
 
@@ -86,7 +89,8 @@ export class DataSource extends DataSourceApi<FhirQuery, FhirDataSourceOptions> 
       const types = res.data.rest[0].resource.map((r: any) => ({ label: r.type, value: r.type }));
       return types;
     } catch (err) {
-      return [];
+      console.error('Failed to fetch resource types', err);
+      throw err;
     }
   }
 }
