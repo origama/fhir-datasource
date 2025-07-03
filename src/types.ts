@@ -1,15 +1,19 @@
 import { DataQuery, DataSourceJsonData } from '@grafana/data';
 
-export interface FhirQuery extends DataQuery {
-  resourceType: string;
-  searchParam?: string;
+export interface Filter {
+  resourceType?: string;
+  field?: string;
   operator?: string;
-  searchValue?: string;
+  value?: string;
 }
 
-export const DEFAULT_QUERY: Partial<FhirQuery> = {
-  resourceType: 'Observation',
-  operator: '==',
+export interface MyQuery extends DataQuery {
+  filters: Filter[];
+}
+
+export const DEFAULT_QUERY: MyQuery = {
+  refId: '',
+  filters: [{}],
 };
 
 export interface FhirDataSourceOptions extends DataSourceJsonData {
