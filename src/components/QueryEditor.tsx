@@ -3,7 +3,24 @@ import { QueryEditorProps, SelectableValue } from '@grafana/data';
 import { Field, Select, AsyncSelect, Input, Button, stylesFactory } from '@grafana/ui';
 import { DataSource } from '../datasource';
 import { FhirDataSourceOptions, MyQuery, Filter } from '../types';
-import debounce from 'lodash/debounce';
+
+function debouncePromise<F extends (...args: any[]) => Promise<any>>(fn: F, wait: number) {
+  let timer: NodeJS.Timeout | null = null;
+  let resolvers: Array<(value: any) => void> = [];
+  return ((...args: Parameters<F>): Promise<ReturnType<F>> => {
+    if (timer) {
+      clearTimeout(timer);
+    }
+    return new Promise<ReturnType<F>>((resolve) => {
+      resolvers.push(resolve);
+      timer = setTimeout(async () => {
+        const result = await fn(...args);
+        resolvers.forEach(r => r(result));
+        resolvers = [];
+      }, wait);
+    });
+  }) as F;
+}
 
 interface Props extends QueryEditorProps<DataSource, MyQuery, FhirDataSourceOptions> {}
 
@@ -56,7 +73,7 @@ export default function QueryEditor({ query, datasource, onChange, onRunQuery }:
     return opts;
   };
 
-  const debouncedLoad = useRef(debounce(loadFields, 300)).current;
+  const debouncedLoad = useRef(debouncePromise(loadFields, 300)).current;
 
   const updateFilter = (idx: number, patch: Partial<Filter>) => {
     const filters = query.filters.map((f, i) => (i === idx ? { ...f, ...patch } : f));

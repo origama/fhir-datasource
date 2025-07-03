@@ -104,25 +104,22 @@ export class DataSource extends DataSourceApi<MyQuery, FhirDataSourceOptions> {
     const base = this.getBaseUrl();
     try {
       const res = await firstValueFrom(
-        getBackendSrv().fetch<any>({ url: `${base}/StructureDefinition/${resourceType}` })
+        getBackendSrv().fetch<any>({ url: `${base}/SearchParameter?base=${resourceType}` })
       );
-      const elements = res.data.snapshot?.element || [];
-      const fields = elements
-        .filter((e: any) => e.searchParam === true)
-        .map((e: any) => ({ label: e.path, value: e.path }));
-      if (fields.length > 0) {
-        return fields;
+      const entries = res.data.entry || [];
+      if (entries.length > 0) {
+        return entries.map((e: any) => ({ label: e.resource?.code, value: e.resource?.code }));
       }
     } catch (err) {
-      console.error('StructureDefinition fetch failed', err);
+      console.error('SearchParameter fetch failed', err);
     }
 
     try {
       const res = await firstValueFrom(
-        getBackendSrv().fetch<any>({ url: `${base}/SearchParameter?base=${resourceType}` })
+        getBackendSrv().fetch<any>({ url: `${base}/StructureDefinition/${resourceType}` })
       );
-      const entries = res.data.entry || [];
-      return entries.map((e: any) => ({ label: e.resource?.code, value: e.resource?.code }));
+      const elements = res.data.snapshot?.element || [];
+      return elements.map((e: any) => ({ label: e.path, value: e.path }));
     } catch (err) {
       console.error('Failed to fetch fields', err);
       return [];
