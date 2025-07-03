@@ -101,14 +101,28 @@ export class DataSource extends DataSourceApi<MyQuery, FhirDataSourceOptions> {
   }
 
   async getFields(resourceType: string): Promise<Array<SelectableValue<string>>> {
+    const base = this.getBaseUrl();
     try {
-      const url = `${this.getBaseUrl()}/StructureDefinition/${resourceType}`;
-      const res = await firstValueFrom(getBackendSrv().fetch<any>({ url }));
+      const res = await firstValueFrom(
+        getBackendSrv().fetch<any>({ url: `${base}/StructureDefinition/${resourceType}` })
+      );
       const elements = res.data.snapshot?.element || [];
       const fields = elements
         .filter((e: any) => e.searchParam === true)
         .map((e: any) => ({ label: e.path, value: e.path }));
-      return fields;
+      if (fields.length > 0) {
+        return fields;
+      }
+    } catch (err) {
+      console.error('StructureDefinition fetch failed', err);
+    }
+
+    try {
+      const res = await firstValueFrom(
+        getBackendSrv().fetch<any>({ url: `${base}/SearchParameter?base=${resourceType}` })
+      );
+      const entries = res.data.entry || [];
+      return entries.map((e: any) => ({ label: e.resource?.code, value: e.resource?.code }));
     } catch (err) {
       console.error('Failed to fetch fields', err);
       return [];

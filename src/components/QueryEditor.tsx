@@ -58,16 +58,15 @@ export default function QueryEditor({ query, datasource, onChange, onRunQuery }:
 
   const debouncedLoad = useRef(debounce(loadFields, 300)).current;
 
-  const updateFilter = (idx: number, patch: Partial<Filter>, run = false) => {
+  const updateFilter = (idx: number, patch: Partial<Filter>) => {
     const filters = query.filters.map((f, i) => (i === idx ? { ...f, ...patch } : f));
     onChange({ ...query, filters });
-    if (run) {
-      onRunQuery();
-    }
+    onRunQuery();
   };
 
   const addFilter = () => {
     onChange({ ...query, filters: [...query.filters, {}] });
+    onRunQuery();
   };
 
   const removeFilter = (idx: number) => {
@@ -80,7 +79,7 @@ export default function QueryEditor({ query, datasource, onChange, onRunQuery }:
     <div>
       {query.filters.map((f, i) => (
         <div className={styles.row} key={i}>
-          <Field label="Resource Type">
+          <Field label="Resource Type" horizontal>
             <Select
               options={resources}
               value={f.resourceType}
@@ -88,7 +87,7 @@ export default function QueryEditor({ query, datasource, onChange, onRunQuery }:
               width={20}
             />
           </Field>
-          <Field label="Field">
+          <Field label="Field" horizontal>
             <AsyncSelect
               isDisabled={!f.resourceType}
               loadOptions={(value) => (f.resourceType ? debouncedLoad(f.resourceType) : Promise.resolve([]))}
@@ -97,7 +96,7 @@ export default function QueryEditor({ query, datasource, onChange, onRunQuery }:
               width={20}
             />
           </Field>
-          <Field label="Operator">
+          <Field label="Operator" horizontal>
             <Select
               options={operatorOptions}
               value={f.operator}
@@ -106,7 +105,7 @@ export default function QueryEditor({ query, datasource, onChange, onRunQuery }:
               width={12}
             />
           </Field>
-          <Field label="Value">
+          <Field label="Value" horizontal>
             <Input
               value={f.value || ''}
               onChange={e => updateFilter(i, { value: e.target.value }, true)}
