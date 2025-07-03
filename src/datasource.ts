@@ -1,9 +1,9 @@
-import { DataSourceApi, DataSourceInstanceSettings, DataQueryRequest, DataQueryResponse, MutableDataFrame, FieldType } from '@grafana/data';
+import { DataSourceApi, DataSourceInstanceSettings, DataQueryRequest, DataQueryResponse, MutableDataFrame, FieldType, SelectableValue } from '@grafana/data';
 import { getBackendSrv } from '@grafana/runtime';
 import { firstValueFrom } from 'rxjs';
-import { FhirQuery, FhirDataSourceOptions, DEFAULT_QUERY } from './types';
+import { MyQuery, Filter, FhirDataSourceOptions, DEFAULT_QUERY } from './types';
 
-export class DataSource extends DataSourceApi<FhirQuery, FhirDataSourceOptions> {
+export class DataSource extends DataSourceApi<MyQuery, FhirDataSourceOptions> {
   instanceSettings: DataSourceInstanceSettings<FhirDataSourceOptions>;
 
   constructor(instanceSettings: DataSourceInstanceSettings<FhirDataSourceOptions>) {
@@ -29,29 +29,35 @@ export class DataSource extends DataSourceApi<FhirQuery, FhirDataSourceOptions> 
     return DEFAULT_QUERY;
   }
 
-  async query(options: DataQueryRequest<FhirQuery>): Promise<DataQueryResponse> {
-    const promises = options.targets.map(t => this.fetchSeries(t));
+  async query(options: DataQueryRequest<MyQuery>): Promise<DataQueryResponse> {
+    const promises = options.targets.flatMap(target =>
+      target.filters.map(f => this.fetchSeries({ ...f, refId: target.refId }))
+    );
     const data = await Promise.all(promises);
     return { data };
   }
 
-  async fetchSeries(query: FhirQuery) {
-    let params = '';
-    if (query.searchParam && query.searchValue) {
-      const prefix = query.operator === '!=' ? ':ne' : '';
-      params = `?${encodeURIComponent(query.searchParam)}${prefix}=${encodeURIComponent(query.searchValue)}`;
+  async fetchSeries(filter: Filter & { refId?: string }) {
+    if (!filter.resourceType) {
+      return new MutableDataFrame({ refId: filter.refId, fields: [] });
     }
-    const url = `${this.getBaseUrl()}/${query.resourceType}${params}`;
+    let params = '';
+    if (filter.field && filter.value) {
+      const opMap: Record<string, string> = { '!=': ':ne', '>': ':gt', '<': ':lt', contains: ':contains', '=': '' };
+      const op = opMap[filter.operator || '='] || '';
+      params = `?${encodeURIComponent(filter.field)}${op}=${encodeURIComponent(filter.value)}`;
+    }
+    const url = `${this.getBaseUrl()}/${filter.resourceType}${params}`;
     const res = await firstValueFrom(getBackendSrv().fetch<any>({ url }));
 
     const resources = (res.data.entry || []).map((e: any) => e.resource || {});
     if (resources.length === 0) {
-      return new MutableDataFrame({ refId: query.refId, fields: [] });
+      return new MutableDataFrame({ refId: filter.refId, fields: [] });
     }
 
     const columns: string[] = Array.from(new Set(resources.flatMap((r: any) => Object.keys(r)))) as string[];
     const fields = columns.map((name: string) => ({ name, type: FieldType.string }));
-    const frame = new MutableDataFrame({ refId: query.refId, fields });
+    const frame = new MutableDataFrame({ refId: filter.refId, fields });
 
     resources.forEach((r: any) => {
       const row: Record<string, any> = {};
@@ -91,6 +97,32 @@ export class DataSource extends DataSourceApi<FhirQuery, FhirDataSourceOptions> 
     } catch (err) {
       console.error('Failed to fetch resource types', err);
       throw err;
+    }
+  }
+
+  async getFields(resourceType: string): Promise<Array<SelectableValue<string>>> {
+    const base = this.getBaseUrl();
+    try {
+      const res = await firstValueFrom(
+        getBackendSrv().fetch<any>({ url: `${base}/SearchParameter?base=${resourceType}` })
+      );
+      const entries = res.data.entry || [];
+      if (entries.length > 0) {
+        return entries.map((e: any) => ({ label: e.resource?.code, value: e.resource?.code }));
+      }
+    } catch (err) {
+      console.error('SearchParameter fetch failed', err);
+    }
+
+    try {
+      const res = await firstValueFrom(
+        getBackendSrv().fetch<any>({ url: `${base}/StructureDefinition/${resourceType}` })
+      );
+      const elements = res.data.snapshot?.element || [];
+      return elements.map((e: any) => ({ label: e.path, value: e.path }));
+    } catch (err) {
+      console.error('Failed to fetch fields', err);
+      return [];
     }
   }
 }
