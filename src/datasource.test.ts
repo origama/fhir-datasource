@@ -33,13 +33,16 @@ describe('DataSource.fetchSeries', () => {
     (getBackendSrv as jest.Mock).mockReturnValue({ fetch });
 
     const ds = new DataSource(makeSettings('http://example.com'));
-    const frame: any = await ds.fetchSeries({ queryString: 'Patient', refId: 'A' } as any);
+    const frames: any[] = await ds.fetchSeries({ queryString: 'Patient', refId: 'A' } as any);
+    const frame = frames[0];
+    const tsFrame = frames[1];
 
     expect(fetch).toHaveBeenCalledWith({ url: '/api/datasources/proxy/1/Patient' });
     expect(frame._opts.fields).toEqual([
       { name: 'id', type: 'string' },
       { name: 'name', type: 'string' },
     ]);
+    expect(tsFrame._opts.fields).toEqual([]);
     expect(__addMock).toHaveBeenCalledTimes(2);
     expect(__addMock.mock.calls[0][0]).toEqual({ id: '1', name: 'Alice' });
     expect(__addMock.mock.calls[1][0]).toEqual({ id: '2', name: 'Bob' });

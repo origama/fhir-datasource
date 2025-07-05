@@ -2,6 +2,7 @@ import { DataSourceApi, DataSourceInstanceSettings, DataQueryRequest, DataQueryR
 import { getBackendSrv } from '@grafana/runtime';
 import { firstValueFrom } from 'rxjs';
 import { FhirQuery, FhirDataSourceOptions, DEFAULT_QUERY } from './types';
+import { isTimeSeriesResource, extractDatapoints, pointsToDataFrame, TimeSeriesPoint } from './timeseries';
 
 export class DataSource extends DataSourceApi<FhirQuery, FhirDataSourceOptions> {
   instanceSettings: DataSourceInstanceSettings<FhirDataSourceOptions>;
@@ -31,8 +32,9 @@ export class DataSource extends DataSourceApi<FhirQuery, FhirDataSourceOptions> 
 
   async query(options: DataQueryRequest<FhirQuery>): Promise<DataQueryResponse> {
     const promises = options.targets.map(t => this.fetchSeries(t));
-    const data = await Promise.all(promises);
-    return { data };
+    const results = await Promise.all(promises);
+    const frames = results.flat();
+    return { data: frames };
   }
 
   async fetchSeries(query: FhirQuery) {
@@ -50,8 +52,14 @@ export class DataSource extends DataSourceApi<FhirQuery, FhirDataSourceOptions> 
     const res = await firstValueFrom(getBackendSrv().fetch<any>({ url }));
 
     const resources = (res.data.entry || []).map((e: any) => e.resource || {});
+    const tsPoints: TimeSeriesPoint[] = [];
+    resources.forEach(r => {
+      if (isTimeSeriesResource(r)) {
+        tsPoints.push(...extractDatapoints(r));
+      }
+    });
     if (resources.length === 0) {
-      return new MutableDataFrame({ refId: query.refId, fields: [] });
+      return [new MutableDataFrame({ refId: query.refId, fields: [] })];
     }
 
     const columns: string[] = Array.from(new Set(resources.flatMap((r: any) => Object.keys(r)))) as string[];
@@ -73,7 +81,9 @@ export class DataSource extends DataSourceApi<FhirQuery, FhirDataSourceOptions> 
       frame.add(row);
     });
 
-    return frame;
+    const tsFrame = tsPoints.length > 0 ? pointsToDataFrame(tsPoints, `${query.refId}_ts`) : new MutableDataFrame({ refId: `${query.refId}_ts`, fields: [] });
+
+    return [frame, tsFrame];
   }
 
   async testDatasource() {
