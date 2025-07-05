@@ -1,9 +1,20 @@
 import { DataQuery, DataSourceJsonData } from '@grafana/data';
 
 export interface FhirQuery extends DataQuery {
+  /**
+   * Raw query string in the form `Resource?param=value` as entered in the
+   * editor's code mode. When provided this value takes precedence over the
+   * structured fields below.
+   */
+  queryString?: string;
+
+  /** The resource type to query when using the builder UI */
   resourceType: string;
+  /** Search parameter name */
   searchParam?: string;
+  /** Comparison operator */
   operator?: string;
+  /** Search parameter value */
   searchValue?: string;
 }
 
