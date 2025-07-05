@@ -33,7 +33,7 @@ describe('DataSource.fetchSeries', () => {
     (getBackendSrv as jest.Mock).mockReturnValue({ fetch });
 
     const ds = new DataSource(makeSettings('http://example.com'));
-    const frame: any = await ds.fetchSeries({ resourceType: 'Patient', refId: 'A' } as any);
+    const frame: any = await ds.fetchSeries({ queryString: 'Patient', refId: 'A' } as any);
 
     expect(fetch).toHaveBeenCalledWith({ url: '/api/datasources/proxy/1/Patient' });
     expect(frame._opts.fields).toEqual([

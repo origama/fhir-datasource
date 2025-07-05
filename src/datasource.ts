@@ -36,12 +36,17 @@ export class DataSource extends DataSourceApi<FhirQuery, FhirDataSourceOptions> 
   }
 
   async fetchSeries(query: FhirQuery) {
-    let params = '';
-    if (query.searchParam && query.searchValue) {
-      const prefix = query.operator === '!=' ? ':ne' : '';
-      params = `?${encodeURIComponent(query.searchParam)}${prefix}=${encodeURIComponent(query.searchValue)}`;
+    let url = '';
+    if (query.queryString) {
+      url = `${this.getBaseUrl()}/${query.queryString}`;
+    } else {
+      let params = '';
+      if (query.searchParam && query.searchValue) {
+        const prefix = query.operator === '!=' ? ':ne' : '';
+        params = `?${encodeURIComponent(query.searchParam)}${prefix}=${encodeURIComponent(query.searchValue)}`;
+      }
+      url = `${this.getBaseUrl()}/${query.resourceType}${params}`;
     }
-    const url = `${this.getBaseUrl()}/${query.resourceType}${params}`;
     const res = await firstValueFrom(getBackendSrv().fetch<any>({ url }));
 
     const resources = (res.data.entry || []).map((e: any) => e.resource || {});
@@ -90,6 +95,22 @@ export class DataSource extends DataSourceApi<FhirQuery, FhirDataSourceOptions> 
       return types;
     } catch (err) {
       console.error('Failed to fetch resource types', err);
+      throw err;
+    }
+  }
+
+  /**
+   * Returns the available search parameters for the given resource type by
+   * reading the server's capability statement.
+   */
+  async getSearchParameters(resourceType: string) {
+    try {
+      const res = await firstValueFrom(getBackendSrv().fetch<any>({ url: `${this.getBaseUrl()}/metadata` }));
+      const resource = res.data.rest[0].resource.find((r: any) => r.type === resourceType);
+      const params = (resource?.searchParam || []).map((p: any) => ({ label: p.name, value: p.name }));
+      return params;
+    } catch (err) {
+      console.error('Failed to fetch search parameters', err);
       throw err;
     }
   }
