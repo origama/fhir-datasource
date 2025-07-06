@@ -1,7 +1,7 @@
 import { DataSourceApi, DataSourceInstanceSettings, DataQueryRequest, DataQueryResponse, MutableDataFrame, FieldType, MetricFindValue, AppEvents } from '@grafana/data';
 import { getBackendSrv, getAppEvents } from '@grafana/runtime';
 import { firstValueFrom } from 'rxjs';
-import get = require('lodash/get');
+import * as lodash from 'lodash';
 import { FhirQuery, FhirDataSourceOptions, DEFAULT_QUERY } from './types';
 import { isTimeSeriesResource, extractDatapoints, pointsToDataFrame, TimeSeriesPoint } from './timeseries';
 
@@ -158,7 +158,7 @@ export class DataSource extends DataSourceApi<FhirQuery, FhirDataSourceOptions> 
       }
 
       const resources = (res.data.entry || []).map((e: any) => e.resource || {});
-      return resources.map((r: any) => ({ text: get(r, textField!), value: get(r, valueField!) }));
+      return resources.map((r: any) => ({ text: lodash.get(r, textField!), value: lodash.get(r, valueField!) }));
     } catch (err: any) {
       const detail = err?.statusText || err?.message;
       (getAppEvents() as any)?.emit(AppEvents.alertError, ['FHIR query error', detail]);
