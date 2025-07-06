@@ -2,6 +2,7 @@ import { DataSourceApi, DataSourceInstanceSettings, DataQueryRequest, DataQueryR
 import { getBackendSrv, getAppEvents } from '@grafana/runtime';
 import { firstValueFrom } from 'rxjs';
 import * as lodash from 'lodash';
+const lodashGet: any = (lodash as any).get || (lodash as any).default?.get;
 import { FhirQuery, FhirDataSourceOptions, DEFAULT_QUERY } from './types';
 import { isTimeSeriesResource, extractDatapoints, pointsToDataFrame, TimeSeriesPoint } from './timeseries';
 
@@ -158,7 +159,7 @@ export class DataSource extends DataSourceApi<FhirQuery, FhirDataSourceOptions> 
       }
 
       const resources = (res.data.entry || []).map((e: any) => e.resource || {});
-      return resources.map((r: any) => ({ text: lodash.get(r, textField!), value: lodash.get(r, valueField!) }));
+      return resources.map((r: any) => ({ text: lodashGet(r, textField!), value: lodashGet(r, valueField!) }));
     } catch (err: any) {
       const detail = err?.statusText || err?.message;
       (getAppEvents() as any)?.emit(AppEvents.alertError, ['FHIR query error', detail]);
