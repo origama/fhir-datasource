@@ -37,3 +37,16 @@ npm run build
 ```
 Run the build script before manually installing the plugin. Copy the generated
 `dist` directory into Grafana's plugin directory to install it.
+
+### Template variables
+
+Template variables can be populated using the datasource's `metricFindQuery` implementation.
+Provide a string in the form `ResourceType|textField|valueField` and the datasource
+will fetch the resources and map each one to a text/value pair using the specified fields.
+
+Example:
+
+```
+Patient|name[0].family|id
+Observation?code=weight|subject.reference|id
+```

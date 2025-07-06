@@ -19,6 +19,7 @@ jest.mock('@grafana/data', () => {
     DataSourceApi: class {},
     MutableDataFrame: MockFrame,
     FieldType: { time: 'time', number: 'number', string: 'string' },
+    SelectableValue: class {},
     __addMock: addMock,
   };
 });
@@ -128,5 +129,36 @@ describe('DataSource.getResourceTypes', () => {
     (getBackendSrv as jest.Mock).mockReturnValue({ fetch });
     const ds = new DataSource(makeSettings('http://example.com'));
     await expect(ds.getResourceTypes()).rejects.toThrow('oops');
+  });
+});
+
+describe('DataSource.metricFindQuery', () => {
+  it('fetches resources and maps text/value', async () => {
+    const fetch = jest.fn().mockReturnValue(
+      of({ data: { entry: [
+        { resource: { id: '1', name: [{ family: 'Smith' }] } },
+        { resource: { id: '2', name: [{ family: 'Jones' }] } },
+      ] } })
+    );
+    (getBackendSrv as jest.Mock).mockReturnValue({ fetch });
+    const ds = new DataSource(makeSettings('http://example.com'));
+    const res = await ds.metricFindQuery('Patient|name[0].family|id');
+    expect(fetch).toHaveBeenCalledWith({ url: '/api/datasources/proxy/1/Patient' });
+    expect(res).toEqual([
+      { text: 'Smith', value: '1' },
+      { text: 'Jones', value: '2' },
+    ]);
+  });
+
+  it('handles nested value fields', async () => {
+    const fetch = jest.fn().mockReturnValue(
+      of({ data: { entry: [
+        { resource: { id: 'obs1', subject: { reference: 'Patient/1' } } },
+      ] } })
+    );
+    (getBackendSrv as jest.Mock).mockReturnValue({ fetch });
+    const ds = new DataSource(makeSettings('http://example.com'));
+    const res = await ds.metricFindQuery('Observation|subject.reference|id');
+    expect(res).toEqual([{ text: 'Patient/1', value: 'obs1' }]);
   });
 });

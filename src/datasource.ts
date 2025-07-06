@@ -1,6 +1,7 @@
-import { DataSourceApi, DataSourceInstanceSettings, DataQueryRequest, DataQueryResponse, MutableDataFrame, FieldType } from '@grafana/data';
+import { DataSourceApi, DataSourceInstanceSettings, DataQueryRequest, DataQueryResponse, MutableDataFrame, FieldType, SelectableValue } from '@grafana/data';
 import { getBackendSrv } from '@grafana/runtime';
 import { firstValueFrom } from 'rxjs';
+import { get } from 'lodash';
 import { FhirQuery, FhirDataSourceOptions, DEFAULT_QUERY } from './types';
 import { isTimeSeriesResource, extractDatapoints, pointsToDataFrame, TimeSeriesPoint } from './timeseries';
 
@@ -129,5 +130,16 @@ export class DataSource extends DataSourceApi<FhirQuery, FhirDataSourceOptions> 
       console.error('Failed to fetch search parameters', err);
       throw err;
     }
+  }
+
+  async metricFindQuery(query: string) {
+    const [resourceQuery, textField, valueField] = query.split('|').map(p => p.trim());
+    if (!resourceQuery || !textField || !valueField) {
+      return [];
+    }
+    const url = `${this.getBaseUrl()}/${resourceQuery}`;
+    const res = await firstValueFrom(getBackendSrv().fetch<any>({ url }));
+    const resources = (res.data.entry || []).map((e: any) => e.resource || {});
+    return resources.map((r: any) => ({ text: get(r, textField), value: get(r, valueField) }));
   }
 }
