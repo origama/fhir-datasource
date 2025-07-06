@@ -40,13 +40,18 @@ Run the build script before manually installing the plugin. Copy the generated
 
 ### Template variables
 
-Template variables can be populated using the datasource's `metricFindQuery` implementation.
-Provide a string in the form `ResourceType|textField|valueField` and the datasource
-will fetch the resources and map each one to a text/value pair using the specified fields.
+Template variables can be populated using the datasource's variable query editor.
+Specify the **Resource**, **Text field**, and **Value field** separately. The datasource
+will fetch matching resources and map each to a text/value pair using the selected fields.
 
-Example:
+Example fields:
 
-```
-Patient|name[0].family|id
-Observation?code=weight|subject.reference|id
-```
+- Resource: `Patient`
+- Text field: `name[0].family`
+- Value field: `id`
+
+Or:
+
+- Resource: `Observation?code=weight`
+- Text field: `subject.reference`
+- Value field: `id`

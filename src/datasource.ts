@@ -1,4 +1,4 @@
-import { DataSourceApi, DataSourceInstanceSettings, DataQueryRequest, DataQueryResponse, MutableDataFrame, FieldType, SelectableValue } from '@grafana/data';
+import { DataSourceApi, DataSourceInstanceSettings, DataQueryRequest, DataQueryResponse, MutableDataFrame, FieldType, SelectableValue, MetricFindValue } from '@grafana/data';
 import { getBackendSrv } from '@grafana/runtime';
 import { firstValueFrom } from 'rxjs';
 import { get } from 'lodash';
@@ -132,12 +132,12 @@ export class DataSource extends DataSourceApi<FhirQuery, FhirDataSourceOptions> 
     }
   }
 
-  async metricFindQuery(query: string) {
-    const [resourceQuery, textField, valueField] = query.split('|').map(p => p.trim());
-    if (!resourceQuery || !textField || !valueField) {
+  async metricFindQuery(query: { resource?: string; textField?: string; valueField?: string }): Promise<MetricFindValue[]> {
+    const { resource, textField, valueField } = query || {};
+    if (!resource || !textField || !valueField) {
       return [];
     }
-    const url = `${this.getBaseUrl()}/${resourceQuery}`;
+    const url = `${this.getBaseUrl()}/${resource}`;
     const res = await firstValueFrom(getBackendSrv().fetch<any>({ url }));
     const resources = (res.data.entry || []).map((e: any) => e.resource || {});
     return resources.map((r: any) => ({ text: get(r, textField), value: get(r, valueField) }));

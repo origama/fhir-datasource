@@ -142,7 +142,7 @@ describe('DataSource.metricFindQuery', () => {
     );
     (getBackendSrv as jest.Mock).mockReturnValue({ fetch });
     const ds = new DataSource(makeSettings('http://example.com'));
-    const res = await ds.metricFindQuery('Patient|name[0].family|id');
+    const res = await ds.metricFindQuery({ resource: 'Patient', textField: 'name[0].family', valueField: 'id' });
     expect(fetch).toHaveBeenCalledWith({ url: '/api/datasources/proxy/1/Patient' });
     expect(res).toEqual([
       { text: 'Smith', value: '1' },
@@ -158,7 +158,7 @@ describe('DataSource.metricFindQuery', () => {
     );
     (getBackendSrv as jest.Mock).mockReturnValue({ fetch });
     const ds = new DataSource(makeSettings('http://example.com'));
-    const res = await ds.metricFindQuery('Observation|subject.reference|id');
+    const res = await ds.metricFindQuery({ resource: 'Observation', textField: 'subject.reference', valueField: 'id' });
     expect(res).toEqual([{ text: 'Patient/1', value: 'obs1' }]);
   });
 });
