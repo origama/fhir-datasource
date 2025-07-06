@@ -14,6 +14,11 @@ interface FilterRow {
   value: string;
 }
 
+const formatOptions: Array<SelectableValue<'table' | 'timeseries'>> = [
+  { label: 'Table', value: 'table' },
+  { label: 'Time series', value: 'timeseries' },
+];
+
 export function QueryEditor({
   query,
   datasource,
@@ -28,6 +33,8 @@ export function QueryEditor({
   const [resource, setResource] = useState<string>('');
   const [filters, setFilters] = useState<FilterRow[]>([{ param: '', value: '' }]);
   const [error, setError] = useState<string | null>(null);
+  const [showAdvanced, setShowAdvanced] = useState(false);
+  const [format, setFormat] = useState<'table' | 'timeseries'>(query.frameFormat || 'table');
 
   useEffect(() => {
     datasource.getResourceTypes().then(setResources);
@@ -73,10 +80,10 @@ export function QueryEditor({
     if (mode === 'builder') {
       const q = buildQuery(resource, filters);
       setCurrentQuery(q);
-      onChange({ ...query, queryString: q });
+      onChange({ ...query, queryString: q, frameFormat: format });
       onQueryChange?.(q);
     }
-  }, [mode, resource, filters, buildQuery]);
+  }, [mode, resource, filters, buildQuery, format]);
 
   const switchMode = useCallback(() => {
     if (mode === 'code') {
@@ -84,6 +91,7 @@ export function QueryEditor({
         const parsed = parseQuery(currentQuery);
         setResource(parsed.resourceType);
         setFilters(parsed.filters.length > 0 ? parsed.filters : [{ param: '', value: '' }]);
+        setFormat(query.frameFormat || 'table');
         setMode('builder');
         setError(null);
       } catch (err: any) {
@@ -128,6 +136,12 @@ export function QueryEditor({
     setFilters(next);
   };
 
+  const onFormatChange = (v: SelectableValue<string>) => {
+    const val = (v.value || 'table') as 'table' | 'timeseries';
+    setFormat(val);
+    onChange({ ...query, frameFormat: val });
+  };
+
   if (mode === 'code') {
     return (
       <Stack direction="column" gap={1} wrap="nowrap">
@@ -138,9 +152,21 @@ export function QueryEditor({
           placeholder="Patient?name=John"
         />
         {error && <Label color="red">{error}</Label>}
-        <Button variant="secondary" size="sm" onClick={switchMode}>
-          » Switch to Builder (Ctrl+⇧+M)
-        </Button>
+        <Stack direction="row" gap={1} wrap="nowrap">
+          <Button variant="secondary" size="sm" onClick={switchMode}>
+            » Switch to Builder (Ctrl+⇧+M)
+          </Button>
+          <Button variant="secondary" size="sm" onClick={() => setShowAdvanced(a => !a)}>
+            {showAdvanced ? 'Hide options' : 'Show options'}
+          </Button>
+        </Stack>
+        {showAdvanced && (
+          <Stack direction="row" gap={1} wrap="nowrap">
+            <InlineField label="Format">
+              <Select options={formatOptions} value={format} onChange={onFormatChange} width={20} />
+            </InlineField>
+          </Stack>
+        )}
       </Stack>
     );
   }
@@ -172,9 +198,21 @@ export function QueryEditor({
           )}
         </Stack>
       ))}
-      <Button variant="secondary" size="sm" onClick={switchMode}>
-        » Switch to Code (Ctrl+⇧+M)
-      </Button>
+      <Stack direction="row" gap={1} wrap="nowrap">
+        <Button variant="secondary" size="sm" onClick={switchMode}>
+          » Switch to Code (Ctrl+⇧+M)
+        </Button>
+        <Button variant="secondary" size="sm" onClick={() => setShowAdvanced(a => !a)}>
+          {showAdvanced ? 'Hide options' : 'Show options'}
+        </Button>
+      </Stack>
+      {showAdvanced && (
+        <Stack direction="row" gap={1} wrap="nowrap">
+          <InlineField label="Format">
+            <Select options={formatOptions} value={format} onChange={onFormatChange} width={20} />
+          </InlineField>
+        </Stack>
+      )}
     </Stack>
   );
 }

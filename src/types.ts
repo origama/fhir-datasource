@@ -16,11 +16,15 @@ export interface FhirQuery extends DataQuery {
   operator?: string;
   /** Search parameter value */
   searchValue?: string;
+
+  /** Desired response format */
+  frameFormat?: 'table' | 'timeseries';
 }
 
 export const DEFAULT_QUERY: Partial<FhirQuery> = {
   resourceType: 'Observation',
   operator: '==',
+  frameFormat: 'table',
 };
 
 export interface FhirDataSourceOptions extends DataSourceJsonData {

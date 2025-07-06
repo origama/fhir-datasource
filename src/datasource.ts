@@ -83,7 +83,13 @@ export class DataSource extends DataSourceApi<FhirQuery, FhirDataSourceOptions> 
 
     const tsFrame = tsPoints.length > 0 ? pointsToDataFrame(tsPoints, `${query.refId}_ts`) : new MutableDataFrame({ refId: `${query.refId}_ts`, fields: [] });
 
-    return [frame, tsFrame];
+    switch (query.frameFormat) {
+      case 'timeseries':
+        return [tsFrame];
+      case 'table':
+      default:
+        return [frame];
+    }
   }
 
   async testDatasource() {
