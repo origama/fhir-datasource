@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { DataSourceVariableQueryEditorProps } from '@grafana/data';
-import { InlineField, Input, Stack } from '@grafana/ui';
+import { InlineField, Input, Stack, Button } from '@grafana/ui';
 import { DataSource } from '../datasource';
 
 interface VariableQuery {
@@ -9,26 +9,40 @@ interface VariableQuery {
   valueField?: string;
 }
 
-export function VariableQueryEditor({ query, onChange }: DataSourceVariableQueryEditorProps<DataSource>) {
+export function VariableQueryEditor({ query, onChange, onRunQuery }: DataSourceVariableQueryEditorProps<DataSource>) {
   const q = (query || {}) as VariableQuery;
 
-  const update = (patch: Partial<VariableQuery>) => {
-    const next = { ...q, ...patch };
-    const definition = `${next.resource || ''}|${next.textField || ''}|${next.valueField || ''}`;
+  const [resource, setResource] = useState(q.resource || '');
+  const [textField, setTextField] = useState(q.textField || '');
+  const [valueField, setValueField] = useState(q.valueField || '');
+
+  useEffect(() => {
+    setResource(q.resource || '');
+    setTextField(q.textField || '');
+    setValueField(q.valueField || '');
+  }, [q.resource, q.textField, q.valueField]);
+
+  const run = () => {
+    const next = { resource, textField, valueField };
+    const definition = `${resource}|${textField}|${valueField}`;
     onChange(next, definition);
+    onRunQuery();
   };
 
   return (
     <Stack direction="column" gap={1} wrap="nowrap">
       <InlineField label="Resource">
-        <Input value={q.resource || ''} onChange={e => update({ resource: e.currentTarget.value })} width={20} />
+        <Input value={resource} onChange={e => setResource(e.currentTarget.value)} width={20} />
       </InlineField>
       <InlineField label="Text field">
-        <Input value={q.textField || ''} onChange={e => update({ textField: e.currentTarget.value })} width={20} />
+        <Input value={textField} onChange={e => setTextField(e.currentTarget.value)} width={20} />
       </InlineField>
       <InlineField label="Value field">
-        <Input value={q.valueField || ''} onChange={e => update({ valueField: e.currentTarget.value })} width={20} />
+        <Input value={valueField} onChange={e => setValueField(e.currentTarget.value)} width={20} />
       </InlineField>
+      <Button variant="secondary" size="sm" onClick={run}>
+        Run query
+      </Button>
     </Stack>
   );
 }

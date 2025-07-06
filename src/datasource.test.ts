@@ -164,6 +164,18 @@ describe('DataSource.metricFindQuery', () => {
     expect(res).toEqual([{ text: 'Patient/1', value: 'obs1' }]);
   });
 
+  it('combines multiple text fields', async () => {
+    const fetch = jest.fn().mockReturnValue(
+      of({ data: { entry: [
+        { resource: { id: '1', name: [{ given: ['Alice'], family: 'Smith' }] } },
+      ] } })
+    );
+    (getBackendSrv as jest.Mock).mockReturnValue({ fetch });
+    const ds = new DataSource(makeSettings('http://example.com'));
+    const res = await ds.metricFindQuery('Patient|name[0].given[0], name[0].family|id');
+    expect(res).toEqual([{ text: 'Alice Smith', value: '1' }]);
+  });
+
   it('shows toast when response has issue', async () => {
     const fetch = jest.fn().mockReturnValue(
       of({ data: { issue: [{ diagnostics: 'bad request' }] } })

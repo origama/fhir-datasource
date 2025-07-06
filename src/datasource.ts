@@ -159,7 +159,11 @@ export class DataSource extends DataSourceApi<FhirQuery, FhirDataSourceOptions> 
       }
 
       const resources = (res.data.entry || []).map((e: any) => e.resource || {});
-      return resources.map((r: any) => ({ text: lodashGet(r, textField!), value: lodashGet(r, valueField!) }));
+      const textPaths = textField!.split(',').map(p => p.trim()).filter(Boolean);
+      return resources.map((r: any) => ({
+        text: textPaths.map(p => lodashGet(r, p)).filter(v => v != null).join(' '),
+        value: lodashGet(r, valueField!),
+      }));
     } catch (err: any) {
       const detail = err?.statusText || err?.message;
       (getAppEvents() as any)?.emit(AppEvents.alertError, ['FHIR query error', detail]);

@@ -44,10 +44,20 @@ Template variables can be populated using the datasource's variable query editor
 Specify the **Resource**, **Text field**, and **Value field** separately. The datasource
 will fetch matching resources and map each to a text/value pair using the selected fields.
 
+The **Text field** may contain a comma separated list of JSON paths. Each value is
+looked up and combined with spaces to form the final text shown in the variable.
+Run the query using the **Run query** button to fetch results.
+
 Example fields:
 
 - Resource: `Patient`
 - Text field: `name[0].family`
+- Value field: `id`
+
+Or with multiple text fields:
+
+- Resource: `Patient`
+- Text field: `name[0].given[0], name[0].family`
 - Value field: `id`
 
 Or:
