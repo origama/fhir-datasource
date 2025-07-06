@@ -38,6 +38,12 @@ npm run build
 Run the build script before manually installing the plugin. Copy the generated
 `dist` directory into Grafana's plugin directory to install it.
 
+### Query editor
+
+The query fields accept Grafana template variables. References like `${patient}`
+are replaced when the query is executed. This works in both code mode and the
+builder UI.
+
 ### Template variables
 
 Template variables can be populated using the datasource's variable query editor.

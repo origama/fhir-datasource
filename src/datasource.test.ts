@@ -1,10 +1,11 @@
 import { of, throwError } from 'rxjs';
 import { DataSource } from './datasource';
-import { getBackendSrv, getAppEvents } from '@grafana/runtime';
+import { getBackendSrv, getAppEvents, getTemplateSrv } from '@grafana/runtime';
 
 jest.mock('@grafana/runtime', () => ({
   getBackendSrv: jest.fn(),
   getAppEvents: jest.fn(),
+  getTemplateSrv: jest.fn(),
 }));
 
 jest.mock('@grafana/data', () => {
@@ -187,5 +188,38 @@ describe('DataSource.metricFindQuery', () => {
     const res = await ds.metricFindQuery('Patient|name|id');
     expect(res).toEqual([]);
     expect(emit).toHaveBeenCalledWith('alert-error', ['FHIR query error', 'bad request']);
+  });
+});
+
+describe('DataSource.query template variables', () => {
+  it('replaces vars in queryString', async () => {
+    const fetch = jest.fn().mockReturnValue(of({ data: { entry: [] } }));
+    const replace = jest.fn().mockImplementation((str: string) => str.replace('$id', '42'));
+    (getBackendSrv as jest.Mock).mockReturnValue({ fetch });
+    (getTemplateSrv as jest.Mock).mockReturnValue({ replace });
+
+    const ds = new DataSource(makeSettings('http://example.com'));
+    await ds.query({
+      targets: [{ queryString: 'Patient/$id', refId: 'A', resourceType: '', frameFormat: 'table' }],
+      scopedVars: {},
+    } as any);
+
+    expect(replace).toHaveBeenCalledWith('Patient/$id', {});
+    expect(fetch).toHaveBeenCalledWith({ url: '/api/datasources/proxy/1/Patient/42' });
+  });
+
+  it('replaces vars in searchValue', async () => {
+    const fetch = jest.fn().mockReturnValue(of({ data: { entry: [] } }));
+    const replace = jest.fn().mockImplementation((str: string) => str.replace('$p', 'abc'));
+    (getBackendSrv as jest.Mock).mockReturnValue({ fetch });
+    (getTemplateSrv as jest.Mock).mockReturnValue({ replace });
+
+    const ds = new DataSource(makeSettings('http://example.com'));
+    await ds.query({
+      targets: [{ resourceType: 'Observation', searchParam: 'subject', searchValue: '$p', refId: 'B', frameFormat: 'table' }],
+      scopedVars: {},
+    } as any);
+
+    expect(fetch).toHaveBeenCalledWith({ url: '/api/datasources/proxy/1/Observation?subject=abc' });
   });
 });

@@ -1,5 +1,5 @@
 import { DataSourceApi, DataSourceInstanceSettings, DataQueryRequest, DataQueryResponse, MutableDataFrame, FieldType, MetricFindValue, AppEvents } from '@grafana/data';
-import { getBackendSrv, getAppEvents } from '@grafana/runtime';
+import { getBackendSrv, getAppEvents, getTemplateSrv } from '@grafana/runtime';
 import { firstValueFrom } from 'rxjs';
 import * as lodash from 'lodash';
 const lodashGet: any = (lodash as any).get || (lodash as any).default?.get;
@@ -33,7 +33,16 @@ export class DataSource extends DataSourceApi<FhirQuery, FhirDataSourceOptions> 
   }
 
   async query(options: DataQueryRequest<FhirQuery>): Promise<DataQueryResponse> {
-    const promises = options.targets.map(t => this.fetchSeries(t));
+    const templateSrv = getTemplateSrv();
+    const promises = options.targets.map(t => {
+      const replaced: FhirQuery = {
+        ...t,
+        queryString: t.queryString ? templateSrv.replace(t.queryString, options.scopedVars) : undefined,
+        searchValue: t.searchValue ? templateSrv.replace(t.searchValue, options.scopedVars) : undefined,
+        resourceType: t.resourceType ? templateSrv.replace(t.resourceType, options.scopedVars) : t.resourceType,
+      };
+      return this.fetchSeries(replaced);
+    });
     const results = await Promise.all(promises);
     const frames = results.flat();
     return { data: frames };
