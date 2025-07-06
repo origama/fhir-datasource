@@ -1,7 +1,7 @@
 import { DataSourceApi, DataSourceInstanceSettings, DataQueryRequest, DataQueryResponse, MutableDataFrame, FieldType, MetricFindValue, AppEvents } from '@grafana/data';
 import { getBackendSrv, getAppEvents } from '@grafana/runtime';
 import { firstValueFrom } from 'rxjs';
-import { get } from 'lodash';
+import get = require('lodash/get');
 import { FhirQuery, FhirDataSourceOptions, DEFAULT_QUERY } from './types';
 import { isTimeSeriesResource, extractDatapoints, pointsToDataFrame, TimeSeriesPoint } from './timeseries';
 
