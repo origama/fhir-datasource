@@ -55,3 +55,6 @@ Or:
 - Resource: `Observation?code=weight`
 - Text field: `subject.reference`
 - Value field: `id`
+
+If a query fails and the FHIR server returns a Bundle with an `issue` element,
+the diagnostics text will be displayed as a toast notification in Grafana.

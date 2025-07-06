@@ -1,9 +1,10 @@
 import { of, throwError } from 'rxjs';
 import { DataSource } from './datasource';
-import { getBackendSrv } from '@grafana/runtime';
+import { getBackendSrv, getAppEvents } from '@grafana/runtime';
 
 jest.mock('@grafana/runtime', () => ({
   getBackendSrv: jest.fn(),
+  getAppEvents: jest.fn(),
 }));
 
 jest.mock('@grafana/data', () => {
@@ -20,6 +21,7 @@ jest.mock('@grafana/data', () => {
     MutableDataFrame: MockFrame,
     FieldType: { time: 'time', number: 'number', string: 'string' },
     SelectableValue: class {},
+    AppEvents: { alertError: 'alert-error' },
     __addMock: addMock,
   };
 });
@@ -142,7 +144,7 @@ describe('DataSource.metricFindQuery', () => {
     );
     (getBackendSrv as jest.Mock).mockReturnValue({ fetch });
     const ds = new DataSource(makeSettings('http://example.com'));
-    const res = await ds.metricFindQuery({ resource: 'Patient', textField: 'name[0].family', valueField: 'id' });
+    const res = await ds.metricFindQuery('Patient|name[0].family|id');
     expect(fetch).toHaveBeenCalledWith({ url: '/api/datasources/proxy/1/Patient' });
     expect(res).toEqual([
       { text: 'Smith', value: '1' },
@@ -158,7 +160,20 @@ describe('DataSource.metricFindQuery', () => {
     );
     (getBackendSrv as jest.Mock).mockReturnValue({ fetch });
     const ds = new DataSource(makeSettings('http://example.com'));
-    const res = await ds.metricFindQuery({ resource: 'Observation', textField: 'subject.reference', valueField: 'id' });
+    const res = await ds.metricFindQuery('Observation|subject.reference|id');
     expect(res).toEqual([{ text: 'Patient/1', value: 'obs1' }]);
+  });
+
+  it('shows toast when response has issue', async () => {
+    const fetch = jest.fn().mockReturnValue(
+      of({ data: { issue: [{ diagnostics: 'bad request' }] } })
+    );
+    const emit = jest.fn();
+    (getBackendSrv as jest.Mock).mockReturnValue({ fetch });
+    (getAppEvents as jest.Mock).mockReturnValue({ emit });
+    const ds = new DataSource(makeSettings('http://example.com'));
+    const res = await ds.metricFindQuery('Patient|name|id');
+    expect(res).toEqual([]);
+    expect(emit).toHaveBeenCalledWith('alert-error', ['FHIR query error', 'bad request']);
   });
 });

@@ -1,5 +1,5 @@
-import { DataSourceApi, DataSourceInstanceSettings, DataQueryRequest, DataQueryResponse, MutableDataFrame, FieldType, SelectableValue, MetricFindValue } from '@grafana/data';
-import { getBackendSrv } from '@grafana/runtime';
+import { DataSourceApi, DataSourceInstanceSettings, DataQueryRequest, DataQueryResponse, MutableDataFrame, FieldType, MetricFindValue, AppEvents } from '@grafana/data';
+import { getBackendSrv, getAppEvents } from '@grafana/runtime';
 import { firstValueFrom } from 'rxjs';
 import { get } from 'lodash';
 import { FhirQuery, FhirDataSourceOptions, DEFAULT_QUERY } from './types';
@@ -132,14 +132,37 @@ export class DataSource extends DataSourceApi<FhirQuery, FhirDataSourceOptions> 
     }
   }
 
-  async metricFindQuery(query: { resource?: string; textField?: string; valueField?: string }): Promise<MetricFindValue[]> {
-    const { resource, textField, valueField } = query || {};
+  async metricFindQuery(query: string | { resource?: string; textField?: string; valueField?: string }): Promise<MetricFindValue[]> {
+    let resource: string | undefined;
+    let textField: string | undefined;
+    let valueField: string | undefined;
+
+    if (typeof query === 'string') {
+      [resource, textField, valueField] = query.split('|');
+    } else if (query) {
+      ({ resource, textField, valueField } = query);
+    }
+
     if (!resource || !textField || !valueField) {
       return [];
     }
+
     const url = `${this.getBaseUrl()}/${resource}`;
-    const res = await firstValueFrom(getBackendSrv().fetch<any>({ url }));
-    const resources = (res.data.entry || []).map((e: any) => e.resource || {});
-    return resources.map((r: any) => ({ text: get(r, textField), value: get(r, valueField) }));
+    try {
+      const res = await firstValueFrom(getBackendSrv().fetch<any>({ url }));
+
+      if (res.data.issue) {
+        const detail = res.data.issue[0]?.diagnostics || res.data.issue[0]?.details?.text;
+        (getAppEvents() as any)?.emit(AppEvents.alertError, ['FHIR query error', detail]);
+        return [];
+      }
+
+      const resources = (res.data.entry || []).map((e: any) => e.resource || {});
+      return resources.map((r: any) => ({ text: get(r, textField!), value: get(r, valueField!) }));
+    } catch (err: any) {
+      const detail = err?.statusText || err?.message;
+      (getAppEvents() as any)?.emit(AppEvents.alertError, ['FHIR query error', detail]);
+      throw err;
+    }
   }
 }
