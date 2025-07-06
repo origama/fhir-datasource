@@ -1,9 +1,11 @@
 import { of, throwError } from 'rxjs';
 import { DataSource } from './datasource';
-import { getBackendSrv } from '@grafana/runtime';
+import { getBackendSrv, getAppEvents, getTemplateSrv } from '@grafana/runtime';
 
 jest.mock('@grafana/runtime', () => ({
   getBackendSrv: jest.fn(),
+  getAppEvents: jest.fn(),
+  getTemplateSrv: jest.fn(),
 }));
 
 jest.mock('@grafana/data', () => {
@@ -19,6 +21,8 @@ jest.mock('@grafana/data', () => {
     DataSourceApi: class {},
     MutableDataFrame: MockFrame,
     FieldType: { time: 'time', number: 'number', string: 'string' },
+    SelectableValue: class {},
+    AppEvents: { alertError: 'alert-error' },
     __addMock: addMock,
   };
 });
@@ -128,5 +132,94 @@ describe('DataSource.getResourceTypes', () => {
     (getBackendSrv as jest.Mock).mockReturnValue({ fetch });
     const ds = new DataSource(makeSettings('http://example.com'));
     await expect(ds.getResourceTypes()).rejects.toThrow('oops');
+  });
+});
+
+describe('DataSource.metricFindQuery', () => {
+  it('fetches resources and maps text/value', async () => {
+    const fetch = jest.fn().mockReturnValue(
+      of({ data: { entry: [
+        { resource: { id: '1', name: [{ family: 'Smith' }] } },
+        { resource: { id: '2', name: [{ family: 'Jones' }] } },
+      ] } })
+    );
+    (getBackendSrv as jest.Mock).mockReturnValue({ fetch });
+    const ds = new DataSource(makeSettings('http://example.com'));
+    const res = await ds.metricFindQuery('Patient|name[0].family|id');
+    expect(fetch).toHaveBeenCalledWith({ url: '/api/datasources/proxy/1/Patient' });
+    expect(res).toEqual([
+      { text: 'Smith', value: '1' },
+      { text: 'Jones', value: '2' },
+    ]);
+  });
+
+  it('handles nested value fields', async () => {
+    const fetch = jest.fn().mockReturnValue(
+      of({ data: { entry: [
+        { resource: { id: 'obs1', subject: { reference: 'Patient/1' } } },
+      ] } })
+    );
+    (getBackendSrv as jest.Mock).mockReturnValue({ fetch });
+    const ds = new DataSource(makeSettings('http://example.com'));
+    const res = await ds.metricFindQuery('Observation|subject.reference|id');
+    expect(res).toEqual([{ text: 'Patient/1', value: 'obs1' }]);
+  });
+
+  it('combines multiple text fields', async () => {
+    const fetch = jest.fn().mockReturnValue(
+      of({ data: { entry: [
+        { resource: { id: '1', name: [{ given: ['Alice'], family: 'Smith' }] } },
+      ] } })
+    );
+    (getBackendSrv as jest.Mock).mockReturnValue({ fetch });
+    const ds = new DataSource(makeSettings('http://example.com'));
+    const res = await ds.metricFindQuery('Patient|name[0].given[0], name[0].family|id');
+    expect(res).toEqual([{ text: 'Alice Smith', value: '1' }]);
+  });
+
+  it('shows toast when response has issue', async () => {
+    const fetch = jest.fn().mockReturnValue(
+      of({ data: { issue: [{ diagnostics: 'bad request' }] } })
+    );
+    const emit = jest.fn();
+    (getBackendSrv as jest.Mock).mockReturnValue({ fetch });
+    (getAppEvents as jest.Mock).mockReturnValue({ emit });
+    const ds = new DataSource(makeSettings('http://example.com'));
+    const res = await ds.metricFindQuery('Patient|name|id');
+    expect(res).toEqual([]);
+    expect(emit).toHaveBeenCalledWith('alert-error', ['FHIR query error', 'bad request']);
+  });
+});
+
+describe('DataSource.query template variables', () => {
+  it('replaces vars in queryString', async () => {
+    const fetch = jest.fn().mockReturnValue(of({ data: { entry: [] } }));
+    const replace = jest.fn().mockImplementation((str: string) => str.replace('$id', '42'));
+    (getBackendSrv as jest.Mock).mockReturnValue({ fetch });
+    (getTemplateSrv as jest.Mock).mockReturnValue({ replace });
+
+    const ds = new DataSource(makeSettings('http://example.com'));
+    await ds.query({
+      targets: [{ queryString: 'Patient/$id', refId: 'A', resourceType: '', frameFormat: 'table' }],
+      scopedVars: {},
+    } as any);
+
+    expect(replace).toHaveBeenCalledWith('Patient/$id', {});
+    expect(fetch).toHaveBeenCalledWith({ url: '/api/datasources/proxy/1/Patient/42' });
+  });
+
+  it('replaces vars in searchValue', async () => {
+    const fetch = jest.fn().mockReturnValue(of({ data: { entry: [] } }));
+    const replace = jest.fn().mockImplementation((str: string) => str.replace('$p', 'abc'));
+    (getBackendSrv as jest.Mock).mockReturnValue({ fetch });
+    (getTemplateSrv as jest.Mock).mockReturnValue({ replace });
+
+    const ds = new DataSource(makeSettings('http://example.com'));
+    await ds.query({
+      targets: [{ resourceType: 'Observation', searchParam: 'subject', searchValue: '$p', refId: 'B', frameFormat: 'table' }],
+      scopedVars: {},
+    } as any);
+
+    expect(fetch).toHaveBeenCalledWith({ url: '/api/datasources/proxy/1/Observation?subject=abc' });
   });
 });

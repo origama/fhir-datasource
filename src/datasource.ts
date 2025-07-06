@@ -1,6 +1,8 @@
-import { DataSourceApi, DataSourceInstanceSettings, DataQueryRequest, DataQueryResponse, MutableDataFrame, FieldType } from '@grafana/data';
-import { getBackendSrv } from '@grafana/runtime';
+import { DataSourceApi, DataSourceInstanceSettings, DataQueryRequest, DataQueryResponse, MutableDataFrame, FieldType, MetricFindValue, AppEvents } from '@grafana/data';
+import { getBackendSrv, getAppEvents, getTemplateSrv } from '@grafana/runtime';
 import { firstValueFrom } from 'rxjs';
+import * as lodash from 'lodash';
+const lodashGet: any = (lodash as any).get || (lodash as any).default?.get;
 import { FhirQuery, FhirDataSourceOptions, DEFAULT_QUERY } from './types';
 import { isTimeSeriesResource, extractDatapoints, pointsToDataFrame, TimeSeriesPoint } from './timeseries';
 
@@ -31,7 +33,16 @@ export class DataSource extends DataSourceApi<FhirQuery, FhirDataSourceOptions> 
   }
 
   async query(options: DataQueryRequest<FhirQuery>): Promise<DataQueryResponse> {
-    const promises = options.targets.map(t => this.fetchSeries(t));
+    const templateSrv = getTemplateSrv();
+    const promises = options.targets.map(t => {
+      const replaced: FhirQuery = {
+        ...t,
+        queryString: t.queryString ? templateSrv.replace(t.queryString, options.scopedVars) : undefined,
+        searchValue: t.searchValue ? templateSrv.replace(t.searchValue, options.scopedVars) : undefined,
+        resourceType: t.resourceType ? templateSrv.replace(t.resourceType, options.scopedVars) : t.resourceType,
+      };
+      return this.fetchSeries(replaced);
+    });
     const results = await Promise.all(promises);
     const frames = results.flat();
     return { data: frames };
@@ -127,6 +138,44 @@ export class DataSource extends DataSourceApi<FhirQuery, FhirDataSourceOptions> 
       return params;
     } catch (err) {
       console.error('Failed to fetch search parameters', err);
+      throw err;
+    }
+  }
+
+  async metricFindQuery(query: string | { resource?: string; textField?: string; valueField?: string }): Promise<MetricFindValue[]> {
+    let resource: string | undefined;
+    let textField: string | undefined;
+    let valueField: string | undefined;
+
+    if (typeof query === 'string') {
+      [resource, textField, valueField] = query.split('|');
+    } else if (query) {
+      ({ resource, textField, valueField } = query);
+    }
+
+    if (!resource || !textField || !valueField) {
+      return [];
+    }
+
+    const url = `${this.getBaseUrl()}/${resource}`;
+    try {
+      const res = await firstValueFrom(getBackendSrv().fetch<any>({ url }));
+
+      if (res.data.issue) {
+        const detail = res.data.issue[0]?.diagnostics || res.data.issue[0]?.details?.text;
+        (getAppEvents() as any)?.emit(AppEvents.alertError, ['FHIR query error', detail]);
+        return [];
+      }
+
+      const resources = (res.data.entry || []).map((e: any) => e.resource || {});
+      const textPaths = textField!.split(',').map(p => p.trim()).filter(Boolean);
+      return resources.map((r: any) => ({
+        text: textPaths.map(p => lodashGet(r, p)).filter(v => v != null).join(' '),
+        value: lodashGet(r, valueField!),
+      }));
+    } catch (err: any) {
+      const detail = err?.statusText || err?.message;
+      (getAppEvents() as any)?.emit(AppEvents.alertError, ['FHIR query error', detail]);
       throw err;
     }
   }

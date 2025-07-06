@@ -37,3 +37,40 @@ npm run build
 ```
 Run the build script before manually installing the plugin. Copy the generated
 `dist` directory into Grafana's plugin directory to install it.
+
+### Query editor
+
+The query fields accept Grafana template variables. References like `${patient}`
+are replaced when the query is executed. This works in both code mode and the
+builder UI.
+
+### Template variables
+
+Template variables can be populated using the datasource's variable query editor.
+Specify the **Resource**, **Text field**, and **Value field** separately. The datasource
+will fetch matching resources and map each to a text/value pair using the selected fields.
+
+The **Text field** may contain a comma separated list of JSON paths. Each value is
+looked up and combined with spaces to form the final text shown in the variable.
+Run the query using the **Run query** button to fetch results.
+
+Example fields:
+
+- Resource: `Patient`
+- Text field: `name[0].family`
+- Value field: `id`
+
+Or with multiple text fields:
+
+- Resource: `Patient`
+- Text field: `name[0].given[0], name[0].family`
+- Value field: `id`
+
+Or:
+
+- Resource: `Observation?code=weight`
+- Text field: `subject.reference`
+- Value field: `id`
+
+If a query fails and the FHIR server returns a Bundle with an `issue` element,
+the diagnostics text will be displayed as a toast notification in Grafana.
