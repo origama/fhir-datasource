@@ -54,6 +54,33 @@ describe('DataSource.fetchSeries', () => {
     expect(__addMock.mock.calls[1][0]).toEqual({ id: '2', name: 'Bob' });
   });
 
+  it('applies time range and follows pagination', async () => {
+    const fetch = jest
+      .fn()
+      .mockReturnValueOnce(
+        of({
+          data: {
+            entry: [{ resource: { id: '1' } }],
+            link: [{ relation: 'next', url: '/Patient?page=2' }],
+          },
+        })
+      )
+      .mockReturnValueOnce(
+        of({ data: { entry: [{ resource: { id: '2' } }] } })
+      );
+    (getBackendSrv as jest.Mock).mockReturnValue({ fetch });
+
+    const ds = new DataSource(makeSettings('http://example.com'));
+    const range = { from: new Date('2024-01-01T00:00:00Z'), to: new Date('2024-01-02T00:00:00Z') };
+    const frames: any[] = await ds.fetchSeries({ queryString: 'Patient', refId: 'A', frameFormat: 'table' } as any, range);
+    const from = encodeURIComponent(range.from.toISOString());
+    const to = encodeURIComponent(range.to.toISOString());
+    expect(fetch.mock.calls[0][0]).toEqual({ url: `/api/datasources/proxy/1/Patient?_lastUpdated=ge${from}&_lastUpdated=le${to}` });
+    expect(fetch.mock.calls[1][0]).toEqual({ url: '/api/datasources/proxy/1/Patient?page=2' });
+    expect(frames[0]._opts.fields[0].name).toBe('id');
+    expect(frames[0]._opts.fields.length).toBe(1);
+  });
+
   it('returns a timeseries frame when requested', async () => {
     const fetch = jest.fn().mockReturnValue(
       of({
