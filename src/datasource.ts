@@ -6,6 +6,12 @@ const lodashGet: any = (lodash as any).get || (lodash as any).default?.get;
 import { FhirQuery, FhirDataSourceOptions, DEFAULT_QUERY } from './types';
 import { isTimeSeriesResource, extractDatapoints, pointsToDataFrame, TimeSeriesPoint } from './timeseries';
 
+const DATE_SEARCH_PARAMS: Record<string, string> = {
+  Observation: 'date',
+  MedicationAdministration: 'date',
+  Condition: 'onset-date',
+};
+
 export class DataSource extends DataSourceApi<FhirQuery, FhirDataSourceOptions> {
   instanceSettings: DataSourceInstanceSettings<FhirDataSourceOptions>;
 
@@ -28,6 +34,28 @@ export class DataSource extends DataSourceApi<FhirQuery, FhirDataSourceOptions> 
     return jsonData.useProxy ? this.getProxyBase() : this.getDirectBase();
   }
 
+  /** Fetches all pages of a paginated FHIR search result */
+  private async fetchAllPages(url: string): Promise<any[]> {
+    const resources: any[] = [];
+    let next: string | undefined = url;
+    while (next) {
+      const res = await firstValueFrom(getBackendSrv().fetch<any>({ url: next }));
+      if (res.data.issue) {
+        const detail = res.data.issue[0]?.diagnostics || res.data.issue[0]?.details?.text;
+        (getAppEvents() as any)?.emit(AppEvents.alertError, ['FHIR query error', detail]);
+        break;
+      }
+      resources.push(...((res.data.entry || []).map((e: any) => e.resource || {})));
+      const nextLink = (res.data.link || []).find((l: any) => l.relation === 'next');
+      if (nextLink && nextLink.url) {
+        next = nextLink.url.startsWith('http') ? nextLink.url : `${this.getBaseUrl()}${nextLink.url.startsWith('/') ? '' : '/'}${nextLink.url}`;
+      } else {
+        next = undefined;
+      }
+    }
+    return resources;
+  }
+
   getDefaultQuery() {
     return DEFAULT_QUERY;
   }
@@ -40,15 +68,16 @@ export class DataSource extends DataSourceApi<FhirQuery, FhirDataSourceOptions> 
         queryString: t.queryString ? templateSrv.replace(t.queryString, options.scopedVars) : undefined,
         searchValue: t.searchValue ? templateSrv.replace(t.searchValue, options.scopedVars) : undefined,
         resourceType: t.resourceType ? templateSrv.replace(t.resourceType, options.scopedVars) : t.resourceType,
+        legend: t.legend ? templateSrv.replace(t.legend, options.scopedVars) : t.legend,
       };
-      return this.fetchSeries(replaced);
+      return this.fetchSeries(replaced, options.range);
     });
     const results = await Promise.all(promises);
     const frames = results.flat();
     return { data: frames };
   }
 
-  async fetchSeries(query: FhirQuery) {
+  async fetchSeries(query: FhirQuery, range?: { from: any; to: any }) {
     let url = '';
     if (query.queryString) {
       url = `${this.getBaseUrl()}/${query.queryString}`;
@@ -60,9 +89,19 @@ export class DataSource extends DataSourceApi<FhirQuery, FhirDataSourceOptions> 
       }
       url = `${this.getBaseUrl()}/${query.resourceType}${params}`;
     }
-    const res = await firstValueFrom(getBackendSrv().fetch<any>({ url }));
 
-    const resources = (res.data.entry || []).map((e: any) => e.resource || {});
+    if (range) {
+      const type = (query.resourceType || query.queryString?.split('?')[0] || '').replace(/^\/+/, '');
+      const param = DATE_SEARCH_PARAMS[type];
+      if (param) {
+        const from = encodeURIComponent(range.from.toISOString());
+        const to = encodeURIComponent(range.to.toISOString());
+        const sep = url.includes('?') ? '&' : '?';
+        url = `${url}${sep}${param}=ge${from}&${param}=le${to}`;
+      }
+    }
+
+    const resources = await this.fetchAllPages(url);
     const tsPoints: TimeSeriesPoint[] = [];
     resources.forEach(r => {
       if (isTimeSeriesResource(r)) {
@@ -93,6 +132,28 @@ export class DataSource extends DataSourceApi<FhirQuery, FhirDataSourceOptions> 
     });
 
     const tsFrame = tsPoints.length > 0 ? pointsToDataFrame(tsPoints, `${query.refId}_ts`) : new MutableDataFrame({ refId: `${query.refId}_ts`, fields: [] });
+
+    let legend = query.legend;
+    const sample = tsPoints[0]?.src || resources[0];
+    if (legend && sample) {
+      legend = legend.replace(/{{\s*([^}]+)\s*}}/g, (match, path) => {
+        let p = (path || '').trim();
+        if (p.startsWith('$.')) p = p.slice(2);
+        else if (p.startsWith('$')) p = p.slice(1);
+        const val = lodashGet(sample, p);
+        return val == null ? match : String(val);
+      });
+    }
+    if (legend) {
+      (tsFrame as any).name = legend;
+      (frame as any).name = legend;
+      const getField = (tsFrame as any).getFieldByName as ((name: string) => any) | undefined;
+      const valueField = getField ? getField.call(tsFrame, 'value') : undefined;
+      if (valueField) {
+        valueField.name = legend;
+        valueField.config = { ...(valueField.config || {}), displayNameFromDS: legend } as any;
+      }
+    }
 
     switch (query.frameFormat) {
       case 'timeseries':
@@ -159,15 +220,7 @@ export class DataSource extends DataSourceApi<FhirQuery, FhirDataSourceOptions> 
 
     const url = `${this.getBaseUrl()}/${resource}`;
     try {
-      const res = await firstValueFrom(getBackendSrv().fetch<any>({ url }));
-
-      if (res.data.issue) {
-        const detail = res.data.issue[0]?.diagnostics || res.data.issue[0]?.details?.text;
-        (getAppEvents() as any)?.emit(AppEvents.alertError, ['FHIR query error', detail]);
-        return [];
-      }
-
-      const resources = (res.data.entry || []).map((e: any) => e.resource || {});
+      const resources = await this.fetchAllPages(url);
       const textPaths = textField!.split(',').map(p => p.trim()).filter(Boolean);
       return resources.map((r: any) => ({
         text: textPaths.map(p => lodashGet(r, p)).filter(v => v != null).join(' '),
