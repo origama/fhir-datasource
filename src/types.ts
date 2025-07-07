@@ -17,6 +17,9 @@ export interface FhirQuery extends DataQuery {
   /** Search parameter value */
   searchValue?: string;
 
+  /** Legend format string with {{jsonPath}} placeholders */
+  legend?: string;
+
   /** Desired response format */
   frameFormat?: 'table' | 'timeseries';
 }

@@ -40,6 +40,7 @@ export class DataSource extends DataSourceApi<FhirQuery, FhirDataSourceOptions> 
         queryString: t.queryString ? templateSrv.replace(t.queryString, options.scopedVars) : undefined,
         searchValue: t.searchValue ? templateSrv.replace(t.searchValue, options.scopedVars) : undefined,
         resourceType: t.resourceType ? templateSrv.replace(t.resourceType, options.scopedVars) : t.resourceType,
+        legend: t.legend ? templateSrv.replace(t.legend, options.scopedVars) : t.legend,
       };
       return this.fetchSeries(replaced);
     });
@@ -93,6 +94,22 @@ export class DataSource extends DataSourceApi<FhirQuery, FhirDataSourceOptions> 
     });
 
     const tsFrame = tsPoints.length > 0 ? pointsToDataFrame(tsPoints, `${query.refId}_ts`) : new MutableDataFrame({ refId: `${query.refId}_ts`, fields: [] });
+
+    let legend = query.legend;
+    const sample = tsPoints[0]?.src || resources[0];
+    if (legend && sample) {
+      legend = legend.replace(/{{\s*([^}]+)\s*}}/g, (match, path) => {
+        let p = (path || '').trim();
+        if (p.startsWith('$.')) p = p.slice(2);
+        else if (p.startsWith('$')) p = p.slice(1);
+        const val = lodashGet(sample, p);
+        return val == null ? match : String(val);
+      });
+    }
+    if (legend) {
+      (tsFrame as any).name = legend;
+      (frame as any).name = legend;
+    }
 
     switch (query.frameFormat) {
       case 'timeseries':

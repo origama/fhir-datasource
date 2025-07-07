@@ -223,3 +223,25 @@ describe('DataSource.query template variables', () => {
     expect(fetch).toHaveBeenCalledWith({ url: '/api/datasources/proxy/1/Observation?subject=abc' });
   });
 });
+
+describe('Legend formatting', () => {
+  it('handles single placeholder', async () => {
+    const fetch = jest.fn().mockReturnValue(of({ data: { entry: [{ resource: { id: '1' } }] } }));
+    (getBackendSrv as jest.Mock).mockReturnValue({ fetch });
+
+    const ds = new DataSource(makeSettings('http://example.com'));
+    const frames: any[] = await ds.fetchSeries({ queryString: 'Patient', legend: 'ID {{ $.id }}', refId: 'A', frameFormat: 'table' } as any);
+    expect((frames[0] as any).name).toBe('ID 1');
+  });
+
+  it('handles multiple placeholders and missing keys', async () => {
+    const fetch = jest.fn().mockReturnValue(
+      of({ data: { entry: [{ resource: { id: '1', subject: { reference: 'Patient/1' } } }] } })
+    );
+    (getBackendSrv as jest.Mock).mockReturnValue({ fetch });
+
+    const ds = new DataSource(makeSettings('http://example.com'));
+    const frames: any[] = await ds.fetchSeries({ queryString: 'Observation', legend: 'A {{ $.id }} {{ $.foo }} {{ $.subject.reference }}', refId: 'B', frameFormat: 'table' } as any);
+    expect((frames[0] as any).name).toBe('A 1 {{ $.foo }} Patient/1');
+  });
+});

@@ -35,6 +35,7 @@ export function QueryEditor({
   const [error, setError] = useState<string | null>(null);
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [format, setFormat] = useState<'table' | 'timeseries'>(query.frameFormat || 'table');
+  const [legend, setLegend] = useState<string>(query.legend || '');
 
   useEffect(() => {
     datasource.getResourceTypes().then(setResources);
@@ -80,7 +81,7 @@ export function QueryEditor({
     if (mode === 'builder') {
       const q = buildQuery(resource, filters);
       setCurrentQuery(q);
-      onChange({ ...query, queryString: q, frameFormat: format });
+      onChange({ ...query, queryString: q, frameFormat: format, legend });
       onQueryChange?.(q);
     }
   }, [mode, resource, filters, buildQuery, format]);
@@ -117,7 +118,7 @@ export function QueryEditor({
   const onCodeChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const q = e.target.value;
     setCurrentQuery(q);
-    onChange({ ...query, queryString: q });
+    onChange({ ...query, queryString: q, legend });
     onQueryChange?.(q);
   };
 
@@ -139,7 +140,7 @@ export function QueryEditor({
   const onFormatChange = (v: SelectableValue<string>) => {
     const val = (v.value || 'table') as 'table' | 'timeseries';
     setFormat(val);
-    onChange({ ...query, frameFormat: val });
+    onChange({ ...query, frameFormat: val, legend });
   };
 
   if (mode === 'code') {
@@ -164,6 +165,9 @@ export function QueryEditor({
           <Stack direction="row" gap={1} wrap="nowrap">
             <InlineField label="Format">
               <Select options={formatOptions} value={format} onChange={onFormatChange} width={20} />
+            </InlineField>
+            <InlineField label="Legend" tooltip="Use {{jsonPath}} placeholders">
+              <Input value={legend} onChange={e => { setLegend(e.target.value); onChange({ ...query, legend: e.target.value, frameFormat: format, queryString: currentQuery }); }} width={20} placeholder="{{ $.id }}" />
             </InlineField>
           </Stack>
         )}
@@ -210,6 +214,9 @@ export function QueryEditor({
         <Stack direction="row" gap={1} wrap="nowrap">
           <InlineField label="Format">
             <Select options={formatOptions} value={format} onChange={onFormatChange} width={20} />
+          </InlineField>
+          <InlineField label="Legend" tooltip="Use {{jsonPath}} placeholders">
+            <Input value={legend} onChange={e => { setLegend(e.target.value); onChange({ ...query, legend: e.target.value, frameFormat: format, queryString: currentQuery }); }} width={20} placeholder="{{ $.id }}" />
           </InlineField>
         </Stack>
       )}

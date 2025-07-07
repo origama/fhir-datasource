@@ -72,6 +72,18 @@ Or:
 - Text field: `subject.reference`
 - Value field: `id`
 
+### Legend formatting
+
+The query editor exposes a **Legend** field for custom series names. The value may contain one or more `{{ }}` placeholders referencing fields of the returned resource. Each placeholder is replaced using a JSON path lookup against the series payload.
+
+Example:
+
+```
+Patient {{ $.id }} - {{ $.subject.reference }}
+```
+
+Will render `Patient 42 - Patient/42` when the series resource has `id: 42` and a matching subject reference. Unresolved placeholders remain unchanged.
+
 If a query fails and the FHIR server returns a Bundle with an `issue` element,
 the diagnostics text will be displayed as a toast notification in Grafana.
 See [DEVELOPER_OVERVIEW.md](DEVELOPER_OVERVIEW.md) for repository details and [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
