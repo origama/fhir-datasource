@@ -74,3 +74,5 @@ Or:
 
 If a query fails and the FHIR server returns a Bundle with an `issue` element,
 the diagnostics text will be displayed as a toast notification in Grafana.
+See [DEVELOPER_OVERVIEW.md](DEVELOPER_OVERVIEW.md) for repository details and [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
+
