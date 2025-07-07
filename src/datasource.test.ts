@@ -12,9 +12,13 @@ jest.mock('@grafana/data', () => {
   const addMock = jest.fn();
   class MockFrame {
     _opts: any;
+    fields: any[];
+    getFieldByName: (name: string) => any;
     add = addMock;
     constructor(opts?: any) {
       this._opts = opts;
+      this.fields = (opts?.fields || []).map((f: any) => ({ ...f, config: {} }));
+      this.getFieldByName = (name: string) => this.fields.find((fl: any) => fl.name === name);
     }
   }
   return {
@@ -226,22 +230,56 @@ describe('DataSource.query template variables', () => {
 
 describe('Legend formatting', () => {
   it('handles single placeholder', async () => {
-    const fetch = jest.fn().mockReturnValue(of({ data: { entry: [{ resource: { id: '1' } }] } }));
-    (getBackendSrv as jest.Mock).mockReturnValue({ fetch });
-
-    const ds = new DataSource(makeSettings('http://example.com'));
-    const frames: any[] = await ds.fetchSeries({ queryString: 'Patient', legend: 'ID {{ $.id }}', refId: 'A', frameFormat: 'table' } as any);
-    expect((frames[0] as any).name).toBe('ID 1');
-  });
-
-  it('handles multiple placeholders and missing keys', async () => {
     const fetch = jest.fn().mockReturnValue(
-      of({ data: { entry: [{ resource: { id: '1', subject: { reference: 'Patient/1' } } }] } })
+      of({
+        data: {
+          entry: [
+            {
+              resource: {
+                resourceType: 'Observation',
+                id: '1',
+                effectiveDateTime: '2023-01-01T00:00:00Z',
+                valueQuantity: { value: 5, unit: 'mg' },
+                subject: { reference: 'Patient/1' },
+                code: { coding: [{ code: 'weight' }] },
+              },
+            },
+          ],
+        },
+      })
     );
     (getBackendSrv as jest.Mock).mockReturnValue({ fetch });
 
     const ds = new DataSource(makeSettings('http://example.com'));
-    const frames: any[] = await ds.fetchSeries({ queryString: 'Observation', legend: 'A {{ $.id }} {{ $.foo }} {{ $.subject.reference }}', refId: 'B', frameFormat: 'table' } as any);
+    const frames: any[] = await ds.fetchSeries({ queryString: 'Observation', legend: 'ID {{ $.id }}', refId: 'A', frameFormat: 'timeseries' } as any);
+    expect((frames[0] as any).name).toBe('ID 1');
+    expect(frames[0].fields.some((f: any) => f.name === 'ID 1')).toBe(true);
+  });
+
+  it('handles multiple placeholders and missing keys', async () => {
+    const fetch = jest.fn().mockReturnValue(
+      of({
+        data: {
+          entry: [
+            {
+              resource: {
+                resourceType: 'Observation',
+                id: '1',
+                effectiveDateTime: '2023-01-01T00:00:00Z',
+                valueQuantity: { value: 5, unit: 'mg' },
+                subject: { reference: 'Patient/1' },
+                code: { coding: [{ code: 'weight' }] },
+              },
+            },
+          ],
+        },
+      })
+    );
+    (getBackendSrv as jest.Mock).mockReturnValue({ fetch });
+
+    const ds = new DataSource(makeSettings('http://example.com'));
+    const frames: any[] = await ds.fetchSeries({ queryString: 'Observation', legend: 'A {{ $.id }} {{ $.foo }} {{ $.subject.reference }}', refId: 'B', frameFormat: 'timeseries' } as any);
     expect((frames[0] as any).name).toBe('A 1 {{ $.foo }} Patient/1');
+    expect(frames[0].fields.some((f: any) => f.name === 'A 1 {{ $.foo }} Patient/1')).toBe(true);
   });
 });

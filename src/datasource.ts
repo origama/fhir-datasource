@@ -109,6 +109,12 @@ export class DataSource extends DataSourceApi<FhirQuery, FhirDataSourceOptions> 
     if (legend) {
       (tsFrame as any).name = legend;
       (frame as any).name = legend;
+      const getField = (tsFrame as any).getFieldByName as ((name: string) => any) | undefined;
+      const valueField = getField ? getField.call(tsFrame, 'value') : undefined;
+      if (valueField) {
+        valueField.name = legend;
+        valueField.config = { ...(valueField.config || {}), displayNameFromDS: legend } as any;
+      }
     }
 
     switch (query.frameFormat) {
