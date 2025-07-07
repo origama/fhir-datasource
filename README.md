@@ -72,6 +72,14 @@ Or:
 - Text field: `subject.reference`
 - Value field: `id`
 
+### Time range filtering
+
+When the dashboard time range is set, queries for resources that define a date
+parameter are automatically constrained using that field. Observations and
+MedicationAdministrations are filtered using the `date` search parameter, while
+Conditions use `onset-date`. Resources without an appropriate date field, such
+as `Patient`, are not time restricted.
+
 ### Legend formatting
 
 The query editor exposes a **Legend** field for custom series names. The value may contain one or more `{{ }}` placeholders referencing fields of the returned resource. Each placeholder is replaced using a JSON path lookup against the series payload.

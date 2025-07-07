@@ -61,7 +61,7 @@ describe('DataSource.fetchSeries', () => {
         of({
           data: {
             entry: [{ resource: { id: '1' } }],
-            link: [{ relation: 'next', url: '/Patient?page=2' }],
+            link: [{ relation: 'next', url: '/Observation?page=2' }],
           },
         })
       )
@@ -72,13 +72,22 @@ describe('DataSource.fetchSeries', () => {
 
     const ds = new DataSource(makeSettings('http://example.com'));
     const range = { from: new Date('2024-01-01T00:00:00Z'), to: new Date('2024-01-02T00:00:00Z') };
-    const frames: any[] = await ds.fetchSeries({ queryString: 'Patient', refId: 'A', frameFormat: 'table' } as any, range);
+    const frames: any[] = await ds.fetchSeries({ queryString: 'Observation', refId: 'A', frameFormat: 'table' } as any, range);
     const from = encodeURIComponent(range.from.toISOString());
     const to = encodeURIComponent(range.to.toISOString());
-    expect(fetch.mock.calls[0][0]).toEqual({ url: `/api/datasources/proxy/1/Patient?_lastUpdated=ge${from}&_lastUpdated=le${to}` });
-    expect(fetch.mock.calls[1][0]).toEqual({ url: '/api/datasources/proxy/1/Patient?page=2' });
+    expect(fetch.mock.calls[0][0]).toEqual({ url: `/api/datasources/proxy/1/Observation?date=ge${from}&date=le${to}` });
+    expect(fetch.mock.calls[1][0]).toEqual({ url: '/api/datasources/proxy/1/Observation?page=2' });
     expect(frames[0]._opts.fields[0].name).toBe('id');
     expect(frames[0]._opts.fields.length).toBe(1);
+  });
+
+  it('does not apply range filter when resource has no date search param', async () => {
+    const fetch = jest.fn().mockReturnValue(of({ data: { entry: [] } }));
+    (getBackendSrv as jest.Mock).mockReturnValue({ fetch });
+    const ds = new DataSource(makeSettings('http://example.com'));
+    const range = { from: new Date('2024-01-01T00:00:00Z'), to: new Date('2024-01-02T00:00:00Z') };
+    await ds.fetchSeries({ queryString: 'Patient', refId: 'B', frameFormat: 'table' } as any, range);
+    expect(fetch.mock.calls[0][0]).toEqual({ url: '/api/datasources/proxy/1/Patient' });
   });
 
   it('returns a timeseries frame when requested', async () => {
@@ -102,8 +111,8 @@ describe('DataSource.fetchSeries', () => {
     (getBackendSrv as jest.Mock).mockReturnValue({ fetch });
 
     const ds = new DataSource(makeSettings('http://example.com'));
-    const frames: any[] = await ds.fetchSeries({ queryString: 'Observation', refId: 'B', frameFormat: 'timeseries' } as any);
-    expect(frames[0]._opts.refId).toBe('B_ts');
+    const frames: any[] = await ds.fetchSeries({ queryString: 'Observation', refId: 'C', frameFormat: 'timeseries' } as any);
+    expect(frames[0]._opts.refId).toBe('C_ts');
     expect(frames[0]._opts.fields[0].name).toBe('seriesKey');
   });
 });

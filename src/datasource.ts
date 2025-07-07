@@ -6,6 +6,12 @@ const lodashGet: any = (lodash as any).get || (lodash as any).default?.get;
 import { FhirQuery, FhirDataSourceOptions, DEFAULT_QUERY } from './types';
 import { isTimeSeriesResource, extractDatapoints, pointsToDataFrame, TimeSeriesPoint } from './timeseries';
 
+const DATE_SEARCH_PARAMS: Record<string, string> = {
+  Observation: 'date',
+  MedicationAdministration: 'date',
+  Condition: 'onset-date',
+};
+
 export class DataSource extends DataSourceApi<FhirQuery, FhirDataSourceOptions> {
   instanceSettings: DataSourceInstanceSettings<FhirDataSourceOptions>;
 
@@ -85,10 +91,14 @@ export class DataSource extends DataSourceApi<FhirQuery, FhirDataSourceOptions> 
     }
 
     if (range) {
-      const from = encodeURIComponent(range.from.toISOString());
-      const to = encodeURIComponent(range.to.toISOString());
-      const sep = url.includes('?') ? '&' : '?';
-      url = `${url}${sep}_lastUpdated=ge${from}&_lastUpdated=le${to}`;
+      const type = (query.resourceType || query.queryString?.split('?')[0] || '').replace(/^\/+/, '');
+      const param = DATE_SEARCH_PARAMS[type];
+      if (param) {
+        const from = encodeURIComponent(range.from.toISOString());
+        const to = encodeURIComponent(range.to.toISOString());
+        const sep = url.includes('?') ? '&' : '?';
+        url = `${url}${sep}${param}=ge${from}&${param}=le${to}`;
+      }
     }
 
     const resources = await this.fetchAllPages(url);
